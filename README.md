@@ -1,9 +1,13 @@
-# Powerful Dependency Injection inside Browser and Node using Typescript and RXJS 6
+# @rxdi/starter-client-side
+## Starter project with React and Incremental DOM based on @rxdi/core
+## Powerful Dependency Injection inside Browser and Node using Typescript and RXJS 6
 ***
-> The idea behind @rxdi is to create independent dependency injection that can be used everywhere.
-> First steps where with platform called @gapi you can check repository [here](https://github.com/Stradivario/gapi).
-> Then because of the needs of the platform i decided to develop this DI container helping me build progressive applications.
-> Hope you like my journey and help and suggestions are appreciated!
+> The idea behind [@rxdi](https://github.com/rxdi) is to create independent, dependency injection that can be used everywhere,
+> Node and Browser with purpose also to share the same code without chainging nothing!
+> First steps where with platform called [@gapi](https://github.com/Stradivario/gapi) you can check repository [@gapi/core](https://github.com/Stradivario/gapi-core).
+> Then because of the needs of the platform i decided to develop this Reactive Dependency Injection container helping me build progressive applications.
+> Hope you like my journey!
+> Any help and suggestions are appreciated!
 Main repository [@rxdi/core](https://github.com/rxdi/core) 
 ***
 ### Installation and basic examples:
@@ -11,15 +15,26 @@ Main repository [@rxdi/core](https://github.com/rxdi/core)
 ##### To start developing, run:
 
 ```bash
-git clone https://github.com/rxdi/starter-client
+git clone https://github.com/rxdi/starter-client-side
 ```
 ##### Install modules:
 
 ```bash
 npm install
 ```
-##### Start App
+##### Running App
 
+For starting and building application we will use Parcel a new configuration-less web bundler [ParcelJS](https://parceljs.org/)
+
+This project is with added ReactJS and when builded for production bundle is less than 800Kb!!
+
+To install parcel type:
+
+```bash
+npm install -g parcel-bundler
+```
+
+##### Start App
 ```bash
 parcel ./src/index.html --target browser
 ```
@@ -31,13 +46,19 @@ parcel build ./src/index.html --target browser
 
 ## Simplest app
 
+
+#### Main starting point
+
 src/main.ts
 ```typescript
 import { Bootstrap } from '@rxdi/core';
 import { AppModule } from './app/app.module';
 
 Bootstrap(AppModule, {
-    init: true,
+    init: false,
+    initOptions: {
+        services: true,
+    },
     logger: {
         logging: true,
         date: true,
@@ -52,7 +73,10 @@ Bootstrap(AppModule, {
 );
 ```
 
+#### App Module
+
 src/app/app.module.ts
+
 ```typescript
 import { Module } from "@rxdi/core";
 import { RenderService } from './render.service.ts';
@@ -65,51 +89,139 @@ import { ReactModule } from "./react/react.module";
 export class AppModule {}
 ```
 
+
+#### React Module
+You can import `ReactComponent` directly inside `AppModule` but for good architecture purpose we need to create related module.
+
 src/app/react/react.module.ts
+
 ```typescript
 import { Module } from "@rxdi/core";
 import { ReactComponent } from "./components/react.component";
+import { ReactiveService } from "./components/react.service";
 
 @Module({
-    components: [ReactComponent]
+    components: [ReactComponent],
+    services: [ReactiveService]
 })
 export class ReactModule {}
 ```
 
+#### React Component
 src/app/react/components/react.component.tsx
+
 ```typescript
 
 import * as React from "react";
-
 import * as ReactDOM from "react-dom";
-import { Component } from "@rxdi/core";
+import { Component, OnInit, InjectSoft } from "@rxdi/core";
+import shallowCompare from 'react-addons-shallow-compare';
+import { ReactiveService } from "../components/react.service";
+import { Subscription } from "rxjs";
+import { HelloProps, HelloState } from "./react.component.model";
 
-export interface HelloProps {
+@Component()
+export class ReactComponent extends React.Component<HelloProps, HelloState> implements OnInit {
+
+    private reactiveService: ReactiveService = InjectSoft(ReactiveService);
+
+    subscription: Subscription;
+
+    OnInit() {
+        ReactDOM.render(
+            <ReactComponent compiler="TypeScript" framework="React" rxdi="@rxdi" />,
+            document.getElementById("App")
+        );
+    }
+
+    render() {
+        return <div>
+            <h1>Hello from {this.props.compiler}, {this.props.framework} and {this.props.rxdi}!</h1>
+            <h1>Reactive Service Counter: {this.state && this.state.value}</h1>
+        </div>;
+    }
+
+    componentDidMount() {
+        this.subscription = this.reactiveService.state.subscribe(state => this.setState(state));
+    }
+
+    componentWillUnmount() {
+        this.reactiveService.clearInterval();
+        this.subscription.unsubscribe();
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        return shallowCompare(this, nextProps, nextState);
+    }
+
+}
+```
+
+
+#### React State
+
+
+```typescript
+export class HelloProps {
     compiler: string;
     framework: string;
     rxdi: string;
 }
 
-@Component()
-export class ReactComponent extends React.Component<HelloProps, {}> {
-
-    OnInit() {
-        ReactDOM.render(
-            <ReactComponent compiler="TypeScript" framework="React" rxdi="@rxdi" />,
-            document.getElementById("example")
-        );
-    }
-
-    render() {
-        return <h1>Hello from {this.props.compiler}, {this.props.framework} and {this.props.rxdi}!</h1>;
-    }
-
+export class HelloState {
+    value: number;
 }
+
 ```
 
-Renderer service
+#### Reactive Service
+```typescript
 
-src/app/common/services/renderer.ts
+import { Service } from "@rxdi/core";
+import { BehaviorSubject } from "rxjs";
+import { HelloState } from "./react.component.model";
+
+@Service()
+export class ReactiveService {
+    count: number = 0;
+    state: BehaviorSubject<HelloState> = new BehaviorSubject({value: 0});
+    interval: any;
+
+    constructor() {
+        this.interval = setInterval(() => {
+
+            this.count++
+            // Stop changing state when count reaches 6
+            if (this.count <= 6) {
+                this.state.next({ value: this.count });
+            }
+
+            console.log(this);
+            // Until count is 15 no DOM manipulations will be triggered
+            // Start changing state when count reaches 15
+            if (this.count > 10) {
+                this.state.next({ value: this.count });
+            }
+        }, 1000);
+    }
+
+    clearInterval() {
+        clearInterval(this.interval);
+    }
+}
+
+```
+
+#### Renderer service
+
+Renderer example is not related with example above, just different use case for [@rxdi/core](https://github.com/rxdi/core).
+
+It can be used for creating low level library where you can build your own Incremental DOM
+
+More information can be found here: [IDOM](https://github.com/google/incremental-dom)
+
+src/app/core/services/renderer.ts
+
 ```typescript
 
 import { Service } from "@rxdi/core";
@@ -261,4 +373,37 @@ export class RendererService {
     }
 }
 
+```
+
+
+#### Notes
+
+`InjectSoft` - Function is added due to problem when extending `React.Component` class.
+
+Dependencies are not resolved and extended correctly by React.Component class.This is temporary solution for injecting Services when constructor is intialized and setting properties to correct constructor.
+
+Except `@Component()` when extending `React.Component` all other decorators work as expected depending inside constructor.
+
+When using NodeJS reamains unchanged
+
+Later releases will be created separated class extending react and will be inside othe repository `@rxdi/reactive-components`
+Can be extended as follow
+
+```typescript
+import { Component } from "@rxdi/core";
+import { ReactComponent } from "@rxdi/reactive-components";
+import { ReactiveService } from "../components/react.service";
+
+@Component()
+export class AppComponent extends ReactComponent<any, any> {
+
+    // private reactiveService: ReactiveService = InjectSoft(ReactiveService); older version
+
+    constructor(
+        private reactiveService: ReactiveService
+    ) {
+        super();
+    }
+
+}
 ```

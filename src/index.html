@@ -1,7 +1,27 @@
-<input type="text" value="Alexey">
-<button>Increment</button>
+<!doctype html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <title>@rxdi client side example</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
+
+<body>
+
+    <div id='App'></div>
+</body>
 
 
-<div id='example'></div>
-<script type="text/javascript" src="./main.ts">
-</script>
+<div id="renderer">
+    <p>Renderer Example</p>
+    <input type="text" value="Alexey">
+    <button>Increment</button>
+</div>
+
+
+<script type="text/javascript" src="./es5-adapter-shims.js"></script>
+<script type="text/javascript" src="./main.ts"></script>
+
+</html>

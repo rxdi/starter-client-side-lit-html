@@ -1,5 +1,5 @@
 import { Module } from "@rxdi/core";
-import { CommonModule } from './common/common.module';
+import { CommonModule } from './core/core.module';
 import { ReactModule } from "./react/react.module";
 
 @Module({

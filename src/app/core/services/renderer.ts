@@ -128,15 +128,17 @@ export class RendererService {
             elementClose('ul');
         }
 
+        const element = document.getElementById('renderer');
 
         document.querySelector('button').addEventListener('click', () => {
             data.counter++;
-            patch(document.body, render, data);
+            patch(element, render, data);
         });
         document.querySelector('input').addEventListener('input', (e) => {
             data.user = e.target['value'];
             console.log(data);
-            patch(document.body, render, data);
+
+            patch(element, render, data);
         });
 
         const data = {
@@ -144,6 +146,6 @@ export class RendererService {
             counter: 1
         };
 
-        patch(document.body, render, data);
+        patch(element, render, data);
     }
 }
