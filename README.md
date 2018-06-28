@@ -56,13 +56,56 @@ src/app/app.module.ts
 ```typescript
 import { Module } from "@rxdi/core";
 import { RenderService } from './render.service.ts';
+import { ReactModule } from "./react/react.module";
 
 @Module({
+    imports: [ReactModule],
     services: [RenderService]
 })
 export class AppModule {}
 ```
 
+src/app/react/react.module.ts
+```typescript
+import { Module } from "@rxdi/core";
+import { ReactComponent } from "./components/react.component";
+
+@Module({
+    components: [ReactComponent]
+})
+export class ReactModule {}
+```
+
+src/app/react/components/react.component.tsx
+```typescript
+
+import * as React from "react";
+
+import * as ReactDOM from "react-dom";
+import { Component } from "@rxdi/core";
+
+export interface HelloProps {
+    compiler: string;
+    framework: string;
+    rxdi: string;
+}
+
+@Component()
+export class ReactComponent extends React.Component<HelloProps, {}> {
+
+    OnInit() {
+        ReactDOM.render(
+            <ReactComponent compiler="TypeScript" framework="React" rxdi="@rxdi" />,
+            document.getElementById("example")
+        );
+    }
+
+    render() {
+        return <h1>Hello from {this.props.compiler}, {this.props.framework} and {this.props.rxdi}!</h1>;
+    }
+
+}
+```
 
 Renderer service
 

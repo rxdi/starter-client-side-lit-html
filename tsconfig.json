@@ -4,6 +4,7 @@
     "baseUrl": "./",
     "outDir": "./dist/out-tsc",
     "sourceMap": true,
+    "jsx": "react",
     "declaration": false,
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,
@@ -16,5 +17,8 @@
       "es2017",
       "dom"
     ]
-  }
+  },
+  "include": [
+    "./src/**/*"
+  ]
 }

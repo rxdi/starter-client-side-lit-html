@@ -14,7 +14,7 @@ export class RendererService {
     constructor(
 
     ) {
-        alert("My awesome app!");
+        console.log("My awesome app!");
         const NODE_DATA_KEY = '__ID_Data__';
 
         // The current nodes being processed
@@ -135,6 +135,7 @@ export class RendererService {
         });
         document.querySelector('input').addEventListener('input', (e) => {
             data.user = e.target['value'];
+            console.log(data);
             patch(document.body, render, data);
         });
 
