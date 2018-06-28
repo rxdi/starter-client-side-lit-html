@@ -1,0 +1,17 @@
+{
+  "name": "@rxdi/starter-client",
+  "version": "0.0.70",
+  "main": "src/main.ts",
+  "scripts": {
+    "start": "parcel ./src/index.html --target browser",
+    "build": "parcel build ./src/index.html --target browser"
+  },
+  "author": "Kristiyan Tachev",
+  "license": "MIT",
+  "dependencies": {
+    "@rxdi/core": "0.0.70"
+  },
+  "devDependencies": {
+    "typescript": "^2.7.1"
+  }
+}
