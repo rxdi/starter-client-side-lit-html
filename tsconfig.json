@@ -4,6 +4,7 @@
     "baseUrl": ".",
     "sourceMap": true,
     "jsx": "react",
+    "jsxFactory": "h",
     "declaration": false,
     "moduleResolution": "node",
     "emitDecoratorMetadata": true,

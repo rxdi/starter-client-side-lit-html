@@ -1,11 +1,9 @@
 import { Module } from "@rxdi/core";
-import { CommonModule } from './core/core.module';
-import { ReactModule } from "./react/react.module";
+import { CoreModule } from './core/core.module';
+import { AppComponent } from "./app.component";
 
 @Module({
-    imports: [
-        CommonModule,
-        ReactModule
-    ]
+    imports: [CoreModule],
+    bootstrap: [AppComponent]
 })
 export class AppModule {}

@@ -6,4 +6,5 @@ export class HelloProps {
 
 export class HelloState {
     value: number;
+    time?: any;
 }

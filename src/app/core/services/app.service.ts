@@ -1,9 +1,9 @@
 import { Service } from "@rxdi/core";
 import { BehaviorSubject } from "rxjs";
-import { HelloState } from "./react.component.model";
+import { HelloState } from "../../app.model";
 
 @Service()
-export class ReactiveService {
+export class AppService {
     count: number = 0;
     state: BehaviorSubject<HelloState> = new BehaviorSubject({ value: 0 });
     interval: any;

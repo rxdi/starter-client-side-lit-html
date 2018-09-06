@@ -1,5 +1,5 @@
 # @rxdi/starter-client-side
-## Starter project with React and Incremental DOM based on @rxdi/core
+## Starter project with PReact and Incremental DOM based on @rxdi/core
 ## Powerful Dependency Injection inside Browser and Node using Typescript and RXJS 6
 ***
 > The idea behind [@rxdi](https://github.com/rxdi) is to create independent, dependency injection that can be used everywhere,
@@ -79,59 +79,36 @@ src/app/app.module.ts
 
 ```typescript
 import { Module } from "@rxdi/core";
-import { RenderService } from './render.service.ts';
-import { ReactModule } from "./react/react.module";
+import { CoreModule } from './core/core.module';
+import { AppComponent } from "./app.component";
 
 @Module({
-    imports: [ReactModule],
-    services: [RenderService]
+    imports: [CoreModule],
+    bootstrap: [AppComponent]
 })
 export class AppModule {}
 ```
 
-
-#### React Module
-You can import `ReactComponent` directly inside `AppModule` but for good architecture purpose we need to create related module.
-
-src/app/react/react.module.ts
-
-```typescript
-import { Module } from "@rxdi/core";
-import { ReactComponent } from "./components/react.component";
-import { ReactiveService } from "./components/react.service";
-
-@Module({
-    components: [ReactComponent],
-    services: [ReactiveService]
-})
-export class ReactModule {}
-```
-
-#### React Component
-src/app/react/components/react.component.tsx
+#### App Component
+src/app/app.component.tsx
 
 ```typescript
 
-import * as React from "react";
-import * as ReactDOM from "react-dom";
-import { Component, OnInit, InjectSoft } from "@rxdi/core";
-import shallowCompare from 'react-addons-shallow-compare';
-import { ReactiveService } from "../components/react.service";
+import { Component, Injector } from "@rxdi/core";
 import { Subscription } from "rxjs";
-import { HelloProps, HelloState } from "./react.component.model";
+import { h, render, Component as PreactComponent } from 'preact';
+import { AppService } from "./core/services/app.service";
+import { HelloProps, HelloState } from "./app.model";
 
 @Component()
-export class ReactComponent extends React.Component<HelloProps, HelloState> implements OnInit {
+export class AppComponent extends PreactComponent<HelloProps, HelloState> {
 
-    private reactiveService: ReactiveService = InjectSoft(ReactiveService);
+    @Injector(AppService) private appService: AppService;
 
-    subscription: Subscription;
+    private subscription: Subscription;
 
-    OnInit() {
-        ReactDOM.render(
-            <ReactComponent compiler="TypeScript" framework="React" rxdi="@rxdi" />,
-            document.getElementById("App")
-        );
+    OnBefore() {
+        render(<AppComponent compiler="TypeScript" framework="React" rxdi="@rxdi" />, document.body);
     }
 
     render() {
@@ -142,25 +119,18 @@ export class ReactComponent extends React.Component<HelloProps, HelloState> impl
     }
 
     componentDidMount() {
-        this.subscription = this.reactiveService.state.subscribe(state => this.setState(state));
+        this.subscription = this.appService.state.subscribe(state => this.setState(state));
     }
 
     componentWillUnmount() {
-        this.reactiveService.clearInterval();
+        this.appService.clearInterval();
         this.subscription.unsubscribe();
-    }
-
-    shouldComponentUpdate(nextProps, nextState) {
-        return shallowCompare(this, nextProps, nextState);
     }
 
 }
 ```
 
-
-#### React State
-
-
+#### App State
 ```typescript
 export class HelloProps {
     compiler: string;
@@ -174,17 +144,16 @@ export class HelloState {
 
 ```
 
-#### Reactive Service
+#### App Service
 ```typescript
-
 import { Service } from "@rxdi/core";
 import { BehaviorSubject } from "rxjs";
-import { HelloState } from "./react.component.model";
+import { HelloState } from "../../app.model";
 
 @Service()
-export class ReactiveService {
+export class AppService {
     count: number = 0;
-    state: BehaviorSubject<HelloState> = new BehaviorSubject({value: 0});
+    state: BehaviorSubject<HelloState> = new BehaviorSubject({ value: 0 });
     interval: any;
 
     constructor() {
@@ -208,8 +177,8 @@ export class ReactiveService {
     clearInterval() {
         clearInterval(this.interval);
     }
-}
 
+}
 ```
 
 #### Renderer service
@@ -223,7 +192,6 @@ More information can be found here: [IDOM](https://github.com/google/incremental
 src/app/core/services/renderer.ts
 
 ```typescript
-
 import { Service } from "@rxdi/core";
 
 export class NodeData {
@@ -240,7 +208,7 @@ export class RendererService {
     constructor(
 
     ) {
-        alert("My awesome app!");
+        console.log("My awesome app!");
         const NODE_DATA_KEY = '__ID_Data__';
 
         // The current nodes being processed
@@ -354,14 +322,17 @@ export class RendererService {
             elementClose('ul');
         }
 
+        const element = document.getElementById('renderer');
 
         document.querySelector('button').addEventListener('click', () => {
             data.counter++;
-            patch(document.body, render, data);
+            patch(element, render, data);
         });
         document.querySelector('input').addEventListener('input', (e) => {
             data.user = e.target['value'];
-            patch(document.body, render, data);
+            console.log(data);
+
+            patch(element, render, data);
         });
 
         const data = {
@@ -369,16 +340,24 @@ export class RendererService {
             counter: 1
         };
 
-        patch(document.body, render, data);
+        patch(element, render, data);
     }
 }
-
 ```
 
 
 #### Notes
 
-`InjectSoft` - Function is added due to problem when extending `React.Component` class.
+`@Injector()` - Decorator also can be used which will depend imediately instance of Class can be used as follow
+
+```typescript
+@Component()
+export class AppComponent extends PreactComponent<any, any> {
+    @Injector(AppService) private appService: AppService;
+}
+```
+
+`InjectSoft` - Function is added due to problem when extending `React.Component or Preact Component` class.
 
 Dependencies are not resolved and extended correctly by React.Component class.This is temporary solution for injecting Services when constructor is intialized and setting properties to correct constructor.
 
