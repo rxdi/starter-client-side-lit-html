@@ -9,6 +9,7 @@
   "author": "Kristiyan Tachev",
   "license": "MIT",
   "dependencies": {
+    "@babel/polyfill": "^7.0.0",
     "@rxdi/core": "^0.0.259",
     "preact": "^8.3.1"
   },

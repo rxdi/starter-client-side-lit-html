@@ -13,7 +13,7 @@ export class AppComponent extends PreactComponent<HelloProps, HelloState> {
     private subscription: Subscription;
 
     OnBefore() {
-        render(<AppComponent compiler="TypeScript" framework="React" rxdi="@rxdi" />, document.body);
+        render(<AppComponent compiler="TypeScript" framework="PReact" rxdi="@rxdi" />, document.body);
     }
 
     render() {
