@@ -10,7 +10,7 @@
   "license": "MIT",
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
-    "@rxdi/core": "^0.0.318",
+    "@rxdi/core": "^0.0.320",
     "preact": "^8.3.1"
   },
   "devDependencies": {
