@@ -1,10 +1,7 @@
 import { RouteParams } from "./router";
 
 export class HelloProps {
-    compiler: string;
-    framework: string;
-    rxdi: string;
-    routeParams: RouteParams;
+
 }
 
 export class HelloState {

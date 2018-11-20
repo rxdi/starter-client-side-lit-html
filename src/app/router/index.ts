@@ -7,7 +7,6 @@ import { RoutesService } from "./routes.service";
 @Module()
 export class RouterModule {
     public static forRoot(r: Route[]): ModuleWithServices {
-        debugger
         return {
             module: RouterModule,
             services: [

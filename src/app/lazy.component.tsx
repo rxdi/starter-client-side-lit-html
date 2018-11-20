@@ -7,10 +7,12 @@ import { RouteParams } from "./router";
 export class TestComponent extends PreactComponent<any> {
 
     @RouteParams()
-    OnBefore(params: RouteParams) {
-        render(<TestComponent routeParams={params} />, document.getElementById('app'));
+    test(params?: RouteParams) {
+        return params;
     }
     render() {
+        const props = this.test();
+        debugger
         return <div>
             <h1>Lazy routed module </h1>
             <h1>Route: {this.props.routeParams.route}</h1>

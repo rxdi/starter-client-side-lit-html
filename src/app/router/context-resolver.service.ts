@@ -12,7 +12,7 @@ export class ContextResolver {
     ) {
         this.router.onChange()
         .subscribe(async () => {
-            const snapshot = this.router.getSnapshot();
+            const snapshot = await this.router.getSnapshot();
             this.router.activatedRoute.next(snapshot);
             await this.resolve(snapshot.route);
         });

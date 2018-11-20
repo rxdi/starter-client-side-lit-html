@@ -1,19 +1,22 @@
-import { Service } from "@rxdi/core";
+import { Service, Container } from "@rxdi/core";
 import history, { StartOptions } from './history/history';
 import { Observable, of, BehaviorSubject } from "rxjs";
+import { RoutesService } from "./routes.service";
 
 @Service()
 export class Router {
 
     private locationBar = new history();
-    activatedRoute: BehaviorSubject<any> = new BehaviorSubject(null);
+    activatedRoute: BehaviorSubject<{component: any; route: string; params: {[key: string]: string}}> = new BehaviorSubject(null);
     url: string;
 
-    constructor() {
-        setTimeout(() => {
+    constructor(
+        private routes: RoutesService
+    ) {
+        setTimeout(async () => {
             this.url = window.location.pathname;
             this.start({ pushState: true }).subscribe();
-            this.activatedRoute.next(this.getSnapshot());
+            this.activatedRoute.next(await this.getSnapshot());
             this.navigate(this.url + window.location.search, { params: this.getAllUrlParams(this.url) });
         });
 
@@ -24,7 +27,7 @@ export class Router {
         return of(this.locationBar.update(route, options))
     }
 
-    navigate(route: string, options?: { params: any, trigger?: boolean, replace?: boolean, }) {
+    navigate(route: string, options?: { params?: any, trigger?: boolean, replace?: boolean}) {
         return this.navigateInternal(route, options);
     }
 
@@ -49,10 +52,16 @@ export class Router {
         return params;
     }
 
-    getSnapshot() {
-        const path = this.url + window.location.search;
+    async getSnapshot() {
+        const path = this.url + window.location.search
+        const route = path.split('?')[0].replace('/', '');
+        let component = await this.routes.filter(route)[0].component;
+        if (component.__esModule) {
+            component = Container.get(Object.keys(component).map(res => component[res])[0]);
+        }
         return {
-            route: path.split('?')[0],
+            component,
+            route,
             params: this.getAllUrlParams(path)
         }
     }

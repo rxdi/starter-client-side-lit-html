@@ -12,4 +12,8 @@ export class RoutesService {
     get() {
         return this._paths;
     }
+
+    filter(path: string) {
+        return this.get().filter(r => r.path === path);
+    }
 }
