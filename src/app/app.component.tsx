@@ -1,9 +1,11 @@
 
-import { Component, Injector } from "@rxdi/core";
+import { Component, Injector, Container } from "@rxdi/core";
 import { Subscription } from "rxjs";
 import { h, render, Component as PreactComponent } from 'preact';
-import { AppService } from "./core/services/app.service";
+import { AppService } from "./app.service";
 import { HelloProps, HelloState } from "./app.model";
+import { RouteParams, Debounce } from "@rxdi/router";
+import { RouterComponent } from "./router.component";
 
 @Component()
 export class AppComponent extends PreactComponent<HelloProps, HelloState> {
@@ -12,14 +14,18 @@ export class AppComponent extends PreactComponent<HelloProps, HelloState> {
 
     private subscription: Subscription;
 
-    OnBefore() {
-        render(<AppComponent compiler="TypeScript" framework="PReact" rxdi="@rxdi" />, document.body);
+    @RouteParams()
+    OnBefore(params: RouteParams) {
+        render(<AppComponent compiler="TypeScript" framework="PReact" rxdi="@rxdi" routeParams={params} />, document.getElementById('app'));
     }
 
-    render() {
+    render(props: HelloProps, ) {
+        debugger
         return <div>
+            <RouterComponent>dadada</RouterComponent>
             <h1>Hello from {this.props.compiler}, {this.props.framework} and {this.props.rxdi}!</h1>
             <h1>Reactive Service Counter: {this.state && this.state.value}</h1>
+            <h1>Route {this.props.routeParams.route }</h1>
         </div>;
     }
 
@@ -28,7 +34,6 @@ export class AppComponent extends PreactComponent<HelloProps, HelloState> {
     }
 
     componentWillUnmount() {
-        this.appService.clearInterval();
         this.subscription.unsubscribe();
     }
 

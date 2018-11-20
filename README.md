@@ -1,5 +1,5 @@
-# @rxdi/starter-client-side
-## Starter project with PReact and Incremental DOM based on @rxdi/core
+# @rxdi/starter-client-rxdi-router-preact
+## Starter project with PReact based on @rxdi/core
 ## Powerful Dependency Injection inside Browser and Node using Typescript and RXJS 6
 ***
 > The idea behind [@rxdi](https://github.com/rxdi) is to create independent, dependency injection that can be used everywhere,
@@ -15,7 +15,7 @@ Main repository [@rxdi/core](https://github.com/rxdi/core)
 ##### To start developing, run:
 
 ```bash
-git clone https://github.com/rxdi/starter-client-side
+git clone https://github.com/rxdi/starter-client-rxdi-router-preact
 ```
 ##### Install modules:
 
@@ -79,12 +79,19 @@ src/app/app.module.ts
 
 ```typescript
 import { Module } from "@rxdi/core";
-import { CoreModule } from './core/core.module';
-import { AppComponent } from "./app.component";
+import { RouterModule } from "@rxdi/router";
 
 @Module({
-    imports: [CoreModule],
-    bootstrap: [AppComponent]
+    imports: [
+        RouterModule.forRoot([
+            {
+                path: '', component: import('./app.component')
+            },
+            {
+                path: 'lazy', component: import('./lazy.component')
+            }
+        ])
+    ]
 })
 export class AppModule {}
 ```
@@ -94,11 +101,13 @@ src/app/app.component.tsx
 
 ```typescript
 
-import { Component, Injector } from "@rxdi/core";
+import { Component, Injector, Container } from "@rxdi/core";
 import { Subscription } from "rxjs";
 import { h, render, Component as PreactComponent } from 'preact';
-import { AppService } from "./core/services/app.service";
+import { AppService } from "./app.service";
 import { HelloProps, HelloState } from "./app.model";
+import { RouteParams, Debounce } from "@rxdi/router";
+import { RouterComponent } from "./router.component";
 
 @Component()
 export class AppComponent extends PreactComponent<HelloProps, HelloState> {
@@ -107,14 +116,18 @@ export class AppComponent extends PreactComponent<HelloProps, HelloState> {
 
     private subscription: Subscription;
 
-    OnBefore() {
-        render(<AppComponent compiler="TypeScript" framework="React" rxdi="@rxdi" />, document.body);
+    @RouteParams()
+    OnBefore(params: RouteParams) {
+        render(<AppComponent compiler="TypeScript" framework="PReact" rxdi="@rxdi" routeParams={params} />, document.getElementById('app'));
     }
 
-    render() {
+    render(props: HelloProps, ) {
+        debugger
         return <div>
+            <RouterComponent>dadada</RouterComponent>
             <h1>Hello from {this.props.compiler}, {this.props.framework} and {this.props.rxdi}!</h1>
             <h1>Reactive Service Counter: {this.state && this.state.value}</h1>
+            <h1>Route {this.props.routeParams.route }</h1>
         </div>;
     }
 
@@ -123,7 +136,6 @@ export class AppComponent extends PreactComponent<HelloProps, HelloState> {
     }
 
     componentWillUnmount() {
-        this.appService.clearInterval();
         this.subscription.unsubscribe();
     }
 
@@ -132,10 +144,13 @@ export class AppComponent extends PreactComponent<HelloProps, HelloState> {
 
 #### App State
 ```typescript
+import { RouteParams } from "@rxdi/router";
+
 export class HelloProps {
     compiler: string;
     framework: string;
     rxdi: string;
+    routeParams: RouteParams;
 }
 
 export class HelloState {
@@ -148,203 +163,28 @@ export class HelloState {
 ```typescript
 import { Service } from "@rxdi/core";
 import { BehaviorSubject } from "rxjs";
-import { HelloState } from "../../app.model";
+import { HelloState } from "./app.model";
+import { Router } from "@rxdi/router";
 
 @Service()
 export class AppService {
     count: number = 0;
     state: BehaviorSubject<HelloState> = new BehaviorSubject({ value: 0 });
-    interval: any;
-
-    constructor() {
-        this.interval = setInterval(() => {
-
+    constructor(
+        private router: Router
+    ) {
+       const interval = setInterval(() => {
             this.count++
-            // Stop changing state when count reaches 6
-            if (this.count <= 6) {
-                this.state.next({ value: this.count });
+            if (this.count >= 6) {
+                this.router.navigate('/home');
+                this.router.navigate('/home');
+                clearInterval(interval);
             }
-
-            console.log(this);
-            // Until count is 15 no DOM manipulations will be triggered
-            // Start changing state when count reaches 15
-            if (this.count > 10) {
-                this.state.next({ value: this.count });
-            }
+            this.state.next({ value: this.count });
         }, 1000);
     }
-
-    clearInterval() {
-        clearInterval(this.interval);
-    }
-
 }
 ```
-
-#### Renderer service
-
-Renderer example is not related with example above, just different use case for [@rxdi/core](https://github.com/rxdi/core).
-
-It can be used for creating low level library where you can build your own Incremental DOM
-
-More information can be found here: [IDOM](https://github.com/google/incremental-dom)
-
-src/app/core/services/renderer.ts
-
-```typescript
-import { Service } from "@rxdi/core";
-
-export class NodeData {
-    text: string;
-    name: string;
-    constructor(name) {
-        this.name = name;
-        this.text = null;
-    }
-}
-
-@Service()
-export class RendererService {
-    constructor(
-
-    ) {
-        console.log("My awesome app!");
-        const NODE_DATA_KEY = '__ID_Data__';
-
-        // The current nodes being processed
-        let currentNode = null;
-        let currentParent = null;
-
-        function getData(node) {
-            if (!node[NODE_DATA_KEY]) {
-                node[NODE_DATA_KEY] = new NodeData(node.nodeName.toLowerCase());
-            }
-
-            return node[NODE_DATA_KEY];
-        }
-
-        function enterNode() {
-            currentParent = currentNode;
-            currentNode = null;
-        }
-
-        function nextNode() {
-            currentNode = currentNode ? currentNode.nextSibling : currentParent.firstChild;
-        }
-
-        function exitNode() {
-            currentNode = currentParent;
-            currentParent = currentParent.parentNode;
-        }
-
-        const matches = function (matchNode, name/*, key */) {
-            const data = getData(matchNode);
-            return name === data.name // && key === data.key;
-        };
-
-        function renderDOM(name) {
-            if (currentNode && matches(currentNode, name/*, key */)) {
-                return currentNode;
-            }
-
-            const node = name === '#text' ?
-                document.createTextNode('') :
-                document.createElement(name);
-
-            currentParent.insertBefore(node, currentNode);
-
-            currentNode = node;
-
-            return node;
-        }
-
-        function elementOpen(name) {
-            nextNode();
-            const node = renderDOM(name);
-            enterNode();
-
-            // check for updates, i.t attributes
-            const data = getData(node);
-            return currentParent;
-        }
-
-        function elementClose(node) {
-            exitNode();
-
-            return currentNode;
-        }
-
-        function text(value) {
-            nextNode();
-            const node = renderDOM('#text');
-
-            // checks for text updates
-            const data = getData(node);
-
-            if (data.text !== value) {
-                data.text = (value);
-                node.data = value;
-            }
-
-            return currentNode;
-        }
-
-
-        function patch(node, fn, data) {
-            currentNode = node;
-
-            enterNode();
-            fn(data);
-            exitNode();
-        };
-
-
-        function render(data) {
-            elementOpen('h1');
-            {
-                text('Hello, ' + data.user)
-            }
-            elementClose('h1');
-            elementOpen('ul')
-            {
-                elementOpen('li');
-                {
-                    text('Counter: ')
-                    elementOpen('span');
-                    {
-                        text(data.counter);
-                    }
-                    elementClose('span');
-                }
-                elementClose('li');
-            }
-
-            elementClose('ul');
-        }
-
-        const element = document.getElementById('renderer');
-
-        document.querySelector('button').addEventListener('click', () => {
-            data.counter++;
-            patch(element, render, data);
-        });
-        document.querySelector('input').addEventListener('input', (e) => {
-            data.user = e.target['value'];
-            console.log(data);
-
-            patch(element, render, data);
-        });
-
-        const data = {
-            user: 'Alexey',
-            counter: 1
-        };
-
-        patch(element, render, data);
-    }
-}
-```
-
 
 #### Notes
 

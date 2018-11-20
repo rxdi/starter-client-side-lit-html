@@ -1,9 +1,16 @@
 import { Module } from "@rxdi/core";
-import { CoreModule } from './core/core.module';
-import { AppComponent } from "./app.component";
+import { RouterModule } from "@rxdi/router";
 
 @Module({
-    imports: [CoreModule],
-    bootstrap: [AppComponent]
+    imports: [
+        RouterModule.forRoot([
+            {
+                path: '', component: import('./app.component')
+            },
+            {
+                path: 'lazy', component: import('./lazy.component')
+            }
+        ])
+    ]
 })
 export class AppModule {}
