@@ -4,7 +4,7 @@ import { Subscription } from "rxjs";
 import { h, render, Component as PreactComponent } from 'preact';
 import { AppService } from "./app.service";
 import { HelloProps, HelloState } from "./app.model";
-import { RouteParams, Debounce } from "@rxdi/router";
+import { RouteParams } from "./router";
 import { RouterComponent } from "./router.component";
 
 @Component()
@@ -20,7 +20,6 @@ export class AppComponent extends PreactComponent<HelloProps, HelloState> {
     }
 
     render(props: HelloProps, ) {
-        debugger
         return <div>
             <RouterComponent>dadada</RouterComponent>
             <h1>Hello from {this.props.compiler}, {this.props.framework} and {this.props.rxdi}!</h1>

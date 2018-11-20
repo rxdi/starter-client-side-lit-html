@@ -1,7 +1,7 @@
 
 import { Component } from "@rxdi/core";
 import { h, Component as PreactComponent, render } from 'preact';
-import { RouteParams } from "@rxdi/router";
+import { RouteParams } from "./router";
 
 @Component()
 export class TestComponent extends PreactComponent<any> {

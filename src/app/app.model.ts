@@ -1,4 +1,4 @@
-import { RouteParams } from "@rxdi/router";
+import { RouteParams } from "./router";
 
 export class HelloProps {
     compiler: string;

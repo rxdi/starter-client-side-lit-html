@@ -1,7 +1,7 @@
 import { Service } from "@rxdi/core";
 import { BehaviorSubject } from "rxjs";
 import { HelloState } from "./app.model";
-import { Router } from "@rxdi/router";
+import { Router } from "./router";
 
 @Service()
 export class AppService {
@@ -10,14 +10,9 @@ export class AppService {
     constructor(
         private router: Router
     ) {
-       const interval = setInterval(() => {
-            this.count++
-            if (this.count >= 6) {
-                this.router.navigate('/home');
-                this.router.navigate('/home');
-                clearInterval(interval);
-            }
-            this.state.next({ value: this.count });
+       setTimeout(() => {
+            this.router.navigate('/home');
+            this.router.navigate('/home');
         }, 1000);
     }
 }
