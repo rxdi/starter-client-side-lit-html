@@ -11,8 +11,9 @@
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
     "@rxdi/core": "0.0.342",
-    "@rxdi/router": "0.0.346",
     "preact": "^8.3.1",
+    "preact-async-route": "^2.2.1",
+    "preact-router": "^2.6.1",
     "rxjs": "^6.3.3"
   },
   "devDependencies": {

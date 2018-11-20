@@ -79,19 +79,10 @@ src/app/app.module.ts
 
 ```typescript
 import { Module } from "@rxdi/core";
-import { RouterModule } from "@rxdi/router";
+import { AppComponent } from "./app.component";
 
 @Module({
-    imports: [
-        RouterModule.forRoot([
-            {
-                path: '', component: import('./app.component')
-            },
-            {
-                path: 'lazy', component: import('./lazy.component')
-            }
-        ])
-    ]
+    bootstrap: [AppComponent]
 })
 export class AppModule {}
 ```
@@ -101,87 +92,80 @@ src/app/app.component.tsx
 
 ```typescript
 
-import { Component, Injector, Container } from "@rxdi/core";
-import { Subscription } from "rxjs";
+import { Component } from "@rxdi/core";
 import { h, render, Component as PreactComponent } from 'preact';
-import { AppService } from "./app.service";
-import { HelloProps, HelloState } from "./app.model";
-import { RouteParams, Debounce } from "@rxdi/router";
-import { RouterComponent } from "./router.component";
+import AsyncRoute from 'preact-async-route';
+import { Router, Link } from 'preact-router';
 
 @Component()
-export class AppComponent extends PreactComponent<HelloProps, HelloState> {
+export class AppComponent extends PreactComponent {
 
-    @Injector(AppService) private appService: AppService;
-
-    private subscription: Subscription;
-
-    @RouteParams()
-    OnBefore(params: RouteParams) {
-        render(<AppComponent compiler="TypeScript" framework="PReact" rxdi="@rxdi" routeParams={params} />, document.getElementById('app'));
+    OnBefore() {
+        render(<AppComponent />, document.body);
     }
 
-    render(props: HelloProps, ) {
-        debugger
+    render() {
         return <div>
-            <RouterComponent>dadada</RouterComponent>
-            <h1>Hello from {this.props.compiler}, {this.props.framework} and {this.props.rxdi}!</h1>
-            <h1>Reactive Service Counter: {this.state && this.state.value}</h1>
-            <h1>Route {this.props.routeParams.route }</h1>
+            <nav>
+                <Link activeClassName="active" href="/">Home</Link>
+                <Link activeClassName="active" href="/about">About</Link>
+            </nav>
+            <Router>
+                <AsyncRoute
+                    path="/"
+                    getComponent={this.getHomeComponent}
+                    loading={() => <div>loading...</div>}
+                />
+                <AsyncRoute
+                    path="/about"
+                    getComponent={this.getAboutComponent}
+                    loading={() => <div>loading...</div>}
+                />
+            </Router>
+        </div>
+    }
+
+    async getAboutComponent() {
+        return (await import('./about/about.component')).AboutComponent;
+    }
+    async getHomeComponent() {
+        return (await import('./home/home.component')).HomeComponent;
+    }
+
+}
+```
+
+#### About
+```typescript
+
+import { Component } from "@rxdi/core";
+import { h, Component as PreactComponent } from 'preact';
+
+@Component()
+export class AboutComponent extends PreactComponent<any> {
+
+    render() {
+        return <div>
+            <h1>About </h1>
+            <h1>Yey</h1>
         </div>;
     }
-
-    componentDidMount() {
-        this.subscription = this.appService.state.subscribe(state => this.setState(state));
-    }
-
-    componentWillUnmount() {
-        this.subscription.unsubscribe();
-    }
-
 }
 ```
 
-#### App State
+#### Home
 ```typescript
-import { RouteParams } from "@rxdi/router";
 
-export class HelloProps {
-    compiler: string;
-    framework: string;
-    rxdi: string;
-    routeParams: RouteParams;
-}
+import { Component } from "@rxdi/core";
+import { h, Component as PreactComponent } from 'preact';
 
-export class HelloState {
-    value: number;
-}
-
-```
-
-#### App Service
-```typescript
-import { Service } from "@rxdi/core";
-import { BehaviorSubject } from "rxjs";
-import { HelloState } from "./app.model";
-import { Router } from "@rxdi/router";
-
-@Service()
-export class AppService {
-    count: number = 0;
-    state: BehaviorSubject<HelloState> = new BehaviorSubject({ value: 0 });
-    constructor(
-        private router: Router
-    ) {
-       const interval = setInterval(() => {
-            this.count++
-            if (this.count >= 6) {
-                this.router.navigate('/home');
-                this.router.navigate('/home');
-                clearInterval(interval);
-            }
-            this.state.next({ value: this.count });
-        }, 1000);
+@Component()
+export class HomeComponent extends PreactComponent {
+    render() {
+        return <div>
+            <h1>Lazy routed module </h1>
+            <h1>Route: </h1>
+        </div>;
     }
 }
 ```
