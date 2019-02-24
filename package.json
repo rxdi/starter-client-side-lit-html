@@ -1,6 +1,6 @@
 {
   "name": "@rxdi/starter-client-router-preact",
-  "version": "0.0.358",
+  "version": "0.0.359",
   "main": "src/main.ts",
   "scripts": {
     "start": "parcel ./src/index.html --target browser",
