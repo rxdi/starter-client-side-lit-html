@@ -10,7 +10,7 @@
   "license": "MIT",
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
-    "@rxdi/core": "^0.0.378",
+    "@rxdi/core": "^0.0.380",
     "preact": "^8.3.1",
     "preact-async-route": "^2.2.1",
     "preact-router": "^2.6.1",
