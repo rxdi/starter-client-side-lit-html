@@ -19,3 +19,10 @@ Bootstrap(AppModule, {
     () => console.log('App Started!'),
     (err) => console.error(err)
 );
+
+
+if (module['hot']) {
+    module['hot'].dispose(() => document.body.innerHTML = '')
+}
+
+
