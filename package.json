@@ -1,5 +1,5 @@
 {
-  "name": "@rxdi/starter-client-router-preact",
+  "name": "@rxdi/starter-client-lit-html",
   "version": "0.0.387",
   "main": "src/main.ts",
   "scripts": {
@@ -11,12 +11,12 @@
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
     "@rxdi/core": "^0.0.386",
-    "preact": "^8.3.1",
-    "preact-async-route": "^2.2.1",
-    "preact-router": "^2.6.1",
+    "lit-html": "^1.1.0",
+    "lit-rx": "0.0.2",
     "rxjs": "^6.3.3"
   },
   "devDependencies": {
-    "typescript": "^3.0.3"
+    "codelyzer": "^5.0.1",
+    "typescript": "^3.4.5"
   }
 }

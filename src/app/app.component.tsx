@@ -1,42 +1,29 @@
-
-import { Component } from "@rxdi/core";
-import { h, render, Component as PreactComponent } from 'preact';
-import AsyncRoute from 'preact-async-route';
-import { Router, Link } from 'preact-router';
+import { Component, OnInit } from "@rxdi/core";
+import { render, html } from "lit-html";
+import { subscribe } from "lit-rx";
+import { from } from "rxjs";
+import { map } from "rxjs/operators";
+import { IQuery } from "src/api-introspection";
 
 @Component()
-export class AppComponent extends PreactComponent {
-
-    OnBefore() {
-        render(<AppComponent />, document.body);
-    }
-
-    render() {
-        return <div>
-            <nav>
-                <Link activeClassName="active" href="/">Home</Link>
-                <Link activeClassName="active" href="/about">About</Link>
-            </nav>
-            <Router>
-                <AsyncRoute
-                    path="/"
-                    getComponent={this.getHomeComponent}
-                    loading={() => <div>loading...</div>}
-                />
-                <AsyncRoute
-                    path="/about"
-                    getComponent={this.getAboutComponent}
-                    loading={() => <div>loading...</div>}
-                />
-            </Router>
-        </div>
-    }
-
-    async getAboutComponent() {
-        return (await import('./about/about.component')).AboutComponent;
-    }
-    async getHomeComponent() {
-        return (await import('./home/home.component')).HomeComponent;
-    }
-
+export class AppComponent implements OnInit {
+  OnInit() {
+    render(this.render(), document.body);
+  }
+  render() {
+    return html`
+      Server status ${subscribe(from(this.getServerStatus()).pipe(
+          map(res => res.status.status)
+      ))}
+    `;
+  }
+  async getServerStatus(): Promise<IQuery> {
+    return fetch("http://localhost:9000/graphql", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ query: "{status { status }}" })
+    })
+      .then(res => res.json())
+      .then((res: { data: IQuery }) => res.data);
+  }
 }

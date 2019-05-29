@@ -1,5 +1,5 @@
-# @rxdi/starter-client-rxdi-router-preact
-## Starter project with PReact based on @rxdi/core
+# @rxdi/starter-client-lit-html
+## Starter project with LIT-HTML based on @rxdi/core
 ## Powerful Dependency Injection inside Browser and Node using Typescript and RXJS 6
 ***
 > The idea behind [@rxdi](https://github.com/rxdi) is to create independent, dependency injection that can be used everywhere,
@@ -15,7 +15,7 @@ Main repository [@rxdi/core](https://github.com/rxdi/core)
 ##### To start developing, run:
 
 ```bash
-git clone https://github.com/rxdi/starter-client-rxdi-router-preact
+git clone https://github.com/rxdi/starter-client-lit-html
 ```
 ##### Install modules:
 
@@ -25,8 +25,6 @@ npm install
 ##### Running App
 
 For starting and building application we will use Parcel a new configuration-less web bundler [ParcelJS](https://parceljs.org/)
-
-This project is with added ReactJS and when builded for production bundle is less than 800Kb!!
 
 To install parcel type:
 
@@ -91,122 +89,34 @@ export class AppModule {}
 src/app/app.component.tsx
 
 ```typescript
-
-import { Component } from "@rxdi/core";
-import { h, render, Component as PreactComponent } from 'preact';
-import AsyncRoute from 'preact-async-route';
-import { Router, Link } from 'preact-router';
-
-@Component()
-export class AppComponent extends PreactComponent {
-
-    OnBefore() {
-        render(<AppComponent />, document.body);
-    }
-
-    render() {
-        return <div>
-            <nav>
-                <Link activeClassName="active" href="/">Home</Link>
-                <Link activeClassName="active" href="/about">About</Link>
-            </nav>
-            <Router>
-                <AsyncRoute
-                    path="/"
-                    getComponent={this.getHomeComponent}
-                    loading={() => <div>loading...</div>}
-                />
-                <AsyncRoute
-                    path="/about"
-                    getComponent={this.getAboutComponent}
-                    loading={() => <div>loading...</div>}
-                />
-            </Router>
-        </div>
-    }
-
-    async getAboutComponent() {
-        return (await import('./about/about.component')).AboutComponent;
-    }
-    async getHomeComponent() {
-        return (await import('./home/home.component')).HomeComponent;
-    }
-
-}
-```
-
-#### About
-```typescript
-
-import { Component } from "@rxdi/core";
-import { h, Component as PreactComponent } from 'preact';
+import { Component, OnInit } from "@rxdi/core";
+import { render, html } from "lit-html";
+import { subscribe } from "lit-rx";
+import { from } from "rxjs";
+import { map } from "rxjs/operators";
+import { IQuery } from "src/api-introspection";
 
 @Component()
-export class AboutComponent extends PreactComponent<any> {
-
-    render() {
-        return <div>
-            <h1>About </h1>
-            <h1>Yey</h1>
-        </div>;
-    }
+export class AppComponent implements OnInit {
+  OnInit() {
+    render(this.render(), document.body);
+  }
+  render() {
+    return html`
+      Server status ${subscribe(from(this.getServerStatus()).pipe(
+          map(res => res.status.status)
+      ))}
+    `;
+  }
+  async getServerStatus(): Promise<IQuery> {
+    return fetch("http://localhost:9000/graphql", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ query: "{status { status }}" })
+    })
+      .then(res => res.json())
+      .then((res: { data: IQuery }) => res.data);
+  }
 }
-```
 
-#### Home
-```typescript
-
-import { Component } from "@rxdi/core";
-import { h, Component as PreactComponent } from 'preact';
-
-@Component()
-export class HomeComponent extends PreactComponent {
-    render() {
-        return <div>
-            <h1>Lazy routed module </h1>
-            <h1>Route: </h1>
-        </div>;
-    }
-}
-```
-
-#### Notes
-
-`@Injector()` - Decorator also can be used which will depend imediately instance of Class can be used as follow
-
-```typescript
-@Component()
-export class AppComponent extends PreactComponent<any, any> {
-    @Injector(AppService) private appService: AppService;
-}
-```
-
-`InjectSoft` - Function is added due to problem when extending `React.Component or Preact Component` class.
-
-Dependencies are not resolved and extended correctly by React.Component class.This is temporary solution for injecting Services when constructor is intialized and setting properties to correct constructor.
-
-Except `@Component()` when extending `React.Component` all other decorators work as expected depending inside constructor.
-
-When using NodeJS reamains unchanged
-
-Later releases will be created separated class extending react and will be inside othe repository `@rxdi/reactive-components`
-Can be extended as follow
-
-```typescript
-import { Component } from "@rxdi/core";
-import { ReactComponent } from "@rxdi/reactive-components";
-import { ReactiveService } from "../components/react.service";
-
-@Component()
-export class AppComponent extends ReactComponent<any, any> {
-
-    // private reactiveService: ReactiveService = InjectSoft(ReactiveService); older version
-
-    constructor(
-        private reactiveService: ReactiveService
-    ) {
-        super();
-    }
-
-}
 ```
