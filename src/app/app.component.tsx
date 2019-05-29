@@ -4,10 +4,15 @@ import { subscribe } from "lit-rx";
 import { from, Observable, timer } from "rxjs";
 import { map, switchMap } from "rxjs/operators";
 import { IQuery } from "src/api-introspection";
+import { GraphqlService } from "./common/helpers/graphql.service";
 
 @Component()
 export class AppComponent implements OnInit {
 
+  constructor(
+    private graphql: GraphqlService
+  ) {}
+ 
   OnInit() {
     this.render(`Hello world`)
   }
@@ -21,13 +26,8 @@ export class AppComponent implements OnInit {
 
   getServerStatus(): Observable<string> {
     return from(
-      fetch("https://questups.com/api/graphql", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query: "{ status { status } }" })
-      })
+      this.graphql.fetch('{ status { status } }')
     ).pipe(
-      switchMap(res => res.json()),
       map((res: { data: IQuery }) => res.data),
       map(res => res.status.status)
     );

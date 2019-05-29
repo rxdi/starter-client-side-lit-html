@@ -10,11 +10,15 @@
   "license": "MIT",
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
+    "@rxdi/cache": "^3.0.2",
     "@rxdi/core": "^0.0.386",
     "lit-html": "^1.1.0",
     "lit-rx": "0.0.2",
     "rxjs": "^6.3.3"
   },
+  "browserslist": [
+    "last 1 chrome versions"
+  ],
   "devDependencies": {
     "codelyzer": "^5.0.1",
     "typescript": "^3.4.5"
