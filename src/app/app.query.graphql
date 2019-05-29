@@ -1,0 +1,13 @@
+query {
+  status {
+    status
+  }
+  getCrowdsaleInfo {
+    startTime
+    endTime
+    hasEnded
+    token
+    weiRaised
+    wallet
+  }
+}

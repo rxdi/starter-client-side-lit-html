@@ -1,36 +1,47 @@
-import { Component, OnInit } from "@rxdi/core";
-import { render, html } from "lit-html";
-import { subscribe } from "lit-rx";
-import { from, Observable, timer } from "rxjs";
-import { map, switchMap } from "rxjs/operators";
-import { IQuery } from "src/api-introspection";
+import { Component, OnInit, Inject } from '@rxdi/core';
+import { render, html } from 'lit-html';
+import { subscribe } from 'lit-rx';
+import { from, timer } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { IQuery } from 'src/api-introspection';
+import { GraphqlClient } from './graphql/injection.tokens';
+import { importQuery } from './graphql/graphql-helpers';
 
 @Component()
 export class AppComponent implements OnInit {
+  constructor(@Inject(GraphqlClient) private graphql: GraphqlClient) {}
 
   OnInit() {
-    this.render(`Hello world`)
-  }
-
-  render(state: string) {
-    const template = html`
-      ${state} ${subscribe(timer(100, 1000))} <br> Server status ${subscribe(this.getServerStatus())}
-    `;
-    render(template, document.body)
-  }
-
-  getServerStatus(): Observable<string> {
-    return from(
-      fetch("https://questups.com/api/graphql", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ query: "{ status { status } }" })
-      })
-    ).pipe(
-      switchMap(res => res.json()),
-      map((res: { data: IQuery }) => res.data),
-      map(res => res.status.status)
+    render(
+      html`
+        <p>
+          Server status
+          ${subscribe(
+            this.getServerStatus().pipe(map(res => res.status.status))
+          )}
+        </p>
+        <p>${subscribe(timer(100, 1000).pipe(map(() => new Date())))}</p>
+        <p>
+          Crowdsale info
+          ${subscribe(
+            this.getServerStatus().pipe(
+              map(res => JSON.stringify(res.getCrowdsaleInfo, null, 4))
+            )
+          )}
+        </p>
+      `,
+      document.body
     );
   }
 
+  getServerStatus = () => {
+    return from(
+      this.graphql.query<IQuery>({
+        query: importQuery('app.query.graphql')
+      })
+    ).pipe(
+      map(res => res.data),
+      map(res => res)
+    );
+  };
 }

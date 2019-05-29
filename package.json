@@ -4,17 +4,22 @@
   "main": "src/main.ts",
   "scripts": {
     "start": "parcel ./src/index.html --target browser",
-    "build": "parcel build ./src/index.html --target browser"
+    "build": "parcel build ./src/index.html --target browser",
+    "introspect": "gapi schema introspect --collect-documents --collect-types"
   },
   "author": "Kristiyan Tachev",
   "license": "MIT",
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
-    "@rxdi/core": "^0.0.386",
+    "@rxdi/core": "^0.2.24",
+    "apollo-boost": "^0.4.0",
+    "graphql": "^14.3.1",
     "lit-html": "^1.1.0",
-    "lit-rx": "0.0.2",
-    "rxjs": "^6.3.3"
+    "lit-rx": "0.0.2"
   },
+  "browserslist": [
+    "last 1 chrome versions"
+  ],
   "devDependencies": {
     "codelyzer": "^5.0.1",
     "typescript": "^3.4.5"

@@ -78,45 +78,88 @@ src/app/app.module.ts
 ```typescript
 import { Module } from "@rxdi/core";
 import { AppComponent } from "./app.component";
+import { GraphqlModule } from "./graphql/graphql.module";
 
 @Module({
-    bootstrap: [AppComponent]
+  imports: [
+    GraphqlModule.forRoot({
+      uri: "https://questups.com/api/graphql"
+    })
+  ],
+  bootstrap: [AppComponent]
 })
 export class AppModule {}
+
 ```
 
 #### App Component
 src/app/app.component.tsx
 
 ```typescript
-import { Component, OnInit } from "@rxdi/core";
-import { render, html } from "lit-html";
-import { subscribe } from "lit-rx";
-import { from } from "rxjs";
-import { map } from "rxjs/operators";
-import { IQuery } from "src/api-introspection";
+import { Component, OnInit, Inject } from '@rxdi/core';
+import { render, html } from 'lit-html';
+import { subscribe } from 'lit-rx';
+import { from, timer } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { IQuery } from 'src/api-introspection';
+import { GraphqlClient } from './graphql/injection.tokens';
+import { importQuery } from './graphql/graphql-helpers';
 
 @Component()
 export class AppComponent implements OnInit {
+  constructor(@Inject(GraphqlClient) private graphql: GraphqlClient) {}
+
   OnInit() {
-    render(this.render(), document.body);
+    render(
+      html`
+        <p>
+          Server status
+          ${subscribe(
+            this.getServerStatus().pipe(map(res => res.status.status))
+          )}
+        </p>
+        <p>${subscribe(timer(100, 1000).pipe(map(() => new Date())))}</p>
+        <p>
+          Crowdsale info
+          ${subscribe(
+            this.getServerStatus().pipe(
+              map(res => JSON.stringify(res.getCrowdsaleInfo, null, 4))
+            )
+          )}
+        </p>
+      `,
+      document.body
+    );
   }
-  render() {
-    return html`
-      Server status ${subscribe(from(this.getServerStatus()).pipe(
-          map(res => res.status.status)
-      ))}
-    `;
+
+  getServerStatus = () => {
+    return from(
+      this.graphql.query<IQuery>({
+        query: importQuery('app.query.graphql')
+      })
+    ).pipe(
+      map(res => res.data),
+      map(res => res)
+    );
+  };
+}
+```
+
+#### App Query Graphql
+src/app/app.query.graphql
+
+```graphql
+query {
+  status {
+    status
   }
-  async getServerStatus(): Promise<IQuery> {
-    return fetch("http://localhost:9000/graphql", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ query: "{status { status }}" })
-    })
-      .then(res => res.json())
-      .then((res: { data: IQuery }) => res.data);
+  getCrowdsaleInfo {
+    startTime
+    endTime
+    hasEnded
+    token
+    weiRaised
+    wallet
   }
 }
-
 ```

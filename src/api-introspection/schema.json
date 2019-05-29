@@ -8297,9 +8297,9 @@
   "extensions": {
     "tracing": {
       "version": 1,
-      "startTime": "2019-05-29T08:33:21.609Z",
-      "endTime": "2019-05-29T08:33:21.657Z",
-      "duration": 48826179,
+      "startTime": "2019-05-29T22:46:16.576Z",
+      "endTime": "2019-05-29T22:46:16.602Z",
+      "duration": 26287654,
       "execution": {
         "resolvers": []
       }
