@@ -1,9 +1,9 @@
 import { Module } from "@rxdi/core";
 import { AppComponent } from "./app.component";
-import { CommonModule } from "./common/common.module";
+import { GraphqlModule } from "./graphql/graphql.module";
 
 @Module({
-    imports: [CommonModule],
+    imports: [GraphqlModule.forRoot({uri: 'https://questups.com/api/graphql'})],
     bootstrap: [AppComponent]
 })
 export class AppModule {}

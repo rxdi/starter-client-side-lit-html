@@ -1,36 +1,48 @@
-import { Component, OnInit } from "@rxdi/core";
+import { Component, OnInit, Inject } from "@rxdi/core";
 import { render, html } from "lit-html";
 import { subscribe } from "lit-rx";
-import { from, Observable, timer } from "rxjs";
-import { map, switchMap } from "rxjs/operators";
+import { from, timer } from "rxjs";
+import { map } from "rxjs/operators";
 import { IQuery } from "src/api-introspection";
-import { GraphqlService } from "./common/helpers/graphql.service";
+import { GraphqlClient } from "./graphql/injection.tokens";
+import gql from "graphql-tag";
 
 @Component()
 export class AppComponent implements OnInit {
+  constructor(@Inject(GraphqlClient) private graphql: GraphqlClient) {}
 
-  constructor(
-    private graphql: GraphqlService
-  ) {}
- 
   OnInit() {
-    this.render(`Hello world`)
-  }
-
-  render(state: string) {
-    const template = html`
-      ${state} ${subscribe(timer(100, 1000))} <br> Server status ${subscribe(this.getServerStatus())}
-    `;
-    render(template, document.body)
-  }
-
-  getServerStatus(): Observable<string> {
-    return from(
-      this.graphql.fetch('{ status { status } }')
-    ).pipe(
-      map((res: { data: IQuery }) => res.data),
-      map(res => res.status.status)
+    render(
+      html`
+        Server status ${subscribe(this.getServerStatus())} <br />
+        ${subscribe(timer(100, 1000).pipe(map(() => new Date())))}
+      `,
+      document.body
     );
   }
 
+  getServerStatus = () => {
+    return from(
+      this.graphql.query<IQuery>({
+        query: gql`
+          {
+            status {
+              status
+            }
+            getCrowdsaleInfo {
+              startTime
+              endTime
+              hasEnded
+              token
+              weiRaised
+              wallet
+            }
+          }
+        `
+      })
+    ).pipe(
+      map(res => res.data),
+      map(res => res.status.status)
+    );
+  };
 }
