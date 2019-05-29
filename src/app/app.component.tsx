@@ -1,29 +1,36 @@
 import { Component, OnInit } from "@rxdi/core";
 import { render, html } from "lit-html";
 import { subscribe } from "lit-rx";
-import { from } from "rxjs";
-import { map } from "rxjs/operators";
+import { from, Observable, timer } from "rxjs";
+import { map, switchMap } from "rxjs/operators";
 import { IQuery } from "src/api-introspection";
 
 @Component()
 export class AppComponent implements OnInit {
+
   OnInit() {
-    render(this.render(), document.body);
+    this.render(`Hello world`)
   }
-  render() {
-    return html`
-      Server status ${subscribe(from(this.getServerStatus()).pipe(
-          map(res => res.status.status)
-      ))}
+
+  render(state: string) {
+    const template = html`
+      ${state} ${subscribe(timer(100, 1000))} <br> Server status ${subscribe(this.getServerStatus())}
     `;
+    render(template, document.body)
   }
-  async getServerStatus(): Promise<IQuery> {
-    return fetch("http://localhost:9000/graphql", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ query: "{status { status }}" })
-    })
-      .then(res => res.json())
-      .then((res: { data: IQuery }) => res.data);
+
+  getServerStatus(): Observable<string> {
+    return from(
+      fetch("https://questups.com/api/graphql", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ query: "{ status { status } }" })
+      })
+    ).pipe(
+      switchMap(res => res.json()),
+      map((res: { data: IQuery }) => res.data),
+      map(res => res.status.status)
+    );
   }
+
 }
