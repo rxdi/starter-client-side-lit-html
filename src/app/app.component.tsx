@@ -1,37 +1,35 @@
-import { Component, OnInit, Inject } from '@rxdi/core';
-import { render, html } from 'lit-html';
+import { Component, Injector } from '@rxdi/core';
+import { html } from 'lit-html';
 import { subscribe } from 'lit-rx';
-import { from, timer } from 'rxjs';
+import { from, timer, of } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { IQuery } from 'src/api-introspection';
-import { GraphqlClient } from './graphql/injection.tokens';
-import { importQuery } from './graphql/graphql-helpers';
+import { IQuery } from './@introspection';
+import { GraphqlClient } from '@rxdi/graphql-client';
+import { importQuery } from '@rxdi/graphql-client/dist/graphql-helpers';
+import { BaseComponent } from './shared/base.component';
 
 @Component()
-export class AppComponent implements OnInit {
-  constructor(@Inject(GraphqlClient) private graphql: GraphqlClient) {}
+export class AppComponent extends BaseComponent {
+  @Injector(GraphqlClient) private graphql: GraphqlClient;
 
-  OnInit() {
-    render(
-      html`
-        <p>
-          Server status
-          ${subscribe(
-            this.getServerStatus().pipe(map(res => res.status.status))
-          )}
-        </p>
-        <p>${subscribe(timer(100, 1000).pipe(map(() => new Date())))}</p>
-        <p>
-          Crowdsale info
-          ${subscribe(
-            this.getServerStatus().pipe(
-              map(res => JSON.stringify(res.getCrowdsaleInfo, null, 4))
-            )
-          )}
-        </p>
-      `,
-      document.body
-    );
+  render() {
+    return html`
+    <p>
+      Server status
+      ${subscribe(
+        this.getServerStatus().pipe(map(res => res.status.status))
+      )}
+    </p>
+    <p>${subscribe(timer(100, 1000).pipe(map(() => new Date())))}</p>
+    <p>
+      Crowdsale info
+      ${subscribe(
+        from(this.getServerStatus()).pipe(
+          map(res => JSON.stringify(res.getCrowdsaleInfo, null, 4))
+        )
+      )}
+    </p>
+  `;
   }
 
   getServerStatus = () => {
@@ -45,3 +43,5 @@ export class AppComponent implements OnInit {
     );
   };
 }
+
+customElements.define('app-component', AppComponent);

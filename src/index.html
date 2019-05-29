@@ -1,16 +1,25 @@
-<!doctype html>
+<!DOCTYPE html>
 
 <html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>@rxdi client side example</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+  </head>
 
-    <head>
-        <meta charset="utf-8">
-        <title>@rxdi client side example</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-    </head>
+  <body>
+    <header>
+      <h1>Todo app</h1>
+    </header>
+    <nav>
+      <a href="/">Home</a>
+      <a href="/not-found">Not found component</a>
+    </nav>
+    <main id="outlet">
+      <!-- Here Vaadin.Router inserts the current page content -->
+    </main>
+  </body>
 
-    <body></body>
-
-    <script type="text/javascript" src="./es5-adapter-shims.js"></script>
-    <script type="text/javascript" src="./main.ts"></script>
-
+  <script type="text/javascript" src="./polyfills.ts"></script>
+  <script type="text/javascript" src="./main.ts"></script>
 </html>

@@ -1,5 +1,5 @@
 # @rxdi/starter-client-lit-html
-## Starter project with LIT-HTML based on @rxdi/core
+## Starter project with graphql, lit-html, apollo-boost, @vaadin/router, @webcomponents/custom-elements based on @rxdi/core
 ## Powerful Dependency Injection inside Browser and Node using Typescript and RXJS 6
 ***
 > The idea behind [@rxdi](https://github.com/rxdi) is to create independent, dependency injection that can be used everywhere,
@@ -44,7 +44,6 @@ parcel build ./src/index.html --target browser
 
 ## Simplest app
 
-
 #### Main starting point
 
 src/main.ts
@@ -52,23 +51,18 @@ src/main.ts
 import { Bootstrap } from '@rxdi/core';
 import { AppModule } from './app/app.module';
 
-Bootstrap(AppModule, {
+window.addEventListener('load', () => {
+  Bootstrap(AppModule, {
     init: false,
     initOptions: {
-        services: true,
-    },
-    logger: {
-        logging: true,
-        date: true,
-        hashes: true,
-        exitHandler: true,
-        fileService: true
+      services: true
     }
-})
-.subscribe(
-    () => console.log('Started!'),
-    (e) => console.error(e)
-);
+  }).subscribe(() => console.log('App Started!'), err => console.error(err));
+});
+
+if (module['hot']) {
+  module['hot'].dispose(() => (document.body.innerHTML = ''));
+}
 ```
 
 #### App Module
@@ -76,60 +70,87 @@ Bootstrap(AppModule, {
 src/app/app.module.ts
 
 ```typescript
-import { Module } from "@rxdi/core";
-import { AppComponent } from "./app.component";
-import { GraphqlModule } from "./graphql/graphql.module";
+import { Module } from '@rxdi/core';
+import { GraphqlModule } from '@rxdi/graphql-client';
+import { RouterModule } from '@rxdi/router';
+import { DOCUMENTS } from './@introspection/documents';
 
 @Module({
   imports: [
     GraphqlModule.forRoot({
-      uri: "https://questups.com/api/graphql"
-    })
-  ],
-  bootstrap: [AppComponent]
+      uri: 'https://questups.com/api/graphql'
+    }, DOCUMENTS),
+    RouterModule.forRoot('outlet', [
+      {
+        path: '/',
+        component: 'app-component',
+        action: () => import('./app.component')
+      },
+      {
+        path: '(.*)',
+        component: 'not-found-component',
+        action: () => import('./not-found/not-found.component')
+      },
+      {
+        path: '/not-found',
+        component: 'not-found-component',
+        action: () => import('./not-found/not-found.component')
+      }
+      //   { path: '/users/:user', component: 'x-user-profile' },
+      //   { path: '(.*)', component: 'x-not-found-view' }
+    ])
+  ]
 })
 export class AppModule {}
+```
 
+#### Base component
+
+```typescript
+import { LitElement } from 'lit-element';
+export class BaseView extends LitElement {
+  createRenderRoot() {
+    return this;
+  }
+}
 ```
 
 #### App Component
 src/app/app.component.tsx
 
 ```typescript
-import { Component, OnInit, Inject } from '@rxdi/core';
-import { render, html } from 'lit-html';
+import { Component, Injector } from '@rxdi/core';
+import { html } from 'lit-html';
 import { subscribe } from 'lit-rx';
-import { from, timer } from 'rxjs';
+import { from, timer, of } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { IQuery } from 'src/api-introspection';
-import { GraphqlClient } from './graphql/injection.tokens';
-import { importQuery } from './graphql/graphql-helpers';
+import { IQuery } from './@introspection';
+import { GraphqlClient } from '@rxdi/graphql-client';
+import { importQuery } from '@rxdi/graphql-client/dist/graphql-helpers';
+import { BaseComponent } from './shared/base.component';
 
 @Component()
-export class AppComponent implements OnInit {
-  constructor(@Inject(GraphqlClient) private graphql: GraphqlClient) {}
+export class AppComponent extends BaseComponent {
+  @Injector(GraphqlClient) private graphql: GraphqlClient;
 
-  OnInit() {
-    render(
-      html`
-        <p>
-          Server status
-          ${subscribe(
-            this.getServerStatus().pipe(map(res => res.status.status))
-          )}
-        </p>
-        <p>${subscribe(timer(100, 1000).pipe(map(() => new Date())))}</p>
-        <p>
-          Crowdsale info
-          ${subscribe(
-            this.getServerStatus().pipe(
-              map(res => JSON.stringify(res.getCrowdsaleInfo, null, 4))
-            )
-          )}
-        </p>
-      `,
-      document.body
-    );
+  render() {
+    return html`
+    <p>
+      Server status
+      ${subscribe(
+        this.getServerStatus().pipe(map(res => res.status.status))
+      )}
+    </p>
+    <p>${subscribe(timer(100, 1000).pipe(map(() => new Date())))}</p>
+    <p>
+      Crowdsale info
+      ${subscribe(
+        from(this.getServerStatus()).pipe(
+          map(res => JSON.stringify(res.getCrowdsaleInfo, null, 4))
+        )
+      )}
+    </p>
+  `;
   }
 
   getServerStatus = () => {
@@ -143,7 +164,32 @@ export class AppComponent implements OnInit {
     );
   };
 }
+
+customElements.define('app-component', AppComponent);
 ```
+
+#### Not fund component
+
+```typescript
+import { html } from 'lit-element';
+import { BaseComponent } from '../shared/base.component';
+import { Component } from '@rxdi/core';
+
+@Component()
+class NotFoundView extends BaseComponent {
+  render() {
+    return html`
+      <h1>Not found component!</h1>
+      <p>
+        Please check your URL.
+      </p>
+    `;
+  }
+}
+
+customElements.define('not-found-component', NotFoundView);
+```
+
 
 #### App Query Graphql
 src/app/app.query.graphql
