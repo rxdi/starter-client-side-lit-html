@@ -34,15 +34,28 @@ npm install -g parcel-bundler
 
 ##### Start App
 ```bash
-parcel ./src/index.html --target browser
+parcel ./src/index.html
 ```
 
 ##### Build App
 ```bash
-parcel build ./src/index.html --target browser
+parcel build ./src/index.html
 ```
 
 ## Simplest app
+
+
+#### index.html
+
+```html
+<body>
+  <!-- Use navigation component as native web component -->
+  <navbar-component counter="5"></navbar-component>
+  <main id="outlet">
+    <!-- Here Vaadin.Router inserts the current page content -->
+  </main>
+</body>
+```
 
 #### Main starting point
 
@@ -121,18 +134,23 @@ export class BaseComponent extends GraphqlElement {
 src/app/app.component.tsx
 
 ```typescript
-import { Component } from "@rxdi/core";
-import { html } from "lit-html";
-import { subscribe } from "lit-rx";
-import { from, timer } from "rxjs";
-import { map } from "rxjs/operators";
-import { BaseComponent } from "./shared/base.component";
-import { Components } from "./shared/components";
+import { Component } from '@rxdi/core';
+import { html } from 'lit-html';
+import { subscribe } from 'lit-rx';
+import { from, timer } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { BaseComponent } from './shared/base.component';
+import { customElement } from 'lit-element';
 
+@customElement('app-component')
 @Component()
 export class AppComponent extends BaseComponent {
+
   render() {
     return html`
+      <header>
+        <h1>Hello world</h1>
+      </header>
       <p>
         Server status
         ${subscribe(this.getServerStatus().pipe(map(res => res.status.status)))}
@@ -150,29 +168,27 @@ export class AppComponent extends BaseComponent {
   }
 
   subscription() {
-    return this.subscribe({ query: "subscribe.query.graphql" });
+    return this.subscribe({ query: 'subscribe.query.graphql' });
   }
 
   getServerStatus() {
-    return this.query({ query: "app.query.graphql" }).pipe(
+    return this.query({ query: 'app.query.graphql' }).pipe(
       map(res => res.data)
     );
   }
 }
-
-customElements.define(Components["app-component"], AppComponent);
-
 ```
 
 #### Not fund component
 
 ```typescript
-import { html } from 'lit-element';
+import { html, customElement } from 'lit-element';
 import { BaseComponent } from '../shared/base.component';
 import { Component } from '@rxdi/core';
 
+@customElement('not-found-component')
 @Component()
-class NotFoundView extends BaseComponent {
+class NotFoundComponent extends BaseComponent {
   render() {
     return html`
       <h1>Not found component!</h1>
@@ -182,8 +198,46 @@ class NotFoundView extends BaseComponent {
     `;
   }
 }
+```
 
-customElements.define('not-found-component', NotFoundView);
+#### Navbar component
+```typescript
+import { html, LitElement, property, eventOptions, css, customElement } from 'lit-element';
+
+@customElement('navbar-component')
+export class NavbarComponent extends LitElement {
+  static styles = css`
+  .spacer {
+    flex: 1 3 auto;
+  }
+  `;
+
+  @property() counter = 0;
+
+  render() {
+    return html`
+      <nav>
+        <a href="/"><button>App</button></a>
+        <a href="/not-found"><button>Another view</button></a>
+      </nav>
+      <div style="display:flex">
+        <button @click=${this.onIncrement}>Increment</button>
+        <button @click=${this.onDecrement}>Decrement</button>
+        ${this.counter}
+      </div>
+    `;
+  }
+
+  @eventOptions({ capture: true })
+  onIncrement(e: Event) {
+    this.counter++;
+  }
+
+  @eventOptions({ capture: true })
+  onDecrement(e: Event) {
+    this.counter--;
+  }
+}
 ```
 
 

@@ -3,16 +3,17 @@
   "version": "0.0.387",
   "main": "src/main.ts",
   "scripts": {
-    "start": "parcel ./src/index.html --target browser",
-    "build": "parcel build ./src/index.html --target browser",
+    "start": "parcel ./src/index.html",
+    "build": "parcel build ./src/index.html",
+    "lint": "npx tslint -c tslint.json 'src/**/*.{ts,tsx}'",
     "introspect": "gapi schema introspect --collect-documents --collect-types"
   },
   "author": "Kristiyan Tachev",
   "license": "MIT",
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
-    "@rxdi/core": "^0.2.26",
-    "@rxdi/graphql-client": "^0.2.26",
+    "@rxdi/core": "^0.2.28",
+    "@rxdi/graphql-client": "^0.2.28",
     "@rxdi/router": "^0.2.28",
     "@webcomponents/custom-elements": "^1.2.4",
     "lit-element": "^2.1.0",
@@ -23,7 +24,6 @@
     "last 1 chrome versions"
   ],
   "devDependencies": {
-    "codelyzer": "^5.0.1",
-    "typescript": "^3.4.5"
+    "typescript": "^3.5.1"
   }
 }

@@ -3,18 +3,54 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes, maximum-scale=5.0"
+    />
     <title>@rxdi client side example</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" href="assets/images/favicon.ico" />
+
+    <meta name="theme-color" content="#33383a" />
+    <link rel="manifest" href="manifest.webmanifest" />
+    <base href="/" />
+    <!-- iOS -->
+    <link rel="apple-touch-icon" href="assets/images/icons/icon-144x144.png" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="mobile-web-app-status-bar-style" content="black" />
+    <meta name="mobile-web-app-title" content="Expenses" />
+
+    <script>
+      // Load and register pre-caching Service Worker
+      const main = async () => {
+        if ("serviceWorker" in navigator) {
+          if (window.origin.includes('localhost')) {
+            const workers = await navigator.serviceWorker.getRegistrations()
+            for (let worker of workers) {
+              await worker.unregister();
+            }
+          } else {
+            window.addEventListener("load", function() {
+              navigator.serviceWorker.register("service-worker.js", {
+                scope: "/"
+              }).then(function(registration) {
+                console.log('Registration successful, scope is:', registration.scope);
+              })
+              .catch(function(error) {
+                console.log('Service worker registration failed, error:', error);
+              });
+            });
+          }
+        }
+      }
+      main()
+    </script>
+    <!-- Initialize navigation component bundle -->
+    <script type="text/javascript" src="./app/navbar/navbar.component.tsx"></script>
   </head>
 
   <body>
-    <header>
-      <h1>Hello world</h1>
-    </header>
-    <nav>
-      <a href="/">Home</a>
-      <a href="/not-found">Not found component</a>
-    </nav>
+    <!-- Use navigation component as native web component -->
+    <navbar-component counter="5"></navbar-component>
     <main id="outlet">
       <!-- Here Vaadin.Router inserts the current page content -->
     </main>

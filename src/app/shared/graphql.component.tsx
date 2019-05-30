@@ -1,15 +1,15 @@
-import { Container } from "@rxdi/core";
-import { LitElement } from "lit-element";
-import { GraphqlClient } from "@rxdi/graphql-client";
+import { Container } from '@rxdi/core';
+import { LitElement } from 'lit-element';
+import { GraphqlClient } from '@rxdi/graphql-client';
 import {
   QueryOptions,
   MutationOptions,
   SubscriptionOptions
-} from "apollo-boost";
-import { importQuery } from "@rxdi/graphql-client/dist/graphql-helpers";
-import { DocumentTypes } from "../@introspection/documentTypes";
-import { from, Observable } from "rxjs";
-import { IQuery, IMutation, ISubscription } from "../@introspection";
+} from 'apollo-boost';
+import { importQuery } from '@rxdi/graphql-client/dist/graphql-helpers';
+import { DocumentTypes } from '../@introspection/documentTypes';
+import { from, Observable } from 'rxjs';
+import { IQuery, IMutation, ISubscription } from '../@introspection';
 
 interface ImportQueryMixin extends QueryOptions {
   query: DocumentTypes;

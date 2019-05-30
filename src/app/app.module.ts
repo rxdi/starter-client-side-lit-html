@@ -4,6 +4,7 @@ import { RouterModule } from '@rxdi/router';
 import { DOCUMENTS } from './@introspection/documents';
 import { AppComponent } from './app.component';
 import { Components } from './shared/components';
+// const sample = new CheckBox('CheckBox', true);
 
 @Module({
   imports: [
