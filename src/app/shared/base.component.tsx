@@ -1,5 +1,6 @@
-import { LitElement } from 'lit-element';
-export class BaseComponent extends LitElement {
+import { GraphqlComponent } from './graphql.component';
+
+export class BaseComponent extends GraphqlComponent {
   createRenderRoot() {
     return this;
   }

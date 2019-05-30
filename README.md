@@ -74,98 +74,94 @@ import { Module } from '@rxdi/core';
 import { GraphqlModule } from '@rxdi/graphql-client';
 import { RouterModule } from '@rxdi/router';
 import { DOCUMENTS } from './@introspection/documents';
+import { AppComponent } from './app.component';
 
 @Module({
   imports: [
-    GraphqlModule.forRoot({
-      uri: 'https://questups.com/api/graphql'
-    }, DOCUMENTS),
+    GraphqlModule.forRoot(
+      {
+        uri: 'https://questups.com/api/graphql'
+      },
+      DOCUMENTS
+    ),
     RouterModule.forRoot('outlet', [
       {
         path: '/',
-        component: 'app-component',
-        action: () => import('./app.component')
+        component: 'app-component'
+        // action: () => import('./app.component')
       },
       {
         path: '(.*)',
         component: 'not-found-component',
         action: () => import('./not-found/not-found.component')
       },
-      {
-        path: '/not-found',
-        component: 'not-found-component',
-        action: () => import('./not-found/not-found.component')
-      }
       //   { path: '/users/:user', component: 'x-user-profile' },
-      //   { path: '(.*)', component: 'x-not-found-view' }
     ])
-  ]
+  ],
+  bootstrap: [AppComponent]
 })
 export class AppModule {}
+
 ```
 
 #### Base component
 
 ```typescript
-import { LitElement } from 'lit-element';
-export class BaseView extends LitElement {
+import { GraphqlElement } from './graphql.component';
+
+export class BaseComponent extends GraphqlElement {
   createRenderRoot() {
     return this;
   }
 }
+
 ```
 
 #### App Component
 src/app/app.component.tsx
 
 ```typescript
-import { Component, Injector } from '@rxdi/core';
-import { html } from 'lit-html';
-import { subscribe } from 'lit-rx';
-import { from, timer, of } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { IQuery } from './@introspection';
-import { GraphqlClient } from '@rxdi/graphql-client';
-import { importQuery } from '@rxdi/graphql-client/dist/graphql-helpers';
-import { BaseComponent } from './shared/base.component';
+import { Component } from "@rxdi/core";
+import { html } from "lit-html";
+import { subscribe } from "lit-rx";
+import { from, timer } from "rxjs";
+import { map } from "rxjs/operators";
+import { BaseComponent } from "./shared/base.component";
+import { Components } from "./shared/components";
 
 @Component()
 export class AppComponent extends BaseComponent {
-  @Injector(GraphqlClient) private graphql: GraphqlClient;
-
   render() {
     return html`
-    <p>
-      Server status
-      ${subscribe(
-        this.getServerStatus().pipe(map(res => res.status.status))
-      )}
-    </p>
-    <p>${subscribe(timer(100, 1000).pipe(map(() => new Date())))}</p>
-    <p>
-      Crowdsale info
-      ${subscribe(
-        from(this.getServerStatus()).pipe(
-          map(res => JSON.stringify(res.getCrowdsaleInfo, null, 4))
-        )
-      )}
-    </p>
-  `;
+      <p>
+        Server status
+        ${subscribe(this.getServerStatus().pipe(map(res => res.status.status)))}
+      </p>
+      <p>${subscribe(timer(100, 1000).pipe(map(() => new Date())))}</p>
+      <p>
+        Crowdsale info
+        ${subscribe(
+          from(this.getServerStatus()).pipe(
+            map(res => JSON.stringify(res.getCrowdsaleInfo, null, 4))
+          )
+        )}
+      </p>
+    `;
   }
 
-  getServerStatus = () => {
-    return from(
-      this.graphql.query<IQuery>({
-        query: importQuery('app.query.graphql')
-      })
-    ).pipe(
-      map(res => res.data),
-      map(res => res)
+  subscription() {
+    return this.subscribe({ query: "subscribe.query.graphql" });
+  }
+
+  getServerStatus() {
+    return this.query({ query: "app.query.graphql" }).pipe(
+      map(res => res.data)
     );
-  };
+  }
 }
 
-customElements.define('app-component', AppComponent);
+customElements.define(Components["app-component"], AppComponent);
+
 ```
 
 #### Not fund component
@@ -208,4 +204,75 @@ query {
     wallet
   }
 }
+```
+
+
+
+#### Graphql Component
+
+```typescript
+import { Container } from "@rxdi/core";
+import { LitElement } from "lit-element";
+import { GraphqlClient } from "@rxdi/graphql-client";
+import {
+  QueryOptions,
+  MutationOptions,
+  SubscriptionOptions
+} from "apollo-boost";
+import { importQuery } from "@rxdi/graphql-client/dist/graphql-helpers";
+import { DocumentTypes } from "../@introspection/documentTypes";
+import { from, Observable } from "rxjs";
+import { IQuery, IMutation, ISubscription } from "../@introspection";
+
+interface ImportQueryMixin extends QueryOptions {
+  query: DocumentTypes;
+}
+
+interface ImportSubscriptionMixin extends SubscriptionOptions {
+  query: DocumentTypes;
+}
+
+interface ImportMutationMixin extends MutationOptions {
+  mutation: DocumentTypes;
+}
+
+export class GraphqlComponent extends LitElement {
+  public graphql: GraphqlClient = Container.get(GraphqlClient);
+
+  query<T = IQuery>(options: ImportQueryMixin) {
+    options.query = importQuery(options.query);
+    return from((this.graphql.query.bind(this.graphql)(options) as any)) as Observable<{ data: T }>;
+  }
+
+  mutate<T = IMutation>(options: ImportMutationMixin) {
+    options.mutation = importQuery(options.mutation);
+    return from((this.graphql.mutate.bind(this.graphql)(options) as any)) as Observable<{ data: T }>;
+  }
+
+  subscribe<T = ISubscription>(options: ImportSubscriptionMixin) {
+    options.query = importQuery(options.query);
+    return from((this.graphql.subscribe.bind(this.graphql)(options) as any)) as Observable<{ data: T }>;
+  }
+}
+
+```
+
+
+
+#### Components.ts 
+List of all components inside the platform.
+
+```typescript
+
+function strEnum<T extends string>(o: Array<T>): {[K in T]: K} {
+    return o.reduce((res, key) => {
+        res[key] = key;
+        return res;
+    }, Object.create(null));
+}
+export const Components = strEnum([
+    'app-component',
+    'not-found-component'
+]);
+export type Components = keyof typeof Components;
 ```

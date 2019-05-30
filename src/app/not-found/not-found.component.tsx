@@ -1,9 +1,10 @@
 import { html } from 'lit-element';
 import { BaseComponent } from '../shared/base.component';
 import { Component } from '@rxdi/core';
+import { Components } from '../shared/components';
 
 @Component()
-class NotFoundView extends BaseComponent {
+class NotFoundComponent extends BaseComponent {
   render() {
     return html`
       <h1>Not found component!</h1>
@@ -14,4 +15,4 @@ class NotFoundView extends BaseComponent {
   }
 }
 
-customElements.define('not-found-component', NotFoundView);
+customElements.define(Components["not-found-component"], NotFoundComponent);
