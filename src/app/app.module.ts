@@ -3,9 +3,17 @@ import { GraphqlModule } from '@rxdi/graphql-client';
 import { RouterModule } from '@rxdi/router';
 import { DOCUMENTS } from './@introspection/documents';
 import { AppComponent } from './app.component';
+import { NavbarComponent } from './navbar/navbar.component';
+import { FooterComponent } from './footer/footer.component';
+import { HomeComponent } from './home/home.component';
 import { Components } from './shared/components';
 
 @Module({
+  components: [
+    NavbarComponent,
+    FooterComponent,
+    HomeComponent,
+  ],
   imports: [
     GraphqlModule.forRoot(
       {
@@ -13,20 +21,24 @@ import { Components } from './shared/components';
       },
       DOCUMENTS
     ),
-    RouterModule.forRoot<Components>('outlet', [
+    RouterModule.forRoot<Components>([
       {
         path: '/',
-        component: 'app-component'
-        // action: () => import('./app.component')
+        component: 'home-component'
+      },
+      {
+        path: '/about',
+        component: 'about-component',
+        action: () => import('./about/about.component')
       },
       {
         path: '(.*)',
         component: 'not-found-component',
         action: () => import('./not-found/not-found.component')
-      },
+      }
       //   { path: '/users/:user', component: 'x-user-profile' },
     ])
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
 export class AppModule {}

@@ -5,6 +5,6 @@ function strEnum<T extends string>(o: Array<T>): {[K in T]: K} {
         return res;
     }, Object.create(null));
 }
-export const DocumentTypes = strEnum(['app.query.graphql',
-'subscribe.query.graphql']);
+export const DocumentTypes = strEnum(['home.query.graphql',
+'home.subscription.graphql']);
 export type DocumentTypes = keyof typeof DocumentTypes;

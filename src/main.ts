@@ -5,6 +5,7 @@ window.addEventListener('load', () => {
   Bootstrap(AppModule, {
     init: false,
     initOptions: {
+      components: true,
       services: true
     }
   }).subscribe(() => console.log('App Started!'), err => console.error(err));

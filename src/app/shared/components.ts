@@ -7,6 +7,9 @@ function strEnum<T extends string>(o: Array<T>): {[K in T]: K} {
 }
 export const Components = strEnum([
     'app-component',
-    'not-found-component'
+    'not-found-component',
+    'navbar-component',
+    'home-component',
+    'about-component'
 ]);
 export type Components = keyof typeof Components;
