@@ -5,6 +5,9 @@ import { from, timer } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { BaseComponent } from './shared/base.component';
 import { customElement } from 'lit-element';
+import "tailwindcss/base";
+import "tailwindcss/components";
+import "tailwindcss/utilities";
 
 @customElement('app-component')
 @Component()
@@ -20,6 +23,7 @@ export class AppComponent extends BaseComponent {
         ${subscribe(this.getServerStatus().pipe(map(res => res.status.status)))}
       </p>
       <p>${subscribe(timer(100, 1000).pipe(map(() => new Date())))}</p>
+      <navbar-component counter="${subscribe(timer(100, 1000).pipe(map((v) => v)))}"></navbar-component>
       <p>
         Crowdsale info
         ${subscribe(
@@ -28,6 +32,7 @@ export class AppComponent extends BaseComponent {
           )
         )}
       </p>
+      <login-component></login-component>
     `;
   }
 
@@ -40,4 +45,5 @@ export class AppComponent extends BaseComponent {
       map(res => res.data)
     );
   }
+  
 }

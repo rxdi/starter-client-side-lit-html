@@ -151,9 +151,9 @@
     biography: string | null;
     email: string | null;
     type: number | null;
-    stage: number | null;
     industry: string | null;
     xp: string | null;
+    stage: number | null;
     bounties: string | null;
     invitations: string | null;
     endorsments: string | null;
@@ -191,7 +191,7 @@
     representative: IConsultantType | null;
     industry: string | null;
     type: number | null;
-    stage: number | null;
+    stage: string | null;
     description: string | null;
     quests: Array<IQuestType> | null;
     questSkills: Array<IQuestType> | null;
@@ -620,8 +620,8 @@ export
     linkedInProfile?: string | null;
     email?: string | null;
     industry?: string | null;
-    type?: number | null;
-    stage?: number | null;
+    type?: string | null;
+    stage?: string | null;
     description?: string | null;
     products?: string | null;
     userId?: string | null;

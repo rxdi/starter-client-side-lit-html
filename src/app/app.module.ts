@@ -4,9 +4,13 @@ import { RouterModule } from '@rxdi/router';
 import { DOCUMENTS } from './@introspection/documents';
 import { AppComponent } from './app.component';
 import { Components } from './shared/components';
+import { LoginComponent } from './login/login.component';
 // const sample = new CheckBox('CheckBox', true);
 
 @Module({
+  components: [
+      LoginComponent
+  ],
   imports: [
     GraphqlModule.forRoot(
       {

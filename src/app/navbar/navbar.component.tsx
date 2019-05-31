@@ -33,4 +33,9 @@ export class NavbarComponent extends LitElement {
   onDecrement(e: Event) {
     this.counter--;
   }
+
+
+  pesho() {
+    this.dispatchEvent(new CustomEvent('pesho'))
+  }
 }

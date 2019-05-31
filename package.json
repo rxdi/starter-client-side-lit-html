@@ -18,7 +18,8 @@
     "@webcomponents/custom-elements": "^1.2.4",
     "lit-element": "^2.1.0",
     "lit-html": "^1.1.0",
-    "lit-rx": "0.0.2"
+    "lit-rx": "0.0.2",
+    "tailwindcss": "^1.0.2"
   },
   "browserslist": [
     "last 1 chrome versions"
