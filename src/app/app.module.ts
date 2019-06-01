@@ -2,14 +2,15 @@ import { Module } from '@rxdi/core';
 import { GraphqlModule } from '@rxdi/graphql-client';
 import { RouterModule } from '@rxdi/router';
 import { DOCUMENTS } from './@introspection/documents';
-import { AppComponent } from './app.component';
 import { Components } from './shared/components';
 import { LoginComponent } from './login/login.component';
-// const sample = new CheckBox('CheckBox', true);
+import { NavbarComponent } from './navbar/navbar.component';
+import { TestService } from './test/test.service';
 
 @Module({
   components: [
-      LoginComponent
+      LoginComponent,
+      NavbarComponent
   ],
   imports: [
     GraphqlModule.forRoot(
@@ -21,8 +22,18 @@ import { LoginComponent } from './login/login.component';
     RouterModule.forRoot<Components>('outlet', [
       {
         path: '/',
-        component: 'app-component'
-        // action: () => import('./app.component')
+        component: 'app-component',
+        action: () => import('./app.component')
+      },
+      {
+        path: '/gosho',
+        component: 'app-component',
+        action: () => import('./app.component')
+      },
+      {
+        path: '/app',
+        component: 'app-component',
+        action: () => import('./app.component')
       },
       {
         path: '(.*)',
@@ -30,8 +41,8 @@ import { LoginComponent } from './login/login.component';
         action: () => import('./not-found/not-found.component')
       },
       //   { path: '/users/:user', component: 'x-user-profile' },
-    ])
+    ]),
   ],
-  bootstrap: [AppComponent]
+  providers: [TestService],
 })
 export class AppModule {}

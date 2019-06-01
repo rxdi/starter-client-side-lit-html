@@ -12,9 +12,9 @@
   "license": "MIT",
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
-    "@rxdi/core": "^0.2.28",
-    "@rxdi/graphql-client": "^0.2.28",
-    "@rxdi/router": "^0.2.28",
+    "@rxdi/core": "^0.2.29",
+    "@rxdi/graphql-client": "^0.2.29",
+    "@rxdi/router": "^0.2.29",
     "@webcomponents/custom-elements": "^1.2.4",
     "lit-element": "^2.1.0",
     "lit-html": "^1.1.0",

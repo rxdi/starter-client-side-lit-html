@@ -1,6 +1,11 @@
 import { html, LitElement, property, eventOptions, css, customElement } from 'lit-element';
+import { Component, Injector } from '@rxdi/core';
+import { Router } from '@rxdi/router';
+import { TestService } from '../test/test.service';
+import { subscribe } from 'lit-rx';
 
 @customElement('navbar-component')
+@Component()
 export class NavbarComponent extends LitElement {
   static styles = css`
   .spacer {
@@ -8,13 +13,17 @@ export class NavbarComponent extends LitElement {
   }
   `;
 
+  @Injector(TestService)
+  private test: TestService;
+
   @property() counter = 0;
 
   render() {
     return html`
+    ${subscribe(this.test.gosho2)} Singleton
       <nav>
-        <a href="/"><button>App</button></a>
-        <a href="/not-found"><button>Another view</button></a>
+        <a @click=${() => Router().go('/')}><button>App</button></a>
+        <a @click=${() => Router().go('/not-found')}><button>Another view</button></a>
       </nav>
       <div style="display:flex">
         <button @click=${this.onIncrement}>Increment</button>
@@ -36,6 +45,6 @@ export class NavbarComponent extends LitElement {
 
 
   pesho() {
-    this.dispatchEvent(new CustomEvent('pesho'))
+    this.dispatchEvent(new CustomEvent('pesho'));
   }
 }

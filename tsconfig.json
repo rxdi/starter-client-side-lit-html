@@ -1,6 +1,7 @@
 {
   "compileOnSave": false,
   "compilerOptions": {
+    "paths": { "*": ["types/*"] },
     "baseUrl": ".",
     "sourceMap": true,
     "module": "esnext",

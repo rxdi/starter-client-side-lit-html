@@ -4,7 +4,7 @@ import { Component } from '@rxdi/core';
 
 @customElement('not-found-component')
 @Component()
-class NotFoundComponent extends BaseComponent {
+export class NotFoundComponent extends BaseComponent {
   render() {
     return html`
       <h1>Not found component!</h1>
