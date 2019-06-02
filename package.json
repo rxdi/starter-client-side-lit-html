@@ -12,6 +12,7 @@
   "license": "MIT",
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
+    "@polymer/paper-spinner": "^3.0.2",
     "@rxdi/core": "^0.2.29",
     "@rxdi/graphql-client": "^0.2.29",
     "@rxdi/router": "^0.2.29",
@@ -19,6 +20,7 @@
     "lit-element": "^2.1.0",
     "lit-html": "^1.1.0",
     "lit-rx": "0.0.2",
+    "mobx": "^5.9.4",
     "tailwindcss": "^1.0.2"
   },
   "browserslist": [

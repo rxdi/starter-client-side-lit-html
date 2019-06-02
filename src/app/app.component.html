@@ -1,0 +1,18 @@
+<header>
+        <h1>Hello world</h1>
+      </header>
+      <p>
+        Server status
+        ${subscribe(this.getServerStatus().pipe(map(res => res.status.status)))}
+      </p>
+      <p>${subscribe(timer(100, 1000).pipe(map(() => new Date())))}</p>
+      <!-- <navbar-component counter='${subscribe(timer(100, 1000).pipe(map((v) => v)))}'></navbar-component> -->
+      <p>
+        Crowdsale info
+        ${subscribe(
+          from(this.getServerStatus()).pipe(
+            map(res => JSON.stringify(res.getCrowdsaleInfo, null, 4))
+          )
+        )}
+        dadada
+</p>

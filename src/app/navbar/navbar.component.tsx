@@ -1,8 +1,7 @@
 import { html, LitElement, property, eventOptions, css, customElement } from 'lit-element';
-import { Component, Injector } from '@rxdi/core';
+import { Component} from '@rxdi/core';
+import '../shared/components/button/button.component';
 import { Router } from '@rxdi/router';
-import { TestService } from '../test/test.service';
-import { subscribe } from 'lit-rx';
 
 @customElement('navbar-component')
 @Component()
@@ -13,23 +12,21 @@ export class NavbarComponent extends LitElement {
   }
   `;
 
-  @Injector(TestService)
-  private test: TestService;
-
   @property() counter = 0;
 
   render() {
     return html`
-    ${subscribe(this.test.gosho2)} Singleton
-      <nav>
-        <a @click=${() => Router().go('/')}><button>App</button></a>
-        <a @click=${() => Router().go('/not-found')}><button>Another view</button></a>
-      </nav>
       <div style="display:flex">
-        <button @click=${this.onIncrement}>Increment</button>
-        <button @click=${this.onDecrement}>Decrement</button>
-        ${this.counter}
+        <button-component text="Home" type="normal" href="/"></button-component>
+        <button-component text="Not Found" type="normal" href="/not-found"></button-component>
+        <button-component text="Consultants" type="normal" href="/consultants"></button-component>
+        <button-component text="Login" type="normal" href="/login"></button-component>
       </div>
+      <!-- <nav>
+        <a @click=${this.onIncrement}><button>App</button></a>
+        <a @click=${this.onDecrement}><button>Another view</button></a>
+      </nav> -->
+
     `;
   }
 
