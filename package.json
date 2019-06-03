@@ -6,6 +6,7 @@
     "start": "parcel ./src/index.html",
     "build": "parcel build ./src/index.html",
     "lint": "npx tslint -c tslint.json 'src/**/*.{ts,tsx}'",
+    "test": "jest",
     "introspect": "gapi schema introspect --collect-documents --collect-types"
   },
   "author": "Kristiyan Tachev",
@@ -24,6 +25,36 @@
     "last 1 chrome versions"
   ],
   "devDependencies": {
+    "@types/jest": "^24.0.13",
+    "jest": "^24.8.0",
+    "ts-jest": "^24.0.2",
     "typescript": "^3.5.1"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "testPathIgnorePatterns": [
+      "/node_modules/"
+    ],
+    "coverageReporters": [
+      "lcov",
+      "html"
+    ],
+    "rootDir": "./",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "json",
+      "node"
+    ],
+    "globals": {
+      "__DEV__": true
+    },
+    "transform": {
+      "\\.(ts|tsx)$": "ts-jest"
+    },
+    "testRegex": "/src/.*\\.spec.(ts|tsx|js)$",
+    "verbose": true,
+    "collectCoverage": true
   }
 }

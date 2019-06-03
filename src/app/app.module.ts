@@ -3,15 +3,12 @@ import { GraphqlModule } from '@rxdi/graphql-client';
 import { RouterModule } from '@rxdi/router';
 import { DOCUMENTS } from './@introspection/documents';
 import { AppComponent } from './app.component';
-import { NavbarComponent } from './navbar/navbar.component';
-import { FooterComponent } from './footer/footer.component';
 import { HomeComponent } from './home/home.component';
 import { Components } from './shared/components';
+import { State } from './app.state';
 
 @Module({
   components: [
-    NavbarComponent,
-    FooterComponent,
     HomeComponent,
   ],
   imports: [
@@ -40,5 +37,6 @@ import { Components } from './shared/components';
     ])
   ],
   bootstrap: [AppComponent],
+  providers: [State],
 })
 export class AppModule {}

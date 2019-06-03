@@ -35,6 +35,34 @@ code --install-extension runem.lit-plugin
 ```bash
 code --install-extension bierner.lit-html
 ```
+
+
+##### Using `@gapi/cli` schematics
+
+```bash
+npm i -g @gapi/cli
+```
+
+`gapi generate [name]` generates the specified schematic
+
+
+## Available Schematics:
+* controller
+* type
+* directive
+* guard
+* module
+* provide
+* service
+
+## Options
+`--dry-run (alias: -d)` 
+
+`--force (alias: -f)`
+
+
+
+
 ##### Running App
 
 For starting and building application we will use Parcel a new configuration-less web bundler [ParcelJS](https://parceljs.org/)
@@ -56,7 +84,6 @@ parcel build ./src/index.html
 ```
 
 ## Simplest app
-
 
 
 
