@@ -6,10 +6,14 @@ import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
 import { Components } from './shared/components';
 import { State } from './app.state';
+import { NavbarComponent } from './navbar/navbar.component';
+import { FooterComponent } from './footer/footer.component';
 
 @Module({
   components: [
+    NavbarComponent,
     HomeComponent,
+    FooterComponent
   ],
   imports: [
     GraphqlModule.forRoot(
@@ -34,7 +38,7 @@ import { State } from './app.state';
         action: () => import('./not-found/not-found.component')
       }
       //   { path: '/users/:user', component: 'x-user-profile' },
-    ])
+    ], { log: true })
   ],
   bootstrap: [AppComponent],
   providers: [State],

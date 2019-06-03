@@ -1,4 +1,4 @@
 import { Injectable } from '@rxdi/core';
 
-@Injectable()
+@Injectable({ init: true })
 export class State {}

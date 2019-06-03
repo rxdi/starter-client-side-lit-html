@@ -1,18 +1,20 @@
-import { html, customElement } from 'lit-element';
+import { html } from 'lit-element';
 import { BaseComponent } from '../shared/base.component';
-import { Component, Injector } from '@rxdi/core';
+import { customElement, OnInit, OnDestroy, OnUpdate } from '@rxdi/lit-html';
 import { timer, from } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { subscribe } from 'lit-rx';
 
-@customElement('home-component')
-@Component()
-export class HomeComponent extends BaseComponent {
-  render() {
+@customElement('home-component', {
+  template(this: HomeComponent) {
     return html`
       <header>
         <h1>Hello world</h1>
       </header>
+      <img
+        src="https://www.w3schools.com/html/img_girl.jpg"
+        alt="Italian Trulli"
+      />
       <p>
         Server status
         ${subscribe(this.getServerStatus().pipe(map(res => res.status.status)))}
@@ -27,6 +29,19 @@ export class HomeComponent extends BaseComponent {
         )}
       </p>
     `;
+  }
+})
+export class HomeComponent extends BaseComponent implements OnInit, OnDestroy, OnUpdate {
+  OnInit() {
+    console.log('Home component init');
+  }
+
+  OnDestroy() {
+    console.log('Home component destroyed');
+  }
+
+  OnUpdate() {
+    console.log('Home component updated');
   }
 
   subscription() {

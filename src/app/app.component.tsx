@@ -1,39 +1,26 @@
-import { Component } from '@rxdi/core';
 import { html, render } from 'lit-html';
+import { customElement } from '@rxdi/lit-html';
 import { State } from './app.state';
+import { Inject } from '@rxdi/core';
 
 import '@rxdi/router';
 import './footer/footer.component';
 import './navbar/navbar.component';
 
-@Component()
-export class AppComponent {
-  constructor(
-    private state: State
-  ) {}
+@customElement('app-component')
+export class AppComponent extends HTMLElement {
+
+  @Inject(State) private state: State;
 
   OnInit() {
     render(
       html`
-        <router-outlet
-          header=${this.getHeader().getHTML()}
-          footer=${this.getFooter().getHTML()}
-        >
+        <router-outlet>
+         <navbar-component></navbar-component>
+         <footer-component></footer-component>
         </router-outlet>
       `,
       document.body
     );
-  }
-
-  getFooter() {
-    return html`
-      <footer-component></footer-component>
-    `;
-  }
-
-  getHeader() {
-    return html`
-      <navbar-component></navbar-component>
-    `;
   }
 }

@@ -1,4 +1,4 @@
-import { Container } from '@rxdi/core';
+import { Injector } from '@rxdi/core';
 import { LitElement } from 'lit-element';
 import { GraphqlClient } from '@rxdi/graphql-client';
 import {
@@ -24,7 +24,8 @@ interface ImportMutationMixin extends MutationOptions {
 }
 
 export class GraphqlComponent extends LitElement {
-  public graphql: GraphqlClient = Container.get(GraphqlClient);
+
+  @Injector(GraphqlClient) public graphql: GraphqlClient;
 
   query<T = IQuery>(options: ImportQueryMixin) {
     options.query = importQuery(options.query);

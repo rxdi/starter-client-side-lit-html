@@ -97,9 +97,6 @@ import { AppModule } from './app/app.module';
 window.addEventListener('load', () => {
   Bootstrap(AppModule, {
     init: false,
-    initOptions: {
-      services: true
-    }
   }).subscribe(() => console.log('App Started!'), err => console.error(err));
 });
 
@@ -118,16 +115,17 @@ import { GraphqlModule } from '@rxdi/graphql-client';
 import { RouterModule } from '@rxdi/router';
 import { DOCUMENTS } from './@introspection/documents';
 import { AppComponent } from './app.component';
-import { NavbarComponent } from './navbar/navbar.component';
-import { FooterComponent } from './footer/footer.component';
 import { HomeComponent } from './home/home.component';
 import { Components } from './shared/components';
+import { State } from './app.state';
+import { NavbarComponent } from './navbar/navbar.component';
+import { FooterComponent } from './footer/footer.component';
 
 @Module({
   components: [
     NavbarComponent,
-    FooterComponent,
     HomeComponent,
+    FooterComponent
   ],
   imports: [
     GraphqlModule.forRoot(
@@ -152,11 +150,13 @@ import { Components } from './shared/components';
         action: () => import('./not-found/not-found.component')
       }
       //   { path: '/users/:user', component: 'x-user-profile' },
-    ])
+    ], { log: true })
   ],
   bootstrap: [AppComponent],
+  providers: [State],
 })
 export class AppModule {}
+
 ```
 
 
@@ -185,14 +185,16 @@ export class BaseComponent extends GraphqlElement {
 Inside `header` and `footer` you can insert component which will be rendered with `unsafeHTML(html'<navbar-component></navbar-component>')` after the Router is initialized.
 
 ```html
-    <router-outlet
-      header="<navbar-component></navbar-component>"
-      footer="<footer-component></footer-component>"
-    >
-    </router-outlet>
+<router-outlet
+  header="<navbar-component></navbar-component>"
+  footer="<footer-component></footer-component>"
+>
+</router-outlet>
 ```
 
 > Note! Components needs to be bootstraped inside `AppModule` before using them or nothing will be rendered
+
+> Another way of importing modules is directly inside the Component `import './your.component.ts';`;
 
 ```typescript
 @Module({
@@ -209,83 +211,69 @@ export class AppModule {}
 src/app/app.component.tsx
 
 ```typescript
-import { Component } from '@rxdi/core';
 import { html, render } from 'lit-html';
-import '@rxdi/router';
+import { customElement } from '@rxdi/lit-html';
+import { State } from './app.state';
+import { Inject } from '@rxdi/core';
 
-@Component()
-export class AppComponent {
+import '@rxdi/router';
+import './footer/footer.component';
+import './navbar/navbar.component';
+
+@customElement('app-component')
+export class AppComponent extends HTMLElement {
+
+  @Inject(State) private state: State;
+
   OnInit() {
     render(
       html`
-        <router-outlet
-          header=${this.getHeader().getHTML()}
-          footer=${this.getFooter().getHTML()}
-        >
+        <router-outlet>
+         <navbar-component></navbar-component>
+         <footer-component></footer-component>
         </router-outlet>
       `,
       document.body
     );
   }
-
-  getFooter() {
-    return html`
-      <footer-component></footer-component>
-    `;
-  }
-
-  getHeader() {
-    return html`
-      <navbar-component></navbar-component>
-    `;
-  }
 }
-
 ```
 
 
 #### Navbar component
 ```typescript
-import {
-  html,
-  LitElement,
-  property,
-  eventOptions,
-  css,
-  customElement
-} from 'lit-element';
-import { Component, Container } from '@rxdi/core';
+import { html, property, eventOptions, css, LitElement } from 'lit-element';
 import { Router, Outlet } from '@rxdi/router';
-import { subscribe } from 'lit-rx';
+import { customElement } from '@rxdi/lit-html';
 
-@customElement('navbar-component')
-@Component()
-export class NavbarComponent extends LitElement {
-  static styles = css`
+@customElement('navbar-component', {
+  style: css`
     .spacer {
       flex: 1 3 auto;
     }
-  `;
-
-
-  @property() counter = 0;
-
-  @Router()
-  router: Outlet;
-
-  render() {
+    .container {
+      display: flex;
+    }
+  `,
+  template(this: NavbarComponent) {
     return html`
       <nav>
         <a @click=${() => this.router.go('/')}><button>Home</button></a>
         <a @click=${() => this.router.go('/about')}><button>About</button></a>
       </nav>
-      <div style="display:flex">
+      <div class="container">
         <button @click=${this.onIncrement}>Increment</button>
+        <span class="spacer"></span>
         <button @click=${this.onDecrement}>Decrement</button>
         ${this.counter}
       </div>
     `;
   }
+})
+export class NavbarComponent extends LitElement {
+  @property() counter = 0;
+
+  @Router() router: Outlet;
 
   @eventOptions({ capture: true })
   onIncrement(e: Event) {
@@ -297,7 +285,6 @@ export class NavbarComponent extends LitElement {
     this.counter--;
   }
 }
-
 ```
 
 
@@ -305,42 +292,65 @@ export class NavbarComponent extends LitElement {
 src/app/app.component.tsx
 
 ```typescript
-import { html, customElement } from 'lit-element';
+import { html } from 'lit-element';
 import { BaseComponent } from '../shared/base.component';
-import { Component } from '@rxdi/core';
+import { customElement } from '@rxdi/lit-html';
+import { timer } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { subscribe } from 'lit-rx';
 
-@customElement('about-component')
-@Component()
-export class AboutComponent extends BaseComponent {
-  render() {
+@customElement('about-component', {
+  template(this: AboutComponent) {
     return html`
-        About
+    <header>
+      <h1>About</h1>
+    </header>
+     ${subscribe(this.timer)}
+    <p>
+    <img src="https://www.w3schools.com/html/pic_trulli.jpg" alt="Italian Trulli">
+    </p>
     `;
   }
-}
+})
+export class AboutComponent extends BaseComponent {
+  private timer = timer(1, 1000).pipe(map(v => v));
 
+  OnInit() {
+    console.log('About component init');
+  }
+
+  OnDestroy() {
+    console.log('About component destroyed');
+  }
+
+  OnUpdate() {
+    console.log('About component updated');
+  }
+}
 ```
 
 
 #### Home Component
-src/app/app.component.tsx
+src/app/home/home.component.tsx
 
 ```typescript
-import { html, customElement } from 'lit-element';
+import { html } from 'lit-element';
 import { BaseComponent } from '../shared/base.component';
-import { Component, Injector } from '@rxdi/core';
+import { customElement, OnInit, OnDestroy, OnUpdate } from '@rxdi/lit-html';
 import { timer, from } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { subscribe } from 'lit-rx';
 
-@customElement('home-component')
-@Component()
-export class HomeComponent extends BaseComponent {
-  render() {
+@customElement('home-component', {
+  template(this: HomeComponent) {
     return html`
       <header>
         <h1>Hello world</h1>
       </header>
+      <img
+        src="https://www.w3schools.com/html/img_girl.jpg"
+        alt="Italian Trulli"
+      />
       <p>
         Server status
         ${subscribe(this.getServerStatus().pipe(map(res => res.status.status)))}
@@ -355,6 +365,19 @@ export class HomeComponent extends BaseComponent {
         )}
       </p>
     `;
+  }
+})
+export class HomeComponent extends BaseComponent implements OnInit, OnDestroy, OnUpdate {
+  OnInit() {
+    console.log('Home component init');
+  }
+
+  OnDestroy() {
+    console.log('Home component destroyed');
+  }
+
+  OnUpdate() {
+    console.log('Home component updated');
   }
 
   subscription() {
@@ -402,58 +425,60 @@ subscription {
 #### Footer component
 
 ```typescript
-import { html, customElement } from 'lit-element';
-import { BaseComponent } from '../shared/base.component';
-import { Component } from '@rxdi/core';
+import { html } from 'lit-element';
+import { customElement } from '@rxdi/lit-html';
 
-@customElement('footer-component')
-@Component()
-export class FooterComponent extends BaseComponent {
-  render() {
-    return html`
-      Footer
-    `;
-  }
-}
-
+@customElement('footer-component', {
+  template: () => html`
+    <style>
+      .footer {
+        position: fixed;
+        left: 0;
+        bottom: 0;
+        width: 100%;
+        background-color: #03a9f4;
+        color: white;
+        text-align: center;
+      }
+    </style>
+    <div class="footer">
+      <p>Footer</p>
+    </div>
+  `
+})
+export class FooterComponent extends HTMLElement {}
 ```
 
 #### Not fund component
 
 ```typescript
-import { html, customElement } from 'lit-element';
-import { BaseComponent } from '../shared/base.component';
-import { Component } from '@rxdi/core';
+import { html } from 'lit-element';
+import { customElement } from '@rxdi/lit-html';
 
-@customElement('not-found-component')
-@Component()
-class NotFoundComponent extends BaseComponent {
-  render() {
-    return html`
-      <h1>Not found component!</h1>
-      <p>
-        Please check your URL.
-      </p>
-    `;
-  }
-}
+@customElement('not-found-component', {
+  template: () => html`
+    <h1>Not found component!</h1>
+    <p>Please check your URL.</p>
+  `
+})
+export class NotFoundComponent extends HTMLElement {}
 ```
 
 #### Graphql Component
 
 ```typescript
-import { Container } from "@rxdi/core";
-import { LitElement } from "lit-element";
-import { GraphqlClient } from "@rxdi/graphql-client";
+import { Injector } from '@rxdi/core';
+import { LitElement } from 'lit-element';
+import { GraphqlClient } from '@rxdi/graphql-client';
 import {
   QueryOptions,
   MutationOptions,
   SubscriptionOptions
-} from "apollo-boost";
-import { importQuery } from "@rxdi/graphql-client/dist/graphql-helpers";
-import { DocumentTypes } from "../@introspection/documentTypes";
-import { from, Observable } from "rxjs";
-import { IQuery, IMutation, ISubscription } from "../@introspection";
+} from 'apollo-boost';
+import { importQuery } from '@rxdi/graphql-client/dist/graphql-helpers';
+import { DocumentTypes } from '../@introspection/documentTypes';
+import { from, Observable } from 'rxjs';
+import { IQuery, IMutation, ISubscription } from '../@introspection';
 
 interface ImportQueryMixin extends QueryOptions {
   query: DocumentTypes;
@@ -468,7 +493,8 @@ interface ImportMutationMixin extends MutationOptions {
 }
 
 export class GraphqlComponent extends LitElement {
-  public graphql: GraphqlClient = Container.get(GraphqlClient);
+
+  @Injector(GraphqlClient) public graphql: GraphqlClient;
 
   query<T = IQuery>(options: ImportQueryMixin) {
     options.query = importQuery(options.query);
@@ -485,7 +511,6 @@ export class GraphqlComponent extends LitElement {
     return from((this.graphql.subscribe.bind(this.graphql)(options) as any)) as Observable<{ data: T }>;
   }
 }
-
 ```
 
 
