@@ -1,6 +1,6 @@
+import { Inject } from '@rxdi/core';
 import { html, render, customElement } from '@rxdi/lit-html';
 import { State } from './app.state';
-import { Inject } from '@rxdi/core';
 
 import '@rxdi/router';
 import './footer/footer.component';
@@ -16,6 +16,7 @@ export class AppComponent extends HTMLElement {
         <navbar-component></navbar-component>
         <router-outlet></router-outlet>
         <footer-component></footer-component>
+        <
       `,
       document.body
     );

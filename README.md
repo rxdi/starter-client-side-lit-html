@@ -182,8 +182,15 @@ export class BaseComponent extends GraphqlElement {
 
 
 #### When RouterModule is set we can put our component `<router-component></router-component>` inside `AppComponent`
-Inside `header` and `footer` you can insert component which will be rendered with `unsafeHTML(html'<navbar-component></navbar-component>')` after the Router is initialized.
 
+
+```html
+<navbar-component></navbar-component>
+<router-outlet></router-outlet>
+<footer-component></footer-component>
+```
+
+Inside `header` and `footer` you can insert component which will be rendered with `unsafeHTML(html'<navbar-component></navbar-component>')` after the Router is initialized.
 ```html
 <router-outlet
   header="<navbar-component></navbar-component>"
@@ -211,17 +218,16 @@ export class AppModule {}
 src/app/app.component.tsx
 
 ```typescript
-import { html, render } from 'lit-html';
-import { customElement } from '@rxdi/lit-html';
+import { Inject, Component } from '@rxdi/core';
+import { html, render } from '@rxdi/lit-html';
 import { State } from './app.state';
-import { Inject } from '@rxdi/core';
 
 import '@rxdi/router';
 import './footer/footer.component';
 import './navbar/navbar.component';
 
-@customElement('app-component')
-export class AppComponent extends HTMLElement {
+@Component()
+export class AppComponent {
   @Inject(State) private state: State;
 
   OnInit() {
@@ -235,14 +241,14 @@ export class AppComponent extends HTMLElement {
     );
   }
 }
+
 ```
 
 
 #### Navbar component
 ```typescript
-import { html, property, eventOptions, css, LitElement } from 'lit-element';
-import { Router, Outlet } from '@rxdi/router';
-import { customElement } from '@rxdi/lit-html';
+import { Router } from '@rxdi/router';
+import { html, property, eventOptions, css, LitElement, customElement } from '@rxdi/lit-html';
 
 @customElement('navbar-component', {
   style: css`
@@ -298,7 +304,7 @@ import { customElement } from '@rxdi/lit-html';
 export class NavbarComponent extends LitElement {
   @property() counter = 0;
 
-  @Router() router: Outlet;
+  @Router() router: Router;
 
   @eventOptions({ capture: true })
   onIncrement(e: Event) {
@@ -310,6 +316,7 @@ export class NavbarComponent extends LitElement {
     this.counter--;
   }
 }
+
 ```
 
 
@@ -317,11 +324,9 @@ export class NavbarComponent extends LitElement {
 src/app/app.component.tsx
 
 ```typescript
-import { html } from 'lit-element';
-import { customElement } from '@rxdi/lit-html';
+import { subscribe, html, customElement } from '@rxdi/lit-html';
 import { timer } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { subscribe } from 'lit-rx';
 
 @customElement('about-component', {
   template(this: AboutComponent) {
@@ -348,6 +353,7 @@ export class AboutComponent extends HTMLElement {
   }
 
 }
+
 ```
 
 
@@ -355,12 +361,10 @@ export class AboutComponent extends HTMLElement {
 src/app/home/home.component.tsx
 
 ```typescript
-import { html } from 'lit-element';
 import { BaseComponent } from '../shared/base.component';
-import { customElement, OnInit, OnDestroy, OnUpdate } from '@rxdi/lit-html';
+import { subscribe, customElement, OnInit, OnDestroy, OnUpdate, html } from '@rxdi/lit-html';
 import { timer, from } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { subscribe } from 'lit-rx';
 
 @customElement('home-component', {
   template(this: HomeComponent) {
@@ -446,8 +450,8 @@ subscription {
 #### Footer component
 
 ```typescript
-import { html, css } from 'lit-element';
-import { customElement } from '@rxdi/lit-html';
+
+import { html, css, customElement } from '@rxdi/lit-html';
 
 @customElement('footer-component', {
   useShadow: true,
@@ -476,8 +480,7 @@ export class FooterComponent extends HTMLElement {}
 #### Not fund component
 
 ```typescript
-import { html } from 'lit-element';
-import { customElement } from '@rxdi/lit-html';
+import { html, customElement } from '@rxdi/lit-html';
 
 @customElement('not-found-component', {
   template: () => html`
@@ -492,7 +495,6 @@ export class NotFoundComponent extends HTMLElement {}
 
 ```typescript
 import { Injector } from '@rxdi/core';
-import { LitElement } from 'lit-element';
 import { GraphqlClient } from '@rxdi/graphql-client';
 import {
   QueryOptions,
@@ -503,6 +505,7 @@ import { importQuery } from '@rxdi/graphql-client/dist/graphql-helpers';
 import { DocumentTypes } from '../@introspection/documentTypes';
 import { from, Observable } from 'rxjs';
 import { IQuery, IMutation, ISubscription } from '../@introspection';
+import { LitElement } from '@rxdi/lit-html';
 
 interface ImportQueryMixin extends QueryOptions {
   query: DocumentTypes;

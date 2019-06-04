@@ -1,4 +1,3 @@
-
 import { html, css, customElement } from '@rxdi/lit-html';
 
 @customElement('footer-component', {
