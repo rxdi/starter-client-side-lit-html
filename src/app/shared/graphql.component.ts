@@ -5,7 +5,7 @@ import {
   MutationOptions,
   SubscriptionOptions
 } from 'apollo-boost';
-import { importQuery } from '@rxdi/graphql-client/dist/graphql-helpers';
+import { importQuery } from '@rxdi/graphql-client';
 import { DocumentTypes } from '../@introspection/documentTypes';
 import { from, Observable } from 'rxjs';
 import { IQuery, IMutation, ISubscription } from '../@introspection';
