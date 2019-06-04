@@ -9,7 +9,11 @@
     />
     <title>@rxdi client side example</title>
     <link rel="icon" href="assets/images/favicon.ico" />
-
+    <style>
+      body {
+        margin: 0px;
+      }
+    </style>
     <meta name="theme-color" content="#33383a" />
     <link rel="manifest" href="manifest.webmanifest" />
     <base href="/" />
@@ -22,27 +26,35 @@
     <script>
       // Load and register pre-caching Service Worker
       const main = async () => {
-        if ("serviceWorker" in navigator) {
+        if ('serviceWorker' in navigator) {
           if (window.origin.includes('localhost')) {
-            const workers = await navigator.serviceWorker.getRegistrations()
+            const workers = await navigator.serviceWorker.getRegistrations();
             for (let worker of workers) {
               await worker.unregister();
             }
           } else {
-            window.addEventListener("load", function() {
-              navigator.serviceWorker.register("service-worker.js", {
-                scope: "/"
-              }).then(function(registration) {
-                console.log('Registration successful, scope is:', registration.scope);
-              })
-              .catch(function(error) {
-                console.log('Service worker registration failed, error:', error);
-              });
+            window.addEventListener('load', function() {
+              navigator.serviceWorker
+                .register('service-worker.js', {
+                  scope: '/'
+                })
+                .then(function(registration) {
+                  console.log(
+                    'Registration successful, scope is:',
+                    registration.scope
+                  );
+                })
+                .catch(function(error) {
+                  console.log(
+                    'Service worker registration failed, error:',
+                    error
+                  );
+                });
             });
           }
         }
-      }
-      main()
+      };
+      main();
     </script>
   </head>
   <body></body>

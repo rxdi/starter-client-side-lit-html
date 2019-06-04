@@ -1,5 +1,4 @@
 import { html } from 'lit-element';
-import { BaseComponent } from '../shared/base.component';
 import { customElement } from '@rxdi/lit-html';
 import { timer } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -18,7 +17,7 @@ import { subscribe } from 'lit-rx';
     `;
   }
 })
-export class AboutComponent extends BaseComponent {
+export class AboutComponent extends HTMLElement {
   private timer = timer(1, 1000).pipe(map(v => v));
 
   OnInit() {
@@ -29,7 +28,4 @@ export class AboutComponent extends BaseComponent {
     console.log('About component destroyed');
   }
 
-  OnUpdate() {
-    console.log('About component updated');
-  }
 }

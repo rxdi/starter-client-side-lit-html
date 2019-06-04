@@ -222,16 +222,14 @@ import './navbar/navbar.component';
 
 @customElement('app-component')
 export class AppComponent extends HTMLElement {
-
   @Inject(State) private state: State;
 
   OnInit() {
     render(
       html`
-        <router-outlet>
-         <navbar-component></navbar-component>
-         <footer-component></footer-component>
-        </router-outlet>
+        <navbar-component></navbar-component>
+        <router-outlet></router-outlet>
+        <footer-component></footer-component>
       `,
       document.body
     );
@@ -254,19 +252,46 @@ import { customElement } from '@rxdi/lit-html';
     .container {
       display: flex;
     }
+    ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background-color: #f3f3f3;
+      cursor: pointer;
+    }
+
+    li {
+      float: left;
+    }
+
+    li a {
+      display: block;
+      color: #666;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+    }
+
+    li a:hover:not(.active) {
+      background-color: #ddd;
+    }
+
+    li a.active {
+      color: white;
+      background-color: #4caf50;
+    }
   `,
   template(this: NavbarComponent) {
     return html`
-      <nav>
-        <a @click=${() => this.router.go('/')}><button>Home</button></a>
-        <a @click=${() => this.router.go('/about')}><button>About</button></a>
-      </nav>
-      <div class="container">
-        <button @click=${this.onIncrement}>Increment</button>
+      <ul class="container">
+        <li><a @click=${() => this.router.go('/')}>Home</a></li>
+        <li><a @click=${() => this.router.go('/about')}>About</a></li>
         <span class="spacer"></span>
-        <button @click=${this.onDecrement}>Decrement</button>
-        ${this.counter}
-      </div>
+        <li><a @click=${this.onIncrement}>Increment</a></li>
+        <li><a @click=${this.onDecrement}>Decrement</a></li>
+        <li><a>${this.counter}</a></li>
+      </ul>
     `;
   }
 })
@@ -293,7 +318,6 @@ src/app/app.component.tsx
 
 ```typescript
 import { html } from 'lit-element';
-import { BaseComponent } from '../shared/base.component';
 import { customElement } from '@rxdi/lit-html';
 import { timer } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -312,7 +336,7 @@ import { subscribe } from 'lit-rx';
     `;
   }
 })
-export class AboutComponent extends BaseComponent {
+export class AboutComponent extends HTMLElement {
   private timer = timer(1, 1000).pipe(map(v => v));
 
   OnInit() {
@@ -323,9 +347,6 @@ export class AboutComponent extends BaseComponent {
     console.log('About component destroyed');
   }
 
-  OnUpdate() {
-    console.log('About component updated');
-  }
 }
 ```
 
@@ -425,26 +446,29 @@ subscription {
 #### Footer component
 
 ```typescript
-import { html } from 'lit-element';
+import { html, css } from 'lit-element';
 import { customElement } from '@rxdi/lit-html';
 
 @customElement('footer-component', {
-  template: () => html`
-    <style>
-      .footer {
-        position: fixed;
-        left: 0;
-        bottom: 0;
-        width: 100%;
-        background-color: #03a9f4;
-        color: white;
-        text-align: center;
-      }
-    </style>
-    <div class="footer">
-      <p>Footer</p>
-    </div>
-  `
+  useShadow: true,
+  style: css`
+    .footer {
+      position: fixed;
+      left: 0;
+      bottom: 0;
+      width: 100%;
+      background-color: #03a9f4;
+      color: white;
+      text-align: center;
+    }
+  `,
+  template() {
+    return html`
+      <div class="footer">
+        <p>Footer</p>
+      </div>
+    `;
+  }
 })
 export class FooterComponent extends HTMLElement {}
 ```

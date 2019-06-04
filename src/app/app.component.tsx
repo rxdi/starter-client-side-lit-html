@@ -9,16 +9,14 @@ import './navbar/navbar.component';
 
 @customElement('app-component')
 export class AppComponent extends HTMLElement {
-
   @Inject(State) private state: State;
 
   OnInit() {
     render(
       html`
-        <router-outlet>
-         <navbar-component></navbar-component>
-         <footer-component></footer-component>
-        </router-outlet>
+        <navbar-component></navbar-component>
+        <router-outlet></router-outlet>
+        <footer-component></footer-component>
       `,
       document.body
     );
