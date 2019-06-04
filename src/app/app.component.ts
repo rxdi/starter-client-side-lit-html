@@ -1,5 +1,4 @@
-import { html, render } from 'lit-html';
-import { customElement } from '@rxdi/lit-html';
+import { html, render, customElement } from '@rxdi/lit-html';
 import { State } from './app.state';
 import { Inject } from '@rxdi/core';
 

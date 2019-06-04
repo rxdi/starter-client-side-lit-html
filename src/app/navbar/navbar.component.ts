@@ -1,6 +1,5 @@
-import { html, property, eventOptions, css, LitElement } from 'lit-element';
 import { Router } from '@rxdi/router';
-import { customElement } from '@rxdi/lit-html';
+import { html, property, eventOptions, css, LitElement, customElement } from '@rxdi/lit-html';
 
 @customElement('navbar-component', {
   style: css`

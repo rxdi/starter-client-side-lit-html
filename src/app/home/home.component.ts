@@ -1,9 +1,7 @@
-import { html } from 'lit-element';
 import { BaseComponent } from '../shared/base.component';
-import { customElement, OnInit, OnDestroy, OnUpdate } from '@rxdi/lit-html';
+import { subscribe, customElement, OnInit, OnDestroy, OnUpdate, html } from '@rxdi/lit-html';
 import { timer, from } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { subscribe } from 'lit-rx';
 
 @customElement('home-component', {
   template(this: HomeComponent) {

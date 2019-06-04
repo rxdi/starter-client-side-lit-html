@@ -1,6 +1,5 @@
 
-import { html, css } from 'lit-element';
-import { customElement } from '@rxdi/lit-html';
+import { html, css, customElement } from '@rxdi/lit-html';
 
 @customElement('footer-component', {
   useShadow: true,

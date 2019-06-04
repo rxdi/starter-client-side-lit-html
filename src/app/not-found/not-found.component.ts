@@ -1,5 +1,4 @@
-import { html } from 'lit-element';
-import { customElement } from '@rxdi/lit-html';
+import { html, customElement } from '@rxdi/lit-html';
 
 @customElement('not-found-component', {
   template: () => html`

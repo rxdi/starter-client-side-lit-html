@@ -1,5 +1,4 @@
 import { Injector } from '@rxdi/core';
-import { LitElement } from 'lit-element';
 import { GraphqlClient } from '@rxdi/graphql-client';
 import {
   QueryOptions,
@@ -10,6 +9,7 @@ import { importQuery } from '@rxdi/graphql-client/dist/graphql-helpers';
 import { DocumentTypes } from '../@introspection/documentTypes';
 import { from, Observable } from 'rxjs';
 import { IQuery, IMutation, ISubscription } from '../@introspection';
+import { LitElement } from '@rxdi/lit-html';
 
 interface ImportQueryMixin extends QueryOptions {
   query: DocumentTypes;

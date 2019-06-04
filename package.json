@@ -13,10 +13,10 @@
   "license": "MIT",
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
-    "@rxdi/core": "0.3.9",
-    "@rxdi/graphql-client": "0.3.9",
-    "@rxdi/lit-html": "0.3.9",
-    "@rxdi/router": "0.3.9",
+    "@rxdi/core": "0.3.15",
+    "@rxdi/graphql-client": "0.3.15",
+    "@rxdi/lit-html": "0.3.15",
+    "@rxdi/router": "0.3.15",
     "@webcomponents/custom-elements": "^1.2.4"
   },
   "browserslist": [
@@ -50,9 +50,12 @@
       "__DEV__": true
     },
     "transform": {
-      "\\.(ts|tsx)$": "ts-jest"
+      "\\.(ts|tsx|js)$": "ts-jest"
     },
-    "testRegex": "/src/.*\\.spec.(ts|tsx|js)$",
+    "transformIgnorePatterns": [
+      "/node_modules/(?!lit-html).+\\.js"
+    ],
+    "testRegex": "/src/.*\\.spec.(ts|tsx)$",
     "verbose": true,
     "collectCoverage": true
   }

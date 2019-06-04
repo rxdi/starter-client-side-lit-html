@@ -1,8 +1,6 @@
-import { html } from 'lit-element';
-import { customElement } from '@rxdi/lit-html';
+import { subscribe, html, customElement } from '@rxdi/lit-html';
 import { timer } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { subscribe } from 'lit-rx';
 
 @customElement('about-component', {
   template(this: AboutComponent) {
