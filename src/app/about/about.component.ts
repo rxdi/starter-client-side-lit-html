@@ -1,4 +1,4 @@
-import { subscribe, html, customElement } from '@rxdi/lit-html';
+import { html, customElement, async } from '@rxdi/lit-html';
 import { timer } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -8,7 +8,7 @@ import { map } from 'rxjs/operators';
     <header>
       <h1>About</h1>
     </header>
-     ${subscribe(this.timer)}
+     ${async(this.timer)}
     <p>
     <img src="https://www.w3schools.com/html/pic_trulli.jpg" alt="Italian Trulli">
     </p>

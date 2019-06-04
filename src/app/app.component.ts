@@ -16,7 +16,6 @@ export class AppComponent extends HTMLElement {
         <navbar-component></navbar-component>
         <router-outlet></router-outlet>
         <footer-component></footer-component>
-        <
       `,
       document.body
     );

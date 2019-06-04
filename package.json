@@ -7,17 +7,18 @@
     "build": "parcel build ./src/index.html",
     "lint": "npx tslint -c tslint.json 'src/**/*.{ts,tsx}'",
     "test": "jest",
+    "deploy":"firebase deploy",
     "introspect": "gapi schema introspect --collect-documents --collect-types"
   },
   "author": "Kristiyan Tachev",
   "license": "MIT",
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
-    "@rxdi/core": "0.3.15",
-    "@rxdi/graphql-client": "0.3.15",
-    "@rxdi/lit-html": "0.3.15",
-    "@rxdi/router": "0.3.15",
-    "@webcomponents/custom-elements": "^1.2.4"
+    "@rxdi/core": "0.3.17",
+    "@rxdi/graphql-client": "0.3.17",
+    "@rxdi/lit-html": "0.3.17",
+    "@rxdi/router": "0.3.17",
+    "@webcomponents/webcomponentsjs": "^1.2.4"
   },
   "browserslist": [
     "last 1 chrome versions"

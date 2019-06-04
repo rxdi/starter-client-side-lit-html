@@ -1,3 +1,3 @@
 import '@babel/polyfill';
-import '@webcomponents/custom-elements';
+import '@webcomponents/webcomponentsjs';
 

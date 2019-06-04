@@ -1,5 +1,5 @@
 import { BaseComponent } from '../shared/base.component';
-import { subscribe, customElement, OnInit, OnDestroy, OnUpdate, html } from '@rxdi/lit-html';
+import { customElement, OnInit, OnDestroy, OnUpdate, html, async } from '@rxdi/lit-html';
 import { timer, from } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -15,12 +15,12 @@ import { map } from 'rxjs/operators';
       />
       <p>
         Server status
-        ${subscribe(this.getServerStatus().pipe(map(res => res.status.status)))}
+        ${async(this.getServerStatus().pipe(map(res => res.status.status)))}
       </p>
-      <p>${subscribe(timer(100, 1000).pipe(map(() => new Date())))}</p>
+      <p>${async(timer(100, 1000).pipe(map(() => new Date())))}</p>
       <p>
         Crowdsale info
-        ${subscribe(
+        ${async(
           from(this.getServerStatus()).pipe(
             map(res => JSON.stringify(res.getCrowdsaleInfo, null, 4))
           )

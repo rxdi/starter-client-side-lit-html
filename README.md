@@ -10,6 +10,8 @@
 > Any help and suggestions are appreciated!
 Main repository [@rxdi/core](https://github.com/rxdi/core) 
 ***
+[Demo Application](https://rxdi-pwa.firebaseapp.com/)
+
 ### Installation and basic examples:
 
 ##### To start developing, run:
@@ -324,7 +326,7 @@ export class NavbarComponent extends LitElement {
 src/app/app.component.tsx
 
 ```typescript
-import { subscribe, html, customElement } from '@rxdi/lit-html';
+import { async, html, customElement } from '@rxdi/lit-html';
 import { timer } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -334,7 +336,7 @@ import { map } from 'rxjs/operators';
     <header>
       <h1>About</h1>
     </header>
-     ${subscribe(this.timer)}
+     ${async(this.timer)}
     <p>
     <img src="https://www.w3schools.com/html/pic_trulli.jpg" alt="Italian Trulli">
     </p>
@@ -362,7 +364,7 @@ src/app/home/home.component.tsx
 
 ```typescript
 import { BaseComponent } from '../shared/base.component';
-import { subscribe, customElement, OnInit, OnDestroy, OnUpdate, html } from '@rxdi/lit-html';
+import { async, customElement, OnInit, OnDestroy, OnUpdate, html } from '@rxdi/lit-html';
 import { timer, from } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -378,12 +380,12 @@ import { map } from 'rxjs/operators';
       />
       <p>
         Server status
-        ${subscribe(this.getServerStatus().pipe(map(res => res.status.status)))}
+        ${async(this.getServerStatus().pipe(map(res => res.status.status)))}
       </p>
-      <p>${subscribe(timer(100, 1000).pipe(map(() => new Date())))}</p>
+      <p>${async(timer(100, 1000).pipe(map(() => new Date())))}</p>
       <p>
         Crowdsale info
-        ${subscribe(
+        ${async(
           from(this.getServerStatus()).pipe(
             map(res => JSON.stringify(res.getCrowdsaleInfo, null, 4))
           )
@@ -562,4 +564,120 @@ export const Components = strEnum([
 ]);
 export type Components = keyof typeof Components;
 
+```
+
+
+
+#### Unit Testing
+
+```typescript
+import 'jest';
+import { Container, createTestBed } from '@rxdi/core';
+import { State } from './app.state';
+
+describe('State Injectable', () => {
+  beforeAll(async () => {
+    await createTestBed({
+      imports: [],
+      providers: [State]
+    }).toPromise();
+  });
+
+  it('should be defined', done => {
+    expect(Container.has(State)).toBeTruthy();
+    done();
+  });
+});
+
+```
+
+#### Component testing
+
+```typescript
+import 'jest';
+import { Container, createTestBed } from '@rxdi/core';
+import { HomeComponent } from './home.component';
+
+describe('State Injectable', () => {
+  beforeAll(async () => {
+    await createTestBed({
+      components: [HomeComponent],
+    }).toPromise();
+  });
+  afterEach(() => {
+    // The jsdom instance is shared across test cases in a single file so reset the DOM
+    while (document.body.firstChild) {
+      document.body.removeChild(document.body.firstChild);
+    }
+  });
+  it('should be defined', done => {
+    expect(Container.has(HomeComponent)).toBeTruthy();
+    done();
+  });
+  it('displays greeting', () => {
+    // Create element
+    const element = new HomeComponent();
+
+    document.body.appendChild(element);
+    // Verify displayed greeting
+    const div = element.shadowRoot.querySelector('div');
+    expect(div.textContent).toBe('Hello, World!');
+  });
+});
+
+```
+
+
+#### Firebase deploy
+
+Install `firebase-tools`
+```
+npm install -g firebase-tools
+```
+
+Execute firebase init command and follow the steps
+```
+firebase init
+```
+
+> Note `dist` is the output folder of command `npm run build` aka `parcel build` when choosing your `deploy` folder you should consider put `dist`
+
+
+
+This example is configurated to deploy with firebase so you need just to assign your `projectId`:
+
+```
+firebase use --add
+```
+
+
+`firebase.json`
+```json
+{
+  "hosting": {
+    "public": "dist",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}
+```
+
+
+`.firebaserc`
+
+```json
+{
+  "projects": {
+    "staging": "rxdi-pwa"
+  }
+}
 ```
