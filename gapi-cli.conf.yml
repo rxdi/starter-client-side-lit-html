@@ -1,5 +1,9 @@
 
 config:
+  schematics:
+    name: @rxdi/schematics
+    dryRun: false
+
   schema:
     introspectionEndpoint: http://localhost:9000/graphql
     introspectionOutputFolder: ./src/app/@introspection

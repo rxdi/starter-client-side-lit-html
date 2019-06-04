@@ -594,38 +594,58 @@ describe('State Injectable', () => {
 #### Component testing
 
 ```typescript
-import 'jest';
 import { Container, createTestBed } from '@rxdi/core';
 import { HomeComponent } from './home.component';
+import { DOCUMENTS } from '../@introspection/documents';
+import { GraphqlModule } from '@rxdi/graphql-client';
 
 describe('State Injectable', () => {
   beforeAll(async () => {
     await createTestBed({
-      components: [HomeComponent],
+      imports: [
+        GraphqlModule.forRoot(
+          {
+            uri: 'https://questups.com/api/graphql'
+          },
+          DOCUMENTS
+        )
+      ],
+      providers: [
+        {
+          provide: 'documents-graphql',
+          useValue: DOCUMENTS
+        }
+      ],
+      components: [HomeComponent]
     }).toPromise();
   });
+
   afterEach(() => {
     // The jsdom instance is shared across test cases in a single file so reset the DOM
     while (document.body.firstChild) {
       document.body.removeChild(document.body.firstChild);
     }
   });
+
   it('should be defined', done => {
     expect(Container.has(HomeComponent)).toBeTruthy();
     done();
   });
-  it('displays greeting', () => {
-    // Create element
-    const element = new HomeComponent();
 
+  it('displays greeting', () => {
+    const element = Container.get(HomeComponent);
+    element['render']();
     document.body.appendChild(element);
-    // Verify displayed greeting
-    const div = element.shadowRoot.querySelector('div');
-    expect(div.textContent).toBe('Hello, World!');
+    const div = document.querySelector('home-component');
+    expect(div.textContent).toBe('');
   });
 });
 
 ```
+
+#### Debug testing with VSCODE
+
+Go to Debug tab and hit `Jest Test`
 
 
 #### Firebase deploy
@@ -681,3 +701,44 @@ firebase use --add
   }
 }
 ```
+
+
+
+#### Good practices
+
+> Keep templates really simple and use renderer to show them instead of writing logic inside
+
+Wrong
+```typescript
+import { async } from '@rxdi/lit-html';
+import { map } from 'rxjs/operators';
+import { of } from 'rxjs';
+
+const getCollection = async () => ({ collection: { name: '@rxdi/core' } });
+
+html`
+  <div>
+  ${async(of(getCollection('@rxdi/core')).pipe(map(o => o.collection), map(c => c.name)))}
+  </div>
+`
+```
+
+> In this example the logic is testable
+
+Correct
+```typescript
+import { async } from '@rxdi/lit-html';
+import { map } from 'rxjs/operators';
+import { of } from 'rxjs';
+
+const getCollection = async () => ({ collection: { name: '@rxdi/core' } });
+const something = () => of(getCollection()).pipe(map(o => o.collection), map(c => c.name));
+
+html`
+  <div>
+  ${async(something)}
+  </div>
+`
+```
+
+
