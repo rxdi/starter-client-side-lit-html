@@ -49,12 +49,11 @@ npm i -g @gapi/cli
 
 
 ## Available Schematics:
-* controller
-* type
+* component
 * directive
 * guard
 * module
-* provide
+* provider
 * service
 
 ## Options
@@ -62,6 +61,15 @@ npm i -g @gapi/cli
 
 `--force (alias: -f)`
 
+Current settings for schematics are defined inside `gapi-cli.conf.yml`
+Information can be found [here](https://github.com/Stradivario/gapi-cli/wiki/generate)
+
+```yml
+config:
+  schematics:
+    name: @rxdi/schematics
+    dryRun: false
+```
 
 
 
@@ -165,14 +173,53 @@ export class AppModule {}
 #### Base component
 
 ```typescript
-import { GraphqlElement } from './graphql.component';
+import { Injector } from '@rxdi/core';
+import { GraphqlClient } from '@rxdi/graphql-client';
+import {
+  QueryOptions,
+  MutationOptions,
+  SubscriptionOptions
+} from 'apollo-boost';
+import { importQuery } from '@rxdi/graphql-client';
+import { DocumentTypes } from '../@introspection/documentTypes';
+import { from, Observable } from 'rxjs';
+import { IQuery, IMutation, ISubscription } from '../@introspection';
+import { LitElement } from '@rxdi/lit-html';
 
-export class BaseComponent extends GraphqlElement {
+export class BaseComponent extends LitElement {
+  @Injector(GraphqlClient) public graphql: GraphqlClient;
+
   createRenderRoot() {
     return this;
   }
+
+  query<T = IQuery>(options: ImportQueryMixin) {
+    options.query = importQuery(options.query);
+    return from((this.graphql.query.bind(this.graphql)(options) as any)) as Observable<{ data: T }>;
+  }
+
+  mutate<T = IMutation>(options: ImportMutationMixin) {
+    options.mutation = importQuery(options.mutation);
+    return from((this.graphql.mutate.bind(this.graphql)(options) as any)) as Observable<{ data: T }>;
+  }
+
+  subscribe<T = ISubscription>(options: ImportSubscriptionMixin) {
+    options.query = importQuery(options.query);
+    return from((this.graphql.subscribe.bind(this.graphql)(options) as any)) as Observable<{ data: T }>;
+  }
 }
 
+interface ImportQueryMixin extends QueryOptions {
+  query: DocumentTypes;
+}
+
+interface ImportSubscriptionMixin extends SubscriptionOptions {
+  query: DocumentTypes;
+}
+
+interface ImportMutationMixin extends MutationOptions {
+  mutation: DocumentTypes;
+}
 ```
 
 
@@ -185,25 +232,14 @@ export class BaseComponent extends GraphqlElement {
 
 #### When RouterModule is set we can put our component `<router-component></router-component>` inside `AppComponent`
 
-
 ```html
-<navbar-component></navbar-component>
-<router-outlet></router-outlet>
-<footer-component></footer-component>
-```
-
-Inside `header` and `footer` you can insert component which will be rendered with `unsafeHTML(html'<navbar-component></navbar-component>')` after the Router is initialized.
-```html
-<router-outlet
-  header="<navbar-component></navbar-component>"
-  footer="<footer-component></footer-component>"
->
+<router-outlet>
+  <navbar-component slot="header"></navbar-component>
+  <footer-component slot="footer"></footer-component>
 </router-outlet>
 ```
 
 > Note! Components needs to be bootstraped inside `AppModule` before using them or nothing will be rendered
-
-> Another way of importing modules is directly inside the Component `import './your.component.ts';`;
 
 ```typescript
 @Module({
@@ -216,34 +252,37 @@ Inside `header` and `footer` you can insert component which will be rendered wit
 export class AppModule {}
 ```
 
+> Another way of importing modules is directly inside the Component `import './your.component.ts';`;
+
+
 #### App Component
 src/app/app.component.tsx
 
 ```typescript
-import { Inject, Component } from '@rxdi/core';
-import { html, render } from '@rxdi/lit-html';
+import { Inject } from '@rxdi/core';
+import { html, render, customElement } from '@rxdi/lit-html';
 import { State } from './app.state';
 
 import '@rxdi/router';
 import './footer/footer.component';
 import './navbar/navbar.component';
 
-@Component()
-export class AppComponent {
+@customElement('app-component')
+export class AppComponent extends HTMLElement {
   @Inject(State) private state: State;
 
   OnInit() {
     render(
       html`
-        <navbar-component></navbar-component>
-        <router-outlet></router-outlet>
-        <footer-component></footer-component>
+        <router-outlet>
+          <navbar-component slot="header"></navbar-component>
+          <footer-component slot="footer"></footer-component>
+        </router-outlet>
       `,
       document.body
     );
   }
 }
-
 ```
 
 
@@ -493,55 +532,6 @@ import { html, customElement } from '@rxdi/lit-html';
 export class NotFoundComponent extends HTMLElement {}
 ```
 
-#### Graphql Component
-
-```typescript
-import { Injector } from '@rxdi/core';
-import { GraphqlClient } from '@rxdi/graphql-client';
-import {
-  QueryOptions,
-  MutationOptions,
-  SubscriptionOptions
-} from 'apollo-boost';
-import { importQuery } from '@rxdi/graphql-client/dist/graphql-helpers';
-import { DocumentTypes } from '../@introspection/documentTypes';
-import { from, Observable } from 'rxjs';
-import { IQuery, IMutation, ISubscription } from '../@introspection';
-import { LitElement } from '@rxdi/lit-html';
-
-interface ImportQueryMixin extends QueryOptions {
-  query: DocumentTypes;
-}
-
-interface ImportSubscriptionMixin extends SubscriptionOptions {
-  query: DocumentTypes;
-}
-
-interface ImportMutationMixin extends MutationOptions {
-  mutation: DocumentTypes;
-}
-
-export class GraphqlComponent extends LitElement {
-
-  @Injector(GraphqlClient) public graphql: GraphqlClient;
-
-  query<T = IQuery>(options: ImportQueryMixin) {
-    options.query = importQuery(options.query);
-    return from((this.graphql.query.bind(this.graphql)(options) as any)) as Observable<{ data: T }>;
-  }
-
-  mutate<T = IMutation>(options: ImportMutationMixin) {
-    options.mutation = importQuery(options.mutation);
-    return from((this.graphql.mutate.bind(this.graphql)(options) as any)) as Observable<{ data: T }>;
-  }
-
-  subscribe<T = ISubscription>(options: ImportSubscriptionMixin) {
-    options.query = importQuery(options.query);
-    return from((this.graphql.subscribe.bind(this.graphql)(options) as any)) as Observable<{ data: T }>;
-  }
-}
-```
-
 
 
 #### Components.ts 
@@ -596,26 +586,11 @@ describe('State Injectable', () => {
 ```typescript
 import { Container, createTestBed } from '@rxdi/core';
 import { HomeComponent } from './home.component';
-import { DOCUMENTS } from '../@introspection/documents';
-import { GraphqlModule } from '@rxdi/graphql-client';
 
 describe('State Injectable', () => {
   beforeAll(async () => {
     await createTestBed({
-      imports: [
-        GraphqlModule.forRoot(
-          {
-            uri: 'https://questups.com/api/graphql'
-          },
-          DOCUMENTS
-        )
-      ],
-      providers: [
-        {
-          provide: 'documents-graphql',
-          useValue: DOCUMENTS
-        }
-      ],
+      imports: [],
       components: [HomeComponent]
     }).toPromise();
   });
@@ -742,3 +717,68 @@ html`
 ```
 
 
+
+
+#### Wiring up multiple Injectables with single InjectionToken
+
+```typescript
+import { Injectable, InjectionToken, Container } from '@rxdi/core';
+
+export interface FactoryToken {
+  dispatch(action: Actions): void;
+}
+
+export type Actions = 'view-initialized' | 'user-logged-in';
+
+export const FactoryToken = new InjectionToken<FactoryToken>('factories');
+
+@Injectable({
+    id: FactoryToken,
+    init: true,
+    multiple: true
+})
+export class State implements FactoryToken{
+    dispatch(action: Actions) {}
+}
+
+@Injectable({
+    id: FactoryToken,
+    init: true,
+    multiple: true
+})
+export class State2 implements FactoryToken {
+    dispatch(action: Actions) {}
+}
+
+@Injectable({
+    id: FactoryToken,
+    init: true,
+    multiple: true
+})
+export class State3 implements FactoryToken {
+  dispatch(action: Actions) {}
+}
+
+
+const factories = Container.getMany(FactoryToken); // factories is Factory[]
+factories.forEach(factory => factory.dispatch('user-logged-in'));
+```
+
+#### Injecting multiproviders inside Components
+
+```typescript
+import { InjectMany, Component } from '@rxdi/core';
+import { html, render, customElement, customElement } from '@rxdi/lit-html';
+import { FactoryToken } from './app.state';
+
+@customElement('my-element')
+export class MyComponent extends LitElement {
+
+  @InjectMany(FactoryToken) private states: FactoryToken
+
+  OnInit() {
+    this.state.dispatch('user-logged-in');
+  }
+}
+
+```

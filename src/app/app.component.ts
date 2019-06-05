@@ -13,9 +13,10 @@ export class AppComponent extends HTMLElement {
   OnInit() {
     render(
       html`
-        <navbar-component></navbar-component>
-        <router-outlet></router-outlet>
-        <footer-component></footer-component>
+        <router-outlet>
+          <navbar-component slot="header"></navbar-component>
+          <footer-component slot="footer"></footer-component>
+        </router-outlet>
       `,
       document.body
     );

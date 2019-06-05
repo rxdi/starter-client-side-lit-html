@@ -1,4 +1,8 @@
 import { Injectable } from '@rxdi/core';
 
-@Injectable({ init: true })
-export class State {}
+@Injectable()
+export class State {
+    dispatch(action: 'user-logged') {
+        console.log('State', action);
+    }
+}
