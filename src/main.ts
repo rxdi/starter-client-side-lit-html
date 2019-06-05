@@ -1,6 +1,6 @@
 import { Bootstrap } from '@rxdi/core';
 import { AppModule } from './app/app.module';
-
+const now = Date.now();
 window.addEventListener('load', () => {
   Bootstrap(AppModule, {
     init: false,

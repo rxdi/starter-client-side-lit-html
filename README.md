@@ -737,7 +737,7 @@ export const FactoryToken = new InjectionToken<FactoryToken>('factories');
     init: true,
     multiple: true
 })
-export class State implements FactoryToken{
+export class State implements FactoryToken {
     dispatch(action: Actions) {}
 }
 
@@ -782,3 +782,53 @@ export class MyComponent extends LitElement {
 }
 
 ```
+
+
+#### Code splitting
+
+
+Lets create our lazy loaded module with routes
+
+```typescript
+import { Module } from '@rxdi/core';
+import { AboutComponent } from './about.component';
+
+@Module({
+    bootstrap: [AboutComponent]
+})
+export class AboutModule {}
+
+export const Routes = [
+    {path: '/', component: 'x-user-home'},
+    {path: '/:user', component: 'x-user-profile'},
+];
+
+```
+
+#### Importing module
+Lets import this module inside AppModule
+
+```typescript
+RouterModule.forRoot<Components>([
+  {
+    path: '/',
+    animate: true,
+    component: 'home-component'
+  },
+  {
+    path: '/about',
+    component: 'about-component',
+    animate: true,
+    children: () => import('./about/about.module').then(module => module.Routes),
+  },
+])
+```
+
+Part with `children:` is really important since this will lazy load our module and load routes.
+
+From where this `about-component` come from ? and how we actually load it ? Here is the magic
+
+Every `@rxdi/core` module has property `bootstrap`(check above `AboutModule`), putting Component inside, will add him automatically to `Dependency injection` and thus it will be registered inside `customComponents` collection from where Router will load it and redirect to.
+
+Njoy!
+
