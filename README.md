@@ -792,17 +792,24 @@ Lets create our lazy loaded module with routes
 ```typescript
 import { Module } from '@rxdi/core';
 import { AboutComponent } from './about.component';
+import { RouterModule } from '@rxdi/router';
 
 @Module({
-    bootstrap: [AboutComponent]
+  imports: [
+    RouterModule.forChild([
+      {
+        path: '/',
+        component: 'x-user-home'
+      },
+      {
+        path: '/:user',
+        component: 'x-user-profile'
+      }
+    ])
+  ],
+  bootstrap: [AboutComponent]
 })
 export class AboutModule {}
-
-export const Routes = [
-    {path: '/', component: 'x-user-home'},
-    {path: '/:user', component: 'x-user-profile'},
-];
-
 ```
 
 #### Importing module
@@ -812,14 +819,12 @@ Lets import this module inside AppModule
 RouterModule.forRoot<Components>([
   {
     path: '/',
-    animate: true,
     component: 'home-component'
   },
   {
     path: '/about',
     component: 'about-component',
-    animate: true,
-    children: () => import('./about/about.module').then(module => module.Routes),
+    children: () => import('./about/about.module'),
   },
 ])
 ```
@@ -829,6 +834,23 @@ Part with `children:` is really important since this will lazy load our module a
 From where this `about-component` come from ? and how we actually load it ? Here is the magic
 
 Every `@rxdi/core` module has property `bootstrap`(check above `AboutModule`), putting Component inside, will add him automatically to `Dependency injection` and thus it will be registered inside `customComponents` collection from where Router will load it and redirect to.
+
+
+If you don't define `component` property the rendered view will be empty and then you can control the view from the child module config by defining empty slash path `/`
+
+```typescript
+RouterModule.forChild([
+  {
+    path: '/',
+    component: 'x-user-home'
+  }
+])
+```
+
+
+If you define `component` property and the element present this will be the main element wrapper for all other views so it will present inside every child view.
+
+
 
 Njoy!
 

@@ -1,9 +1,16 @@
 import { Module } from '@rxdi/core';
 import { AboutComponent } from './about.component';
+import { RouterModule } from '@rxdi/router';
 
 @Module({
-    bootstrap: [AboutComponent]
+  imports: [
+    RouterModule.forChild([
+      {
+        path: '/',
+        component: 'navbar-component'
+      }
+    ])
+  ],
+  bootstrap: [AboutComponent]
 })
 export class AboutModule {}
-
-export const Routes = [];

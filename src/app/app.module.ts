@@ -30,7 +30,7 @@ import { FooterComponent } from './footer/footer.component';
       {
         path: '/about',
         component: 'about-component',
-        children: () => import('./about/about.module').then(module => module.Routes)
+        children: () => import('./about/about.module')
       },
       {
         path: '(.*)',
