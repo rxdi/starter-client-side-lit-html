@@ -23,7 +23,7 @@
     <meta name="mobile-web-app-status-bar-style" content="black" />
     <meta name="mobile-web-app-title" content="Expenses" />
 
-    <script>
+    <script async>
       // Load and register pre-caching Service Worker
       const main = async () => {
         if ('serviceWorker' in navigator) {
@@ -55,6 +55,18 @@
         }
       };
       main();
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+    <script async>
+      window.onerror = (text, url, lineNumber) => {
+        Swal.fire({
+          type: 'error',
+          title: 'Oops...',
+          text,
+          footer: `<p><strong>File:</strong> ${url}</p>&nbsp<p><strong>Line:</strong> ${lineNumber}</p>`
+        });
+        return true;
+      };
     </script>
   </head>
   <body></body>
