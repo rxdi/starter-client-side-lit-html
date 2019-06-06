@@ -25,12 +25,11 @@ import { FooterComponent } from './footer/footer.component';
     RouterModule.forRoot<Components>([
       {
         path: '/',
-        component: 'home-component'
+        component: HomeComponent
       },
       {
         path: '/about',
-        component: 'about-component',
-        children: () => import('./about/about.module').then(module => module.Routes)
+        children: () => import('./about/about.module')
       },
       {
         path: '(.*)',
