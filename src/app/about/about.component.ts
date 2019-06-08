@@ -1,4 +1,4 @@
-import { html, customElement, async } from '@rxdi/lit-html';
+import { html, customElement, async, LitElement } from '@rxdi/lit-html';
 import { timer } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -15,7 +15,7 @@ import { map } from 'rxjs/operators';
     `;
   }
 })
-export class AboutComponent extends HTMLElement {
+export class AboutComponent extends LitElement {
   private timer = timer(1, 1000).pipe(map(v => v));
 
   OnInit() {
