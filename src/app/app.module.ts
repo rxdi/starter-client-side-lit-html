@@ -8,11 +8,12 @@ import { Components } from './shared/components';
 import { State } from './app.state';
 import { NavbarComponent } from './navbar/navbar.component';
 import { FooterComponent } from './footer/footer.component';
+import { LoggedInGuard } from './logged-in.guard';
 
 @Module({
   components: [
     NavbarComponent,
-    HomeComponent,
+    // HomeComponent,
     FooterComponent
   ],
   imports: [
@@ -25,12 +26,14 @@ import { FooterComponent } from './footer/footer.component';
     RouterModule.forRoot<Components>([
       {
         path: '/',
-        component: 'home-component'
+        component: HomeComponent
       },
       {
         path: '/about',
         component: 'about-component',
-        children: () => import('./about/about.module')
+
+        children: () => import('./about/about.module'),
+        canActivate: LoggedInGuard
       },
       {
         path: '(.*)',

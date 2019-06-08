@@ -52,3 +52,5 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy, O
     );
   }
 }
+
+console.log(HomeComponent['is']());
