@@ -870,7 +870,7 @@ import {
   CanActivateContext,
   CanActivateCommands,
   CanActivateResolver,
-  CanActivateRedirect
+  CanActivateRedirectResult
 } from '@rxdi/router';
 
 @Injectable()
@@ -881,7 +881,7 @@ export class LoggedInGuard implements CanActivateResolver, OnInit {
   canActivate(
     context: CanActivateContext,
     commands: CanActivateCommands
-  ): CanActivateRedirect | boolean | Promise<boolean> | Observable<boolean> | void {
+  ): CanActivateRedirectResult | boolean | Promise<boolean> | Observable<boolean> | void {
     // return commands.redirect('/')
     // return false | true;
     // return new Promise((r) => r(true | false));

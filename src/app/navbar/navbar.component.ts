@@ -1,54 +1,49 @@
 import { Router } from '@rxdi/router';
-import { html, property, eventOptions, css, LitElement, customElement } from '@rxdi/lit-html';
+import {
+  html,
+  property,
+  eventOptions,
+  css,
+  LitElement,
+  customElement
+} from '@rxdi/lit-html';
+import './buttons/buttons.component';
+import { globalCSS } from '../../styles';
 
 @customElement('navbar-component', {
   style: css`
+    ${globalCSS}
     .spacer {
       flex: 1 3 auto;
     }
+    app-button {
+      margin-right: 20px;
+    }
     .container {
-      display: flex;
-    }
-    ul {
-      list-style-type: none;
-      margin: 0;
-      padding: 0;
-      overflow: hidden;
-      background-color: #f3f3f3;
-      cursor: pointer;
-    }
-
-    li {
-      float: left;
-    }
-
-    li a {
-      display: block;
-      color: #666;
-      text-align: center;
-      padding: 14px 16px;
-      text-decoration: none;
-    }
-
-    li a:hover:not(.active) {
-      background-color: #ddd;
-    }
-
-    li a.active {
-      color: white;
-      background-color: #4caf50;
+      padding: 10px;
+      position: fixed;
+      width: 100%;
+      top: 0px;
+      z-index: 1001;
     }
   `,
   template(this: NavbarComponent) {
     return html`
-      <ul class="container">
-        <li><a @click=${() => this.router.go('/')}>Home</a></li>
-        <li><a @click=${() => this.router.go('/about')}>About</a></li>
+      <div class="container bg context flex">
+        <app-button
+          @click=${() => this.router.go('/')}
+          text="Home"
+        ></app-button>
+        <app-button
+          @click=${() => this.router.go('/about')}
+          text="About"
+        ></app-button>
         <span class="spacer"></span>
-        <li><a @click=${this.onIncrement}>Increment</a></li>
-        <li><a @click=${this.onDecrement}>Decrement</a></li>
-        <li><a>${this.counter}</a></li>
-      </ul>
+        <app-button text="DOCUMENTATION"></app-button>
+        <app-button text="RELEASE NOTES"></app-button>
+        <app-button text="API REFERENCE"></app-button>
+        <app-button text="GITHUB"></app-button>
+      </div>
     `;
   }
 })
