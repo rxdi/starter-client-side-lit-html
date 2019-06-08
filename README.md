@@ -861,8 +861,10 @@ RouterModule.forChild([
 
 #### Router Guards
 
+Defining Guard
+
  ```typescript
-import { Injectable } from '@rxdi/core';
+import { Injectable, OnInit } from '@rxdi/core';
 import { Observable } from 'rxjs';
 import {
   CanActivateContext,
@@ -870,18 +872,17 @@ import {
   CanActivateResolver,
   CanActivateRedirect
 } from '@rxdi/router';
- @Injectable()
-export class LoggedInGuard implements CanActivateResolver {
+
+@Injectable()
+export class LoggedInGuard implements CanActivateResolver, OnInit {
+
   OnInit() {}
-   canActivate(
+
+  canActivate(
     context: CanActivateContext,
     commands: CanActivateCommands
-  ):
-    | CanActivateRedirect
-    | boolean
-    | Promise<boolean>
-    | Observable<boolean>
-    | void {
+  ): CanActivateRedirect | boolean | Promise<boolean> | Observable<boolean> | void {
+    // return commands.redirect('/')
     // return false | true;
     // return new Promise((r) => r(true | false));
     // return new Observable((o) => {
@@ -889,14 +890,32 @@ export class LoggedInGuard implements CanActivateResolver {
     //     o.complete();
     // });
     // throw new Error('error');
+    // If everything is cool we can leave VOID
+
+    
   }
 }
 ```
 
- Guards can be defined inside `RouterModule`
+#### Using guard
+
+Guards can be defined inside `RouterModule`
 When particular route resolver is triggered you will stop in this `Guard` before component is resolved
 
- Njoy!	Njoy!
+```typescript
+RouterModule.forRoot<Components>([
+  {
+    path: '/',
+    component: 'home-component'
+  },
+  {
+    path: '/about',
+    component: 'about-component',
+    children: () => import('./about/about.module'),
+    canActivate: LoggedInGuard
+  },
+])
+```
 
 Njoy!
 
