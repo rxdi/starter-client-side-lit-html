@@ -9,6 +9,7 @@ export const template = function(this: NavbarComponent) {
         @click=${() => this.router.go('/')}
         class="pointer flex items-center flex-shrink-0 text-white mr-6"
       >
+      <hamburger-component type=""></hamburger-component>
         <img
           class="pointer"
           style="width: 45px;"
