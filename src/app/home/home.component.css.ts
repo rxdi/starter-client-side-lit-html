@@ -2,15 +2,19 @@ import { css } from '@rxdi/lit-html';
 
 export const style = css`
   .view {
-    margin-top: 100px;
+    margin: 140px auto;
+  }
+  .content {
+    width: 940px;
+    text-align: center;
   }
   .ide {
     max-width: 1400px;
     margin: 60px auto;
     margin-top: 0px;
+    padding: 50px;
   }
   .container {
-    max-width: 960px;
     margin: 60px auto;
     margin-bottom: 0px;
   }
@@ -50,4 +54,5 @@ export const style = css`
     font-size: 2em;
     font-weight: bold;
   }
+
 `;

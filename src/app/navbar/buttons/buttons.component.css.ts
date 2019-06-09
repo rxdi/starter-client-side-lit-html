@@ -1,5 +1,4 @@
 import { css } from '@rxdi/lit-html';
-import { globalCSS } from '../../../styles';
 
 export const style = css`
   .container {

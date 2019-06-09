@@ -8,6 +8,7 @@ import { Components } from './shared/components';
 import { State } from './app.state';
 import { NavbarComponent } from './navbar/navbar.component';
 import { FooterComponent } from './footer/footer.component';
+import { SharedModule } from './shared/shared.module';
 
 @Module({
   components: [
@@ -37,7 +38,8 @@ import { FooterComponent } from './footer/footer.component';
         action: () => import('./not-found/not-found.component')
       }
       //   { path: '/users/:user', component: 'x-user-profile' },
-    ], { log: true })
+    ], { log: true }),
+    SharedModule,
   ],
   bootstrap: [AppComponent],
   providers: [State],

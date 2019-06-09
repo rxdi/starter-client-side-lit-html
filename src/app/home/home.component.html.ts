@@ -17,8 +17,10 @@ const highlightedStyle = {
 
 export const template = function(this: HomeComponent) {
   return html`
+    <inject-tailwind></inject-tailwind>
+    <original-style-graphql></original-style-graphql>
     <div class="view">
-      <div class="container">
+      <div class="container content">
         <h1 class="center">
           A rich framework for building applications and services with GraphQL
           and Apollo inspired by Angular
@@ -27,6 +29,7 @@ export const template = function(this: HomeComponent) {
           <!-- <h2>Start with a simple CLI command</h2> -->
 
           <img
+            style="margin: 0 auto;"
             src="https://raw.githubusercontent.com/Stradivario/gapi-cli-docs/master/src/assets/images/cli-logo.png"
           />
         </div>
@@ -42,12 +45,7 @@ export const template = function(this: HomeComponent) {
         style=${styleMap(this.showIFrame ? hiddenStyle : highlightedStyle)}
         class="center"
       >
-        <div class="lds-ellipsis">
-          <div></div>
-          <div></div>
-          <div></div>
-          <div></div>
-        </div>
+      <spinner-default></spinner-default>
       </div>
       <div class="ide">
         <div>
@@ -64,106 +62,180 @@ export const template = function(this: HomeComponent) {
           </iframe>
         </div>
       </div>
+    </div>
 
-      <div class="container">
-        <h3 class="center" style="margin-top: 60px">
-          Graphql server enables developers to focus on writing reusable
-          application logic instead of spending time building infrastructure.
-          <br />
-          <br />
-          Created to provide complex backend scalable applications with minimum
-          effort.
-        </h3>
-      </div>
-      <div class="container">
-        <div class="flex">
-          <div style="margin: 0 auto;" class="box content">
-            <div style="margin: 0 auto;text-align: center">
-              <h2 style="margin-top: 5px;">Integrates with your</h2>
-              <img
-                style="width: 190px;"
-                src="https://graphql-modules.com/img/home/companies/apollo-logo.png"
-              />
-            </div>
-            <p style="text-align: justify">
-              GraphQL Modules is a set of extra tools, structures and guidelines
-              around the amazing Apollo Server 2.0. You’ll see how effective
-              those tools are once you’ll start growing and scaling your GraphQL
-              server.
-            </p>
-          </div>
-          <div style="margin: 0 auto;" class="box content">
-            <div style="margin: 0 auto;text-align: center">
-              <h2 style="margin-top: 5px;">Build with</h2>
-              <img
-                style="width: 100px;"
-                src="https://hapijs.com/public/img/logo.svg"
-              />
-            </div>
-            <p style="text-align: justify">
-              GraphQL Modules is a set of extra tools, structures and guidelines
-              around the amazing Apollo Server 2.0. You’ll see how effective
-              those tools are once you’ll start growing and scaling your GraphQL
-              server.
-            </p>
-          </div>
-        </div>
-      </div>
-      <div class="container">
-        <div class="flex">
-          <div style="margin: 0 auto;width: 160px;" class="box content">
-            <div style="margin: 0 auto;text-align: center">
-              <h2 style="margin-top: 5px;">Integrates with your</h2>
-            </div>
-            <p style="text-align: justify">
-              Gives you true flexibility by allowing use of any other libraries
-              thanks to modular architecture.
-            </p>
-          </div>
-          <div style="margin: 0 auto;width: 160px;" class="box content">
-            <div style="margin: 0 auto;text-align: center">
-              <h2 style="margin-top: 5px;">Build with</h2>
-            </div>
-            <p style="text-align: justify">
-              An adaptable ecosystem that is a fully-fledged backbone for all
-              kinds of server-side applications.
-            </p>
-          </div>
-          <div style="margin: 0 auto;width: 160px;" class="box content">
-            <div style="margin: 0 auto;text-align: center">
-              <h2 style="margin-top: 5px;">Build with</h2>
-            </div>
-            <p style="text-align: justify">
-              Takes advantage of latest JavaScript features, bringing design
-              patterns and mature solutions to node.js world.
-            </p>
-          </div>
-        </div>
-      </div>
-
-      <h1 style="text-align: center">Prepared for the fast flight ?</h1>
-      <div class="plane"></div>
-      <div class="container center content">
-        <h2>Need Help?</h2>
-        <h3>We've Got You Covered!</h3>
-        <p>
-          Check out our
-          <span
-            class="pointer"
-            style="color: #b6a441"
-            routerLink="/documentation/introduction"
-            >docs</span
-          >, open an issue on our
-          <a
-            style="color: #b6a441"
-            target="_blank"
-            href="https://github.com/Stradivario/gapi-core"
-            >GitHub</a
+    <div class="container my-12 mx-auto px-4 md:px-12">
+      <div class="flex flex-wrap -mx-1 lg:-mx-4">
+        <!-- Column -->
+        <div class="my-1 px-1 w-full md:w-1/2 lg:my-4 lg:px-4 lg:w-1/3">
+          <!-- Article -->
+          <article
+            style="background-color: #27798a;"
+            class="overflow-hidden rounded-lg shadow-lg"
           >
-          repo or simply contact us directly! We would love to help you with
-          Apollo, GraphQL and anything in between! We can help you get started
-          or scale GraphQL across your whole organization.
-        </p>
+            <a href="#">
+              <img
+                alt="Placeholder"
+                class="block h-auto w-full"
+                src="https://picsum.photos/600/400/?random"
+              />
+            </a>
+
+            <header
+              class="flex items-center justify-between leading-tight p-2 md:p-4"
+            >
+              <h1 class="text-lg">
+                <a class="no-underline hover:underline text-white" href="#">
+                  Article Title
+                </a>
+              </h1>
+              <p class="text-grey-darker text-sm">
+                14/4/19
+              </p>
+            </header>
+
+            <footer
+              class="flex items-center justify-between leading-none p-2 md:p-4"
+            >
+              <a
+                class="flex items-center no-underline hover:underline text-white"
+                href="#"
+              >
+                <img
+                  alt="Placeholder"
+                  class="block rounded-full"
+                  src="https://picsum.photos/32/32/?random"
+                />
+                <p class="ml-2 text-sm">
+                  Author Name
+                </p>
+              </a>
+              <a
+                class="no-underline text-grey-darker hover:text-red-dark"
+                href="#"
+              >
+                <span class="hidden">Like</span>
+                <i class="fa fa-heart"></i>
+              </a>
+            </footer>
+          </article>
+          <!-- END Article -->
+        </div>
+        <!-- END Column -->
+
+        <!-- Column -->
+        <div class="my-1 px-1 w-full md:w-1/2 lg:my-4 lg:px-4 lg:w-1/3">
+          <!-- Article -->
+          <article
+            style="background-color: cadetblue;"
+            class="overflow-hidden rounded-lg shadow-lg"
+          >
+            <a href="#">
+              <img
+                alt="Placeholder"
+                class="block h-auto w-full"
+                src="https://picsum.photos/600/400/?random"
+              />
+            </a>
+
+            <header
+              class="flex items-center justify-between leading-tight p-2 md:p-4"
+            >
+              <h1 class="text-lg">
+                <a class="no-underline hover:underline text-white" href="#">
+                  Article Title
+                </a>
+              </h1>
+              <p class="text-grey-darker text-sm">
+                14/4/19
+              </p>
+            </header>
+
+            <footer
+              class="flex items-center justify-between leading-none p-2 md:p-4"
+            >
+              <a
+                class="flex items-center no-underline hover:underline text-white"
+                href="#"
+              >
+                <img
+                  alt="Placeholder"
+                  class="block rounded-full"
+                  src="https://picsum.photos/32/32/?random"
+                />
+                <p class="ml-2 text-sm">
+                  Author Name
+                </p>
+              </a>
+              <a
+                class="no-underline text-grey-darker hover:text-red-dark"
+                href="#"
+              >
+                <span class="hidden">Like</span>
+                <i class="fa fa-heart"></i>
+              </a>
+            </footer>
+          </article>
+          <!-- END Article -->
+        </div>
+        <!-- END Column -->
+
+        <!-- Column -->
+        <div class="my-1 px-1 w-full md:w-1/2 lg:my-4 lg:px-4 lg:w-1/3">
+          <!-- Article -->
+          <article
+            style="background-color: cadetblue;"
+            class="overflow-hidden rounded-lg shadow-lg"
+          >
+            <a href="#">
+              <img
+                alt="Placeholder"
+                class="block h-auto w-full"
+                src="https://picsum.photos/600/400/?random"
+              />
+            </a>
+
+            <header
+              class="flex items-center justify-between leading-tight p-2 md:p-4"
+            >
+              <h1 class="text-lg">
+                <a class="no-underline hover:underline text-white" href="#">
+                  Article Title
+                </a>
+              </h1>
+              <p class="text-grey-darker text-sm">
+                14/4/19
+              </p>
+            </header>
+
+            <footer
+              class="flex items-center justify-between leading-none p-2 md:p-4"
+            >
+              <a
+                class="flex items-center no-underline hover:underline text-white"
+                href="#"
+              >
+                <img
+                  alt="Placeholder"
+                  class="block rounded-full"
+                  src="https://picsum.photos/32/32/?random"
+                />
+                <p class="ml-2 text-sm">
+                  Author Name
+                </p>
+              </a>
+              <a
+                class="no-underline text-grey-darker hover:text-red-dark"
+                href="#"
+              >
+                <span class="hidden">Like</span>
+                <i class="fa fa-heart"></i>
+              </a>
+            </footer>
+          </article>
+          <!-- END Article -->
+        </div>
+        <!-- END Column -->
       </div>
     </div>
   `;

@@ -4,7 +4,7 @@
   "main": "src/main.ts",
   "scripts": {
     "start": "parcel ./src/index.html",
-    "build": "parcel build ./src/index.html",
+    "build": "parcel build ./src/index.html ",
     "lint": "npx tslint -c tslint.json 'src/**/*.{ts,tsx}'",
     "test": "jest",
     "deploy": "firebase deploy",
