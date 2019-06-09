@@ -5,7 +5,6 @@ export const style = css`
     margin: 140px auto;
   }
   .content {
-    width: 940px;
     text-align: center;
   }
   .ide {

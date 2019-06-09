@@ -20,7 +20,10 @@ export const template = function(this: NavbarComponent) {
           >Graphql Server</span
         >
       </div>
-      <div class="block lg:hidden">
+      <div
+        @click=${() => (this.showSanwich = !this.showSanwich)}
+        class="block lg:hidden"
+      >
         <button
           class="flex items-center px-3 py-2 border rounded text-teal-200 border-teal-400 hover:text-white hover:border-white"
         >
@@ -35,48 +38,53 @@ export const template = function(this: NavbarComponent) {
         </button>
       </div>
       <span class="spacer"></span>
-      <div class="w-full block flex-grow lg:flex lg:items-center lg:w-auto">
-        <div class="text-sm lg:flex-grow">
-          <a
-            href="#"
-            class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4"
-          >
-            <app-button text="DOCUMENTATION"></app-button>
-          </a>
-          <a
-            href="#"
-            class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4"
-          >
-            <app-button text="RELEASE NOTES"></app-button>
-          </a>
-          <a
-            href="#"
-            class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white"
-          >
-            <app-button text="API REFERENCE"></app-button>
-          </a>
-          <a
-            href="#"
-            class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white"
-          >
-            <app-button text="GITHUB"></app-button>
-          </a>
-          <a
-            href="#"
-            class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white"
-          >
-            <app-button
-              text="ABOUT"
-            ></app-button>
-          </a>
-        </div>
-        <div>
-          <app-button
-            @click=${() => this.router.go('/about')}
-            text="DOWNLOAD"
-          ></app-button>
-        </div>
-      </div>
+
+      ${this.showSanwich || this.widthHeight.width > 1010
+        ? html`
+            <div
+              class="w-full block flex-grow lg:flex lg:items-center lg:w-auto"
+            >
+              <div class="text-sm lg:flex-grow">
+                <a
+                  href="#"
+                  class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4"
+                >
+                  <app-button text="DOCUMENTATION"></app-button>
+                </a>
+                <a
+                  href="#"
+                  class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4"
+                >
+                  <app-button text="RELEASE NOTES"></app-button>
+                </a>
+                <a
+                  href="#"
+                  class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white"
+                >
+                  <app-button text="API REFERENCE"></app-button>
+                </a>
+                <a
+                  href="#"
+                  class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white"
+                >
+                  <app-button text="GITHUB"></app-button>
+                </a>
+                <a
+                  href="#"
+                  class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white"
+                >
+                  <app-button text="ABOUT"></app-button>
+                </a>
+              </div>
+              <div>
+                <app-button
+                  @click=${() => this.router.go('/about')}
+                  text="DOWNLOAD"
+                ></app-button>
+              </div>
+            </div>
+          `
+        : html``}
     </nav>
   `;
 };

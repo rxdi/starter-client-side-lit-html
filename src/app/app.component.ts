@@ -1,5 +1,5 @@
 import { Inject } from '@rxdi/core';
-import { html, render, customElement, css } from '@rxdi/lit-html';
+import { html, render, customElement } from '@rxdi/lit-html';
 import { State } from './app.state';
 
 @customElement('app-component')
