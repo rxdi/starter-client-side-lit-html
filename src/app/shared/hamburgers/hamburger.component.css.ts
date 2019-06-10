@@ -25,7 +25,7 @@ export const style = css`
   .hamburger.is-active .hamburger-inner,
   .hamburger.is-active .hamburger-inner::before,
   .hamburger.is-active .hamburger-inner::after {
-    background-color: #FFF;
+    background-color: #fff;
   }
 
   .hamburger-box {
@@ -45,7 +45,7 @@ export const style = css`
   .hamburger-inner::after {
     width: 40px;
     height: 4px;
-    background-color: #FFF;
+    background-color: #fff;
     border-radius: 4px;
     position: absolute;
     transition-property: transform;

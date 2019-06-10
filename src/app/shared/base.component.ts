@@ -20,17 +20,23 @@ export class BaseComponent extends LitElement {
 
   query<T = IQuery>(options: ImportQueryMixin) {
     options.query = importQuery(options.query);
-    return from((this.graphql.query.bind(this.graphql)(options) as any)) as Observable<{ data: T }>;
+    return from(this.graphql.query.bind(this.graphql)(
+      options
+    ) as any) as Observable<{ data: T }>;
   }
 
   mutate<T = IMutation>(options: ImportMutationMixin) {
     options.mutation = importQuery(options.mutation);
-    return from((this.graphql.mutate.bind(this.graphql)(options) as any)) as Observable<{ data: T }>;
+    return from(this.graphql.mutate.bind(this.graphql)(
+      options
+    ) as any) as Observable<{ data: T }>;
   }
 
   subscribe<T = ISubscription>(options: ImportSubscriptionMixin) {
     options.query = importQuery(options.query);
-    return from((this.graphql.subscribe.bind(this.graphql)(options) as any)) as Observable<{ data: T }>;
+    return from(this.graphql.subscribe.bind(this.graphql)(
+      options
+    ) as any) as Observable<{ data: T }>;
   }
 }
 

@@ -1,4 +1,3 @@
-
 import { css } from '@rxdi/lit-html';
 export const style = css`
   .filename {

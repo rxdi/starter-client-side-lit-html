@@ -45,7 +45,7 @@ export const template = function(this: HomeComponent) {
         style=${styleMap(this.showIFrame ? hiddenStyle : highlightedStyle)}
         class="center"
       >
-      <spinner-default></spinner-default>
+        <spinner-default></spinner-default>
       </div>
       <div class="ide">
         <div>

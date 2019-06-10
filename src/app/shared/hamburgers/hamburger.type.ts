@@ -11,7 +11,6 @@ export const HambuergerTypes = strEnum([
   '3dy',
   '3dy-r',
   '3dxy',
-  ,
   '3dxy-r',
   'arrow',
   'arrow-r',

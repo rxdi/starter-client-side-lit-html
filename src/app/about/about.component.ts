@@ -1,21 +1,14 @@
-import { html, customElement, async, LitElement } from '@rxdi/lit-html';
+import { html, Component, async, LitElement } from '@rxdi/lit-html';
 import { timer } from 'rxjs';
 import { map } from 'rxjs/operators';
-import {
-  OnBeforeEnter,
-  OnAfterEnter,
-  OnAfterLeave,
-  OnBeforeLeave,
-  Router
-} from '@rxdi/router';
-import { OnBefore, OnDestroy } from '@rxdi/lit-html';
-interface Hooks extends
-OnDestroy,
-OnBeforeEnter,
-OnAfterEnter,
-OnAfterLeave,
-OnBeforeLeave {}
-@customElement('about-component', {
+import { OnDestroy } from '@rxdi/lit-html';
+import { OnInit } from '@rxdi/core';
+
+/**
+ * @customElement about-component
+ */
+@Component({
+  selector: 'about-component',
   template(this: AboutComponent) {
     return html`
       <header>
@@ -31,34 +24,13 @@ OnBeforeLeave {}
     `;
   }
 })
-export class AboutComponent extends LitElement implements Hooks {
+export class AboutComponent extends LitElement implements OnDestroy, OnInit {
   private timer = timer(1, 1000).pipe(map(v => v));
-  @Router() private router: Router;
-
-  onBeforeEnter() {
-    this.router;
-    debugger;
-  }
-  onAfterEnter() {
-    this.router;
-    debugger;
-  }
-  onBeforeLeave() {
-    this.router;
-    debugger;
-  }
-  onAfterLeave() {
-    this.router;
-    debugger;
-  }
-
   OnInit() {
-    this.router;
     console.log('About component init');
   }
 
   OnDestroy() {
-    this.router;
     console.log('About component destroyed');
   }
 }

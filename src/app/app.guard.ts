@@ -8,8 +8,7 @@ import {
 } from '@rxdi/router';
 
 @Injectable()
-export class  LoggedInGuard implements CanActivateResolver, OnInit {
-
+export class LoggedInGuard implements CanActivateResolver, OnInit {
   OnInit() {}
 
   canActivate(
@@ -25,6 +24,5 @@ export class  LoggedInGuard implements CanActivateResolver, OnInit {
     // });
     // throw new Error('error');
     // If everything is cool we can leave VOID
-
   }
 }

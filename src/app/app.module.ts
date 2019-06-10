@@ -12,11 +12,7 @@ import { SharedModule } from './shared/shared.module';
 import { CoreModule } from './core/core.module';
 
 @Module({
-  components: [
-    NavbarComponent,
-    HomeComponent,
-    FooterComponent
-  ],
+  components: [NavbarComponent, HomeComponent, FooterComponent],
   imports: [
     GraphqlModule.forRoot(
       {
@@ -24,26 +20,33 @@ import { CoreModule } from './core/core.module';
       },
       DOCUMENTS
     ),
-    RouterModule.forRoot<Components>([
-      {
-        path: '/',
-        component: HomeComponent
-      },
-      {
-        path: '/about',
-        children: () => import('./about/about.module')
-      },
-      {
-        path: '(.*)',
-        component: 'not-found-component',
-        action: () => import('./not-found/not-found.component')
-      }
-      //   { path: '/users/:user', component: 'x-user-profile' },
-    ], { log: true }),
+    RouterModule.forRoot<Components>(
+      [
+        {
+          path: '/',
+          component: HomeComponent
+        },
+        {
+          path: '/about',
+          children: () => import('./about/about.module')
+        },
+        {
+          path: '/ui-components',
+          children: () => import('./ui-components/ui-components.module')
+        },
+        {
+          path: '(.*)',
+          component: 'not-found-component',
+          action: () => import('./not-found/not-found.component')
+        }
+        //   { path: '/users/:user', component: 'x-user-profile' },
+      ],
+      { log: true }
+    ),
     SharedModule,
     CoreModule
   ],
   bootstrap: [AppComponent],
-  providers: [State],
+  providers: [State]
 })
 export class AppModule {}

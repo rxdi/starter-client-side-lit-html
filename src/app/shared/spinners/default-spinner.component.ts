@@ -1,6 +1,10 @@
-import { customElement, css, html } from '@rxdi/lit-html';
+import { Component, css, html } from '@rxdi/lit-html';
 
-@customElement('spinner-default', {
+/**
+ * @customElement spinner-default
+ */
+@Component({
+  selector: 'spinner-default',
   style: css`
     .lds-ellipsis {
       display: inline-block;

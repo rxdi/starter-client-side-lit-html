@@ -1,6 +1,10 @@
-import { html, css, customElement } from '@rxdi/lit-html';
+import { html, css, Component } from '@rxdi/lit-html';
 
-@customElement('footer-component', {
+/**
+ * @customElement footer-component
+ */
+@Component({
+  selector: 'footer-component',
   useShadow: true,
   style: css`
     .footer {
