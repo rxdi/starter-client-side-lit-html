@@ -1,7 +1,11 @@
 import { Router } from '@rxdi/router';
-import { html, property, eventOptions, css, LitElement, customElement } from '@rxdi/lit-html';
+import { html, property, eventOptions, css, LitElement, Component } from '@rxdi/lit-html';
 
-@customElement('navbar-component', {
+/**
+ * @customElement navbar-component
+ */
+@Component({
+  selector: 'navbar-component',
   style: css`
     .spacer {
       flex: 1 3 auto;

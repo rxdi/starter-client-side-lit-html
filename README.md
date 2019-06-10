@@ -254,32 +254,30 @@ export class AppModule {}
 
 
 #### App Component
-src/app/app.component.tsx
+src/app/app.component.ts
 
 ```typescript
 import { Inject } from '@rxdi/core';
-import { html, render, customElement } from '@rxdi/lit-html';
+import { html, Component } from '@rxdi/lit-html';
 import { State } from './app.state';
 
-import '@rxdi/router';
-import './footer/footer.component';
-import './navbar/navbar.component';
-
-@customElement('app-component')
+/**
+ * @customElement app-component
+ */
+@Component({
+  selector: 'app-component',
+  template() {
+    return html`
+      <router-outlet>
+        <navbar-component slot="header"></navbar-component>
+        <footer-component slot="footer"></footer-component>
+      </router-outlet>
+    `;
+  },
+  container: document.body
+})
 export class AppComponent extends HTMLElement {
   @Inject(State) private state: State;
-
-  OnInit() {
-    render(
-      html`
-        <router-outlet>
-          <navbar-component slot="header"></navbar-component>
-          <footer-component slot="footer"></footer-component>
-        </router-outlet>
-      `,
-      document.body
-    );
-  }
 }
 ```
 
@@ -287,9 +285,13 @@ export class AppComponent extends HTMLElement {
 #### Navbar component
 ```typescript
 import { Router } from '@rxdi/router';
-import { html, property, eventOptions, css, LitElement, customElement } from '@rxdi/lit-html';
+import { html, property, eventOptions, css, LitElement, Component } from '@rxdi/lit-html';
 
-@customElement('navbar-component', {
+/**
+ * @customElement navbar-component
+ */
+@Component({
+  selector: 'navbar-component',
   style: css`
     .spacer {
       flex: 1 3 auto;
@@ -355,57 +357,66 @@ export class NavbarComponent extends LitElement {
     this.counter--;
   }
 }
-
 ```
 
 
 #### About Component
-src/app/app.component.tsx
+src/app/app.component.ts
 
 ```typescript
-import { async, html, customElement } from '@rxdi/lit-html';
+import { html, Component, async, LitElement } from '@rxdi/lit-html';
 import { timer } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-@customElement('about-component', {
+/**
+ * @customElement about-component
+ */
+@Component({
+  selector: 'about-component',
   template(this: AboutComponent) {
     return html`
-    <header>
-      <h1>About</h1>
-    </header>
-     ${async(this.timer)}
-    <p>
-    <img src="https://www.w3schools.com/html/pic_trulli.jpg" alt="Italian Trulli">
-    </p>
+      <header>
+        <h1>About</h1>
+      </header>
+      ${async(this.timer)}
+      <p>
+        <img
+          src="https://www.w3schools.com/html/pic_trulli.jpg"
+          alt="Italian Trulli"
+        />
+      </p>
     `;
   }
 })
-export class AboutComponent extends HTMLElement {
+export class AboutComponent extends LitElement {
   private timer = timer(1, 1000).pipe(map(v => v));
-
-  OnInit() {
-    console.log('About component init');
-  }
-
-  OnDestroy() {
-    console.log('About component destroyed');
-  }
-
 }
 
 ```
 
 
 #### Home Component
-src/app/home/home.component.tsx
+src/app/home/home.component.ts
 
 ```typescript
 import { BaseComponent } from '../shared/base.component';
-import { async, customElement, OnInit, OnDestroy, OnUpdate, html } from '@rxdi/lit-html';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  OnUpdate,
+  html,
+  async
+} from '@rxdi/lit-html';
 import { timer, from } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { Observable } from 'apollo-link';
 
-@customElement('home-component', {
+/**
+ * @customElement home-component
+ */
+@Component({
+  selector: 'home-component',
   template(this: HomeComponent) {
     return html`
       <header>
@@ -416,22 +427,24 @@ import { map } from 'rxjs/operators';
         alt="Italian Trulli"
       />
       <p>
-        Server status
-        ${async(this.getServerStatus().pipe(map(res => res.status.status)))}
+        Server status ${async(this.getServerStatus)}
       </p>
-      <p>${async(timer(100, 1000).pipe(map(() => new Date())))}</p>
+      <p>${async(this.timer)}</p>
       <p>
-        Crowdsale info
-        ${async(
-          from(this.getServerStatus()).pipe(
-            map(res => JSON.stringify(res.getCrowdsaleInfo, null, 4))
-          )
-        )}
+        Crowdsale info ${async(this.getCrowdsaleInfo)}
       </p>
     `;
   }
 })
 export class HomeComponent extends BaseComponent implements OnInit, OnDestroy, OnUpdate {
+  private timer = timer(100, 1000).pipe(map(() => new Date()));
+  private getServerStatus = this.getHomeQuery().pipe(
+    map(res => res.status.status)
+  );
+  private getCrowdsaleInfo = this.getHomeQuery().pipe(
+    map(res => JSON.stringify(res.getCrowdsaleInfo, null, 4))
+  );
+
   OnInit() {
     console.log('Home component init');
   }
@@ -448,7 +461,7 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy, O
     return this.subscribe({ query: 'home.subscription.graphql' });
   }
 
-  getServerStatus() {
+  getHomeQuery() {
     return this.query({ query: 'home.query.graphql' }).pipe(
       map(res => res.data)
     );
@@ -489,10 +502,13 @@ subscription {
 #### Footer component
 
 ```typescript
+import { html, css, Component } from '@rxdi/lit-html';
 
-import { html, css, customElement } from '@rxdi/lit-html';
-
-@customElement('footer-component', {
+/**
+ * @customElement footer-component
+ */
+@Component({
+  selector: 'footer-component',
   useShadow: true,
   style: css`
     .footer {
@@ -519,9 +535,14 @@ export class FooterComponent extends HTMLElement {}
 #### Not fund component
 
 ```typescript
-import { html, customElement } from '@rxdi/lit-html';
+import { html, Component } from '@rxdi/lit-html';
 
-@customElement('not-found-component', {
+/**
+ * @customElement not-found-component
+ */
+@Component({
+  selector: 'not-found-component',
+  useShadow: true,
   template: () => html`
     <h1>Not found component!</h1>
     <p>Please check your URL.</p>
@@ -766,11 +787,16 @@ factories.forEach(factory => factory.dispatch('user-logged-in'));
 
 ```typescript
 import { InjectMany, Component } from '@rxdi/core';
-import { html, render, customElement, customElement } from '@rxdi/lit-html';
+import { html, render, Component } from '@rxdi/lit-html';
 import { FactoryToken } from './app.state';
 
-@customElement('my-element')
-export class MyComponent extends LitElement {
+/**
+ * @customElement my-web-component
+ */
+@Component({
+  selector: 'my-web-component'
+})
+export class MyWebComponent extends LitElement {
 
   @InjectMany(FactoryToken) private states: FactoryToken
 

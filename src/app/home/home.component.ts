@@ -1,9 +1,21 @@
 import { BaseComponent } from '../shared/base.component';
-import { customElement, OnInit, OnDestroy, OnUpdate, html, async } from '@rxdi/lit-html';
+import {
+  Component,
+  OnInit,
+  OnDestroy,
+  OnUpdate,
+  html,
+  async
+} from '@rxdi/lit-html';
 import { timer, from } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { Observable } from 'apollo-link';
 
-@customElement('home-component', {
+/**
+ * @customElement home-component
+ */
+@Component({
+  selector: 'home-component',
   template(this: HomeComponent) {
     return html`
       <header>
@@ -14,22 +26,24 @@ import { map } from 'rxjs/operators';
         alt="Italian Trulli"
       />
       <p>
-        Server status
-        ${async(this.getServerStatus().pipe(map(res => res.status.status)))}
+        Server status ${async(this.getServerStatus)}
       </p>
-      <p>${async(timer(100, 1000).pipe(map(() => new Date())))}</p>
+      <p>${async(this.timer)}</p>
       <p>
-        Crowdsale info
-        ${async(
-          from(this.getServerStatus()).pipe(
-            map(res => JSON.stringify(res.getCrowdsaleInfo, null, 4))
-          )
-        )}
+        Crowdsale info ${async(this.getCrowdsaleInfo)}
       </p>
     `;
   }
 })
 export class HomeComponent extends BaseComponent implements OnInit, OnDestroy, OnUpdate {
+  private timer = timer(100, 1000).pipe(map(() => new Date()));
+  private getServerStatus = this.getHomeQuery().pipe(
+    map(res => res.status.status)
+  );
+  private getCrowdsaleInfo = this.getHomeQuery().pipe(
+    map(res => JSON.stringify(res.getCrowdsaleInfo, null, 4))
+  );
+
   OnInit() {
     console.log('Home component init');
   }
@@ -46,7 +60,7 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy, O
     return this.subscribe({ query: 'home.subscription.graphql' });
   }
 
-  getServerStatus() {
+  getHomeQuery() {
     return this.query({ query: 'home.query.graphql' }).pipe(
       map(res => res.data)
     );
