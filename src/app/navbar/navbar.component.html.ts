@@ -52,7 +52,7 @@ export const template = function(this: NavbarComponent) {
               <div class="text-sm lg:flex-grow">
                 <a
                   @click=${() => this.menuOpened = false}
-                  href="#"
+                  href="/documentation"
                   class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4"
                 >
                   <app-button text="DOCUMENTATION"></app-button>

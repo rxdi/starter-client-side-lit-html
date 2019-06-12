@@ -1,12 +1,14 @@
 import { html, Component, LitElement, css } from '@rxdi/lit-html';
 import { RouteParams } from '@rxdi/router';
+import { MainView } from '../shared/styles/margin-top';
 
+/**
+ * @customElement ui-components-component
+ */
 @Component({
   selector: 'ui-components-component',
   style: css`
-    .view {
-      margin-top: 140px;
-    }
+   ${MainView}
   `,
   template(this: UiComponentsComponent) {
     return html`
@@ -38,6 +40,7 @@ import { RouteParams } from '@rxdi/router';
           </div>
         </div>
       </div>
+      <trello-component></trello-component>
     `;
   }
 })

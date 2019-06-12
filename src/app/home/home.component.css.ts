@@ -1,9 +1,8 @@
 import { css } from '@rxdi/lit-html';
+import { MainView } from '../shared/styles/margin-top';
 
 export const style = css`
-  .view {
-    margin: 140px auto;
-  }
+  ${MainView}
   .content {
     text-align: center;
   }

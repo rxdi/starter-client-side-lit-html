@@ -10,6 +10,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { FooterComponent } from './footer/footer.component';
 import { SharedModule } from './shared/shared.module';
 import { CoreModule } from './core/core.module';
+import { DocumentationModule } from './documentation/documentation.module';
 
 @Module({
   components: [NavbarComponent, HomeComponent, FooterComponent],
@@ -33,6 +34,10 @@ import { CoreModule } from './core/core.module';
         {
           path: '/ui-components',
           children: () => import('./ui-components/ui-components.module')
+        },
+        {
+          path: '/documentation',
+          children: () => import('./documentation/documentation.module')
         },
         {
           path: '(.*)',
