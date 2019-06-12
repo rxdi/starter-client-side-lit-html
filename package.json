@@ -18,6 +18,7 @@
     "@rxdi/graphql-client": "0.5.9",
     "@rxdi/lit-html": "0.5.9",
     "@rxdi/router": "0.5.9",
+    "@rxdi/ui-components": "git+https://github.com/rxdi/ui-components.git",
     "@webcomponents/webcomponentsjs": "^1.2.4"
   },
   "browserslist": [

@@ -13,6 +13,7 @@ import { State } from './app.state';
       top: 0px;
       background: #1c1f24;
       width: 100%;
+      z-index: 11;
     }
   `,
   template: () => html`

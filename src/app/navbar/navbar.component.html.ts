@@ -80,7 +80,7 @@ export const template = function(this: NavbarComponent) {
                 </a>
                 <a
                   @click=${() => this.menuOpened = false}
-                  href="/ui-components"
+                  href="/ui-components/"
                   class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white"
                 >
                   <app-button text="UI COMPONENTS"></app-button>
@@ -93,12 +93,12 @@ export const template = function(this: NavbarComponent) {
                   <app-button text="ABOUT"></app-button>
                 </a>
               </div>
-              <div class="mr-5">
+              <!-- <div class="mr-5">
                 <app-button
                   @click=${() => this.router.go('/about')}
                   text="DOWNLOAD"
                 ></app-button>
-              </div>
+              </div> -->
             </div>
           `
         : html``}

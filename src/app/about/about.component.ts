@@ -3,6 +3,7 @@ import { timer } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { OnDestroy } from '@rxdi/lit-html';
 import { OnInit } from '@rxdi/core';
+import { RouteParams, Router } from '@rxdi/router';
 
 /**
  * @customElement about-component
@@ -26,7 +27,12 @@ import { OnInit } from '@rxdi/core';
 })
 export class AboutComponent extends LitElement implements OnDestroy, OnInit {
   private timer = timer(1, 1000).pipe(map(v => v));
+  @RouteParams() private params;
+  @Router() private router: Router;
   OnInit() {
+    this.params;
+    this.router;
+    debugger;
     console.log('About component init');
   }
 

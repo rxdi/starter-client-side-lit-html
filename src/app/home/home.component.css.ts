@@ -53,4 +53,8 @@ export const style = css`
     font-size: 2em;
     font-weight: bold;
   }
+
+  .pointer {
+    cursor: pointer;
+  }
 `;

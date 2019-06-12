@@ -2,9 +2,6 @@ import { Component, LitElement, html, property } from '@rxdi/lit-html';
 import { style } from './hamburger.component.css';
 import { HambuergerTypes } from './hamburger.type';
 
-/**
- * @customElement hamburger-component
- */
 @Component({
   selector: 'hamburger-component',
   style,

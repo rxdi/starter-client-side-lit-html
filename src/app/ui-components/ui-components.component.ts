@@ -1,4 +1,5 @@
 import { html, Component, LitElement, css } from '@rxdi/lit-html';
+import { RouteParams } from '@rxdi/router';
 
 @Component({
   selector: 'ui-components-component',
@@ -23,7 +24,7 @@ import { html, Component, LitElement, css } from '@rxdi/lit-html';
             <div
               class="uppercase tracking-wide text-sm text-indigo-600 font-bold"
             >
-              Marketing
+              ${this.params.itemId}
             </div>
             <a
               href="#"
@@ -40,4 +41,6 @@ import { html, Component, LitElement, css } from '@rxdi/lit-html';
     `;
   }
 })
-export class UiComponentsComponent extends LitElement {}
+export class UiComponentsComponent extends LitElement {
+  @RouteParams() private params: { itemId: string };
+}

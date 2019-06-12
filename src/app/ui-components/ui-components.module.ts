@@ -1,6 +1,7 @@
 import { Module } from '@rxdi/core';
 import { RouterModule } from '@rxdi/router';
 import { UiComponentsComponent } from './ui-components.component';
+import { DetailsComponent } from './details/details.component';
 
 @Module({
   imports: [
@@ -8,9 +9,13 @@ import { UiComponentsComponent } from './ui-components.component';
       {
         path: '/',
         component: UiComponentsComponent
+      },
+      {
+        path: '/:itemId',
+        component: DetailsComponent
       }
     ])
   ],
-  components: [UiComponentsComponent],
+  components: [UiComponentsComponent, DetailsComponent],
 })
 export class UiComponentsModule {}
