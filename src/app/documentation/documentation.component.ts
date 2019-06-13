@@ -19,20 +19,23 @@ import { MainView } from '../shared/styles/margin-top';
   style: MainView,
   template(this: DocumentationComponent) {
     return html`
-      <header>
-        <h1>${this.name}</h1>
-      </header>
-      ${async(this.timer)} ${JSON.stringify(this.params)}
-      <div>
-        1
-      </div>
-      <div>
-        2
+      <div class="view">
+        <header>
+          <h1>${this.name}</h1>
+        </header>
+        ${async(this.timer)} ${JSON.stringify(this.params)}
+        <div>
+          1
+        </div>
+        <div>
+          2
+        </div>
       </div>
     `;
   }
 })
-export class DocumentationComponent extends LitElement implements OnInit, OnDestroy, OnUpdate {
+export class DocumentationComponent extends LitElement
+  implements OnInit, OnDestroy, OnUpdate {
   @property() private name: string;
 
   @RouteParams() private params: any;

@@ -21,7 +21,7 @@ import { DocumentationModule } from './documentation/documentation.module';
       },
       DOCUMENTS
     ),
-    RouterModule.forRoot<Components>(
+    RouterModule.forRoot<string>(
       [
         {
           path: '/',

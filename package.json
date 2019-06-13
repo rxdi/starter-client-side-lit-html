@@ -15,10 +15,10 @@
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
     "@gapi/core": "^1.7.2",
-    "@rxdi/core": "0.5.15",
-    "@rxdi/graphql-client": "0.5.15",
-    "@rxdi/lit-html": "0.5.15",
-    "@rxdi/router": "0.5.15",
+    "@rxdi/core": "0.5.16",
+    "@rxdi/graphql-client": "0.5.16",
+    "@rxdi/lit-html": "0.5.16",
+    "@rxdi/router": "0.5.16",
     "@rxdi/ui-components": "git+https://github.com/rxdi/ui-components.git",
     "@webcomponents/webcomponentsjs": "^1.2.4"
   },

@@ -1,5 +1,6 @@
 import { NavbarComponent } from './navbar.component';
 import { html, svg } from '@rxdi/lit-html';
+import '@rxdi/ui-components';
 
 export const template = function(this: NavbarComponent) {
   return html`
@@ -51,15 +52,19 @@ export const template = function(this: NavbarComponent) {
             >
               <div class="text-sm lg:flex-grow">
                 <a
-                  @click=${() => this.menuOpened = false}
-                  href="/documentation"
+                @click=${() => {
+                    this.menuOpened = false;
+                    this.router.go('/documentation/');
+                  }}
                   class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4"
                 >
                   <app-button text="DOCUMENTATION"></app-button>
                 </a>
                 <a
-                  @click=${() => this.menuOpened = false}
-                  href="#"
+                @click=${() => {
+                    this.menuOpened = false;
+                    this.router.go('/release-notes/');
+                  }}
                   class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4"
                 >
                   <app-button text="RELEASE NOTES"></app-button>
@@ -72,22 +77,28 @@ export const template = function(this: NavbarComponent) {
                   <app-button text="API REFERENCE"></app-button>
                 </a>
                 <a
-                  @click=${() => this.menuOpened = false}
-                  href="/about"
+                @click=${() => {
+                    this.menuOpened = false;
+                    this.router.go('/about/');
+                  }}
                   class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white"
                 >
                   <app-button text="GITHUB"></app-button>
                 </a>
                 <a
-                  @click=${() => this.menuOpened = false}
-                  href="/ui-components/"
+                  @click=${() => {
+                    this.menuOpened = false;
+                    this.router.go('/ui-components/');
+                  }}
                   class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white"
                 >
                   <app-button text="UI COMPONENTS"></app-button>
                 </a>
                 <a
-                  @click=${() => this.menuOpened = false}
-                  href="#"
+                @click=${() => {
+                    this.menuOpened = false;
+                    this.router.go('/about/');
+                  }}
                   class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white"
                 >
                   <app-button text="ABOUT"></app-button>

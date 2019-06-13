@@ -1,6 +1,6 @@
 import {
   html,
-  customElement,
+  Component,
   async,
   LitElement,
   property,
@@ -13,7 +13,8 @@ import { timer } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { RouteParams } from '@rxdi/router';
 
-@customElement('details-component', {
+@Component({
+  selector: 'documentation-details-component',
   template(this: DetailsComponent) {
     return html`
       <header>
