@@ -4,6 +4,7 @@ import { AppModule } from './app/app.module';
 window.addEventListener('load', () => {
   Bootstrap(AppModule, {
     init: false,
+    strict: true
   }).subscribe(() => console.log('App Started!'), err => console.error(err));
 });
 

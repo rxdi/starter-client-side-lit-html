@@ -25,7 +25,7 @@ import { RouteParams } from '@rxdi/router';
         1
       </div>
       <div>
-        2
+        2dddd
       </div>
     `;
   }
