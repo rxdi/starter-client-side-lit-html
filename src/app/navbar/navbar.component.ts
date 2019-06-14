@@ -17,7 +17,7 @@ import { Subscription } from 'rxjs';
 })
 export class NavbarComponent extends LitElement {
   @property() counter = 0;
-  @property() menuOpened = true;
+  @property() menuOpened = false;
 
   @property() widthHeight: { width: number; height: number };
 
