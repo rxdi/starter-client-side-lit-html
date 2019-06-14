@@ -3,6 +3,7 @@ import { RouterModule } from '@rxdi/router';
 import { UiComponentsComponent } from './ui-components.component';
 import { DetailsComponent } from './details/details.component';
 import { TrelloComponent } from './trello/trello.component';
+import { TocComponent } from './details/toc/toc.component';
 
 @Module({
   imports: [
@@ -17,6 +18,6 @@ import { TrelloComponent } from './trello/trello.component';
       }
     ])
   ],
-  components: [UiComponentsComponent, DetailsComponent, TrelloComponent],
+  components: [UiComponentsComponent, DetailsComponent, TrelloComponent, TocComponent],
 })
 export class UiComponentsModule {}

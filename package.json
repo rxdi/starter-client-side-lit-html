@@ -21,8 +21,7 @@
     "@rxdi/router": "0.5.20",
     "@rxdi/ui-components": "git+https://github.com/rxdi/ui-components.git",
     "@webcomponents/webcomponentsjs": "^1.2.4",
-    "marked": "^0.6.2",
-    "src": "^1.1.2"
+    "marked": "^0.6.2"
   },
   "browserslist": [
     "last 1 chrome versions"

@@ -1,6 +1,7 @@
 import { css } from '@rxdi/lit-html';
 
 export const style = css`
+
   .content h1 {
     font-size: 30px;
     font-weight: bold;
