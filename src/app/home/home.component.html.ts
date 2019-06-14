@@ -70,7 +70,7 @@ export const template = function(this: HomeComponent) {
       <div class="flex flex-wrap -mx-1 lg:-mx-4">
         <!-- Column -->
           <div
-          @click=${() => this.router.go('/ui-components/123')}
+          @click=${() => this.router.go('/ui-components/rxdi/starter-client-lit-html')}
             class="pointer my-1 px-1 w-full md:w-1/2 lg:my-4 lg:px-4 lg:w-1/3"
           >
             <!-- Article -->

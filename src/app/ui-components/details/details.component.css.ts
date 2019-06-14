@@ -3,11 +3,15 @@ import { css } from '@rxdi/lit-html';
 export const style = css`
 
   .content h1 {
-    font-size: 30px;
+    font-size: 35px;
     font-weight: bold;
   }
   .content h2 {
-    font-size: 20px;
+    font-size: 30px;
+    font-weight: 500;
+  }
+  .content h3 {
+    font-size: 25px;
     font-weight: 500;
   }
   p code {
@@ -16,6 +20,7 @@ export const style = css`
   .container {
     margin: 0 auto;
     margin-top: 50px;
+    width: 70%;
     padding: 85px 50px 0;
   }
   .filename {

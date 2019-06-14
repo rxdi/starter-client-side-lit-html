@@ -16,12 +16,14 @@ import { State } from './app.state';
       z-index: 11;
     }
   `,
-  template: () => html`
-    <router-outlet>
-      <navbar-component slot="header"></navbar-component>
-      <footer-component slot="footer"></footer-component>
-    </router-outlet>
-  `,
+  template(this: AppComponent) {
+    return html`
+      <router-outlet>
+        <navbar-component slot="header"></navbar-component>
+        <footer-component slot="footer"></footer-component>
+      </router-outlet>
+    `;
+  },
   container: document.body
 })
 export class AppComponent extends HTMLElement {

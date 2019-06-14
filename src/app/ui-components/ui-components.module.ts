@@ -1,9 +1,8 @@
 import { Module } from '@rxdi/core';
 import { RouterModule } from '@rxdi/router';
+import { MarkdownReaderComponent } from '@rxdi/ui-components/markdown-reader/client';
 import { UiComponentsComponent } from './ui-components.component';
-import { DetailsComponent } from './details/details.component';
 import { TrelloComponent } from './trello/trello.component';
-import { TocComponent } from './details/toc/toc.component';
 
 @Module({
   imports: [
@@ -13,11 +12,11 @@ import { TocComponent } from './details/toc/toc.component';
         component: UiComponentsComponent
       },
       {
-        path: '/:itemId',
-        component: DetailsComponent
+        path: '/:namespace/:repo',
+        component: MarkdownReaderComponent
       }
     ])
   ],
-  components: [UiComponentsComponent, DetailsComponent, TrelloComponent, TocComponent],
+  components: [MarkdownReaderComponent, UiComponentsComponent, TrelloComponent],
 })
 export class UiComponentsModule {}

@@ -4,7 +4,7 @@ import './buttons/buttons.component';
 import { template } from './navbar.component.html';
 import { style } from './navbar.component.css';
 import { Inject } from '@rxdi/core';
-import { ResponsiveService } from '../core/responsive/responsive.service';
+import { ResponsiveService } from '@rxdi/ui-components/services';
 import { Subscription } from 'rxjs';
 
 /**

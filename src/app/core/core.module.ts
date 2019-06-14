@@ -1,8 +1,9 @@
 import { Module } from '@rxdi/core';
-import { ResponsiveService } from './responsive/responsive.service';
-import { MarkdownParserService } from './markdown-parser/markdown-parser.service';
+import { MarkdownReaderModule } from '@rxdi/ui-components/markdown-reader/client';
+import { ResponsiveService } from '@rxdi/ui-components/services';
 
 @Module({
-  providers: [ResponsiveService, MarkdownParserService]
+  imports: [MarkdownReaderModule],
+  providers: [ResponsiveService]
 })
 export class CoreModule {}
