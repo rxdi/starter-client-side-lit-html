@@ -645,12 +645,14 @@ Go to Debug tab and hit `Jest Test`
 #### Firebase deploy
 
 Install `firebase-tools`
-```
+
+```bash
 npm install -g firebase-tools
 ```
 
 Execute firebase init command and follow the steps
-```
+
+```bash
 firebase init
 ```
 
@@ -660,7 +662,7 @@ firebase init
 
 This example is configurated to deploy with firebase so you need just to assign your `projectId`:
 
-```
+```bash
 firebase use --add
 ```
 

@@ -56,6 +56,10 @@
       };
       main();
     </script>
+    <script
+      type="text/javascript"
+      src="./app/loading-screen/loading-screen.component.ts"
+    ></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
     <script async>
       window.onerror = (text, url, lineNumber) => {
@@ -69,7 +73,7 @@
       };
     </script>
   </head>
-  <body></body>
+  <loading-screen-component></loading-screen-component>
   <script type="text/javascript" src="./polyfills.ts"></script>
   <script type="text/javascript" src="./main.ts"></script>
 </html>
