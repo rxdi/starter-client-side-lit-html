@@ -8,6 +8,7 @@ import { Components } from './shared/components';
 import { State } from './app.state';
 import { NavbarComponent } from './navbar/navbar.component';
 import { FooterComponent } from './footer/footer.component';
+import { GraphQLRequest } from 'apollo-link';
 
 @Module({
   components: [
@@ -18,6 +19,10 @@ import { FooterComponent } from './footer/footer.component';
   imports: [
     GraphqlModule.forRoot(
       {
+        async onRequest(this: GraphQLRequest) {
+          return new Headers();
+        },
+        pubsub: 'https://questups.com/api/graphql',
         uri: 'https://questups.com/api/graphql'
       },
       DOCUMENTS
