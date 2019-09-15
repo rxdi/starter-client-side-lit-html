@@ -1,6 +1,6 @@
 {
   "name": "@rxdi/starter-client-lit-html",
-  "version": "0.7.17",
+  "version": "0.7.18",
   "main": "src/main.ts",
   "scripts": {
     "start": "parcel ./src/index.html",
