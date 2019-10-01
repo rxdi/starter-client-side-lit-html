@@ -14,10 +14,10 @@
   "license": "MIT",
   "dependencies": {
     "@babel/polyfill": "^7.0.0",
-    "@rxdi/core": "^0.7.19",
-    "@rxdi/graphql-client": "^0.7.19",
-    "@rxdi/lit-html": "^0.7.19",
-    "@rxdi/router": "^0.7.19",
+    "@rxdi/core": "^0.7.21",
+    "@rxdi/graphql-client": "^0.7.21",
+    "@rxdi/lit-html": "^0.7.21",
+    "@rxdi/router": "^0.7.21",
     "@webcomponents/webcomponentsjs": "^1.2.4"
   },
   "browserslist": [
