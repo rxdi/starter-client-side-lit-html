@@ -7,9 +7,8 @@ import {
   html,
   async
 } from '@rxdi/lit-html';
-import { timer, from } from 'rxjs';
+import { timer } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Observable } from 'apollo-link';
 
 /**
  * @customElement home-component
@@ -35,7 +34,8 @@ import { Observable } from 'apollo-link';
     `;
   }
 })
-export class HomeComponent extends BaseComponent implements OnInit, OnDestroy, OnUpdate {
+export class HomeComponent extends BaseComponent
+  implements OnInit, OnDestroy, OnUpdate {
   private timer = timer(100, 1000).pipe(map(() => new Date()));
   private getServerStatus = this.getHomeQuery().pipe(
     map(res => res.status.status)

@@ -3,7 +3,7 @@ import { AppModule } from './app/app.module';
 
 window.addEventListener('load', () => {
   Bootstrap(AppModule, {
-    init: false,
+    init: false
   }).subscribe(() => console.log('App Started!'), err => console.error(err));
 });
 

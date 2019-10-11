@@ -602,6 +602,10 @@ describe('State Injectable', () => {
 
 #### Component testing
 
+Currently this is not a good and working solution!
+I found out `@testing-library/dom` and needs to be researched!
+No testing at the moment or if you have proposal solution [pull](https://github.com/rxdi/starter-client-side-lit-html/pulls) requests are welcomed
+
 ```typescript
 import { Container, createTestBed } from '@rxdi/core';
 import { HomeComponent } from './home.component';

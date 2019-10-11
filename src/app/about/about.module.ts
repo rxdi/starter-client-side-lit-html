@@ -10,6 +10,6 @@ import { RouterModule } from '@rxdi/router';
         component: AboutComponent
       }
     ])
-  ],
+  ]
 })
 export class AboutModule {}

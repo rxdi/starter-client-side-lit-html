@@ -11,11 +11,7 @@ import { FooterComponent } from './footer/footer.component';
 import { GraphQLRequest } from 'apollo-link';
 
 @Module({
-  components: [
-    NavbarComponent,
-    HomeComponent,
-    FooterComponent
-  ],
+  components: [NavbarComponent, HomeComponent, FooterComponent],
   imports: [
     GraphqlModule.forRoot(
       {
@@ -27,24 +23,27 @@ import { GraphQLRequest } from 'apollo-link';
       },
       DOCUMENTS
     ),
-    RouterModule.forRoot<Components>([
-      {
-        path: '/',
-        component: HomeComponent
-      },
-      {
-        path: '/about',
-        children: () => import('./about/about.module')
-      },
-      {
-        path: '(.*)',
-        component: 'not-found-component',
-        action: () => import('./not-found/not-found.component')
-      }
-      //   { path: '/users/:user', component: 'x-user-profile' },
-    ], { log: true })
+    RouterModule.forRoot<Components>(
+      [
+        {
+          path: '/',
+          component: HomeComponent
+        },
+        {
+          path: '/about',
+          children: () => import('./about/about.module')
+        },
+        {
+          path: '(.*)',
+          component: 'not-found-component',
+          action: () => import('./not-found/not-found.component')
+        }
+        //   { path: '/users/:user', component: 'x-user-profile' },
+      ],
+      { log: true }
+    )
   ],
   bootstrap: [AppComponent],
-  providers: [State],
+  providers: [State]
 })
 export class AppModule {}

@@ -1,5 +1,12 @@
 import { Router } from '@rxdi/router';
-import { html, property, eventOptions, css, LitElement, Component } from '@rxdi/lit-html';
+import {
+  html,
+  property,
+  eventOptions,
+  css,
+  LitElement,
+  Component
+} from '@rxdi/lit-html';
 
 /**
  * @customElement navbar-component
@@ -57,7 +64,7 @@ import { html, property, eventOptions, css, LitElement, Component } from '@rxdi/
   }
 })
 export class NavbarComponent extends LitElement {
-  @property() counter = 0;
+  @property({ type: Number }) counter = 0;
 
   @Router() router: Router;
 

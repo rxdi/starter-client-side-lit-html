@@ -9,7 +9,11 @@ describe('State Injectable', () => {
       imports: [
         GraphqlModule.forRoot(
           {
-            uri: 'https://questups.com/api/graphql'
+            uri: 'https://questups.com/api/graphql',
+            async onRequest() {
+              return new Headers();
+            },
+            pubsub: ''
           },
           DOCUMENTS
         )

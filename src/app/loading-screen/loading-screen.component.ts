@@ -1,4 +1,3 @@
-
 export class LoadingScreenComponent extends HTMLElement {
   constructor() {
     super();
