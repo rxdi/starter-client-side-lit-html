@@ -1,12 +1,12 @@
-import { BaseComponent } from '@shared/base.component';
 import {
-  Component,
-  OnInit,
-  OnDestroy,
-  OnUpdate,
-  html,
   async,
+  Component,
+  html,
+  OnDestroy,
+  OnInit,
+  OnUpdate,
 } from '@rxdi/lit-html';
+import { BaseComponent } from '@shared/base.component';
 import { timer } from 'rxjs';
 import { map } from 'rxjs/operators';
 

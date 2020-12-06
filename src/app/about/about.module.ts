@@ -1,6 +1,7 @@
 import { Module } from '@rxdi/core';
-import { AboutComponent } from './about.component';
 import { RouterModule } from '@rxdi/router';
+
+import { AboutComponent } from './about.component';
 
 @Module({
   imports: [

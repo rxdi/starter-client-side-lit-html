@@ -1,5 +1,6 @@
 import { Inject } from '@rxdi/core';
-import { html, Component } from '@rxdi/lit-html';
+import { Component, html } from '@rxdi/lit-html';
+
 import { State } from './app.state';
 
 /**

@@ -5,14 +5,16 @@ import {
   IntrospectionFragmentMatcher,
 } from '@rxdi/graphql-client';
 import { RouterModule } from '@rxdi/router';
+import { GraphQLRequest } from 'apollo-link';
+
+import { introspectionQueryResultData } from '~/@introspection/fragmentTypes';
+
 import { DOCUMENTS } from './@introspection/documents';
 import { AppComponent } from './app.component';
-import { HomeComponent } from './home/home.component';
 import { State } from './app.state';
-import { NavbarComponent } from './navbar/navbar.component';
 import { FooterComponent } from './footer/footer.component';
-import { GraphQLRequest } from 'apollo-link';
-import { introspectionQueryResultData } from '~/@introspection/fragmentTypes';
+import { HomeComponent } from './home/home.component';
+import { NavbarComponent } from './navbar/navbar.component';
 
 @Module({
   components: [NavbarComponent, HomeComponent, FooterComponent],

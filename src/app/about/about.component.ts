@@ -1,4 +1,4 @@
-import { html, Component, async, LitElement } from '@rxdi/lit-html';
+import { async, Component, html, LitElement } from '@rxdi/lit-html';
 import { timer } from 'rxjs';
 import { map } from 'rxjs/operators';
 

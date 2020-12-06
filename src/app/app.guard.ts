@@ -1,15 +1,17 @@
 import { Injectable, OnInit } from '@rxdi/core';
-import { Observable } from 'rxjs';
 import {
-  CanActivateContext,
   CanActivateCommands,
-  CanActivateResolver,
+  CanActivateContext,
   CanActivateRedirectResult,
+  CanActivateResolver,
 } from '@rxdi/router';
+// import { Observable } from 'rxjs';
 
 @Injectable()
 export class LoggedInGuard implements CanActivateResolver, OnInit {
-  OnInit() {}
+  OnInit() {
+    //
+  }
 
   canActivate(
     context: CanActivateContext,

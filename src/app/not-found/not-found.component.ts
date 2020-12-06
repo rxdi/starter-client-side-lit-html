@@ -1,4 +1,4 @@
-import { html, Component } from '@rxdi/lit-html';
+import { Component, html } from '@rxdi/lit-html';
 
 /**
  * @customElement not-found-component

@@ -1,12 +1,12 @@
-import { Router } from '@rxdi/router';
 import {
-  html,
-  property,
-  eventOptions,
-  css,
-  LitElement,
   Component,
+  css,
+  eventOptions,
+  html,
+  LitElement,
+  property,
 } from '@rxdi/lit-html';
+import { Router } from '@rxdi/router';
 
 /**
  * @customElement navbar-component
@@ -70,11 +70,13 @@ export class NavbarComponent extends LitElement {
 
   @eventOptions({ capture: true })
   onIncrement(e: Event) {
+    e;
     this.counter++;
   }
 
   @eventOptions({ capture: true })
   onDecrement(e: Event) {
+    e;
     this.counter--;
   }
 }

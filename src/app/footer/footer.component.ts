@@ -1,4 +1,4 @@
-import { html, css, Component } from '@rxdi/lit-html';
+import { Component, css, html } from '@rxdi/lit-html';
 
 /**
  * @customElement footer-component
