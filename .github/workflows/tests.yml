@@ -35,5 +35,6 @@ jobs:
 
       - name: Run lint
         run: npm run lint --if-present
+
       - name: Run Tests
         run: npm test --if-present
