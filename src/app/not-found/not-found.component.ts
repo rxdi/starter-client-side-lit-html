@@ -9,6 +9,6 @@ import { html, Component } from '@rxdi/lit-html';
   template: () => html`
     <h1>Not found component!</h1>
     <p>Please check your URL.</p>
-  `
+  `,
 })
 export class NotFoundComponent extends HTMLElement {}

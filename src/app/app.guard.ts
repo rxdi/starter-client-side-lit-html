@@ -4,7 +4,7 @@ import {
   CanActivateContext,
   CanActivateCommands,
   CanActivateResolver,
-  CanActivateRedirectResult
+  CanActivateRedirectResult,
 } from '@rxdi/router';
 
 @Injectable()

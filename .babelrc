@@ -1,0 +1,16 @@
+{
+  "plugins": [
+    [
+      "module-resolver",
+      {
+        "root": ["./src"],
+        "alias": {
+          "@shared": "./src/app/shared",
+          "@introspection": "./src/app/@introspection",
+          "@core": "./src/app/core",
+          "~": "./src/app"
+        }
+      }
+    ]
+  ]
+}

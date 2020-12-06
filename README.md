@@ -1,15 +1,21 @@
 # @rxdi/starter-client-lit-html
-## Starter project with graphql, lit-html, apollo-boost, @vaadin/router, @webcomponents/custom-elements based on @rxdi/core
+
+## Starter project with graphql, lit-html, apollo-graphql, @vaadin/router, @webcomponents/custom-elements based on @rxdi/core
+
 ## Powerful Dependency Injection inside Browser and Node using Typescript and RXJS 6
-***
+
+---
+
 > The idea behind [@rxdi](https://github.com/rxdi) is to create independent, dependency injection that can be used everywhere,
 > Node and Browser with purpose also to share the same code without chainging nothing!
 > First steps where with platform called [@gapi](https://github.com/Stradivario/gapi) you can check repository [@gapi/core](https://github.com/Stradivario/gapi-core).
 > Then because of the needs of the platform i decided to develop this Reactive Dependency Injection container helping me build progressive applications.
 > Hope you like my journey!
 > Any help and suggestions are appreciated!
-Main repository [@rxdi/core](https://github.com/rxdi/core) 
-***
+> Main repository [@rxdi/core](https://github.com/rxdi/core)
+
+---
+
 [Demo Application](https://rxdi-pwa.firebaseapp.com/)
 
 ### Installation and basic examples:
@@ -19,6 +25,7 @@ Main repository [@rxdi/core](https://github.com/rxdi/core)
 ```bash
 git clone https://github.com/rxdi/starter-client-lit-html
 ```
+
 ##### Install modules:
 
 ```bash
@@ -26,18 +33,20 @@ npm install
 ```
 
 ##### Optional
+
 Using VSCode there are extensions helping productivity with lit-html
 
 [lit-plugin](https://marketplace.visualstudio.com/items?itemName=runem.lit-plugin)
+
 ```bash
 code --install-extension runem.lit-plugin
 ```
 
 [lit-html](https://marketplace.visualstudio.com/items?itemName=bierner.lit-html)
+
 ```bash
 code --install-extension bierner.lit-html
 ```
-
 
 ##### Using `@gapi/cli` schematics
 
@@ -47,17 +56,18 @@ npm i -g @gapi/cli
 
 `gapi generate [name]` generates the specified schematic
 
-
 ## Available Schematics:
-* component
-* directive
-* guard
-* module
-* provider
-* service
+
+- component
+- directive
+- guard
+- module
+- provider
+- service
 
 ## Options
-`--dry-run (alias: -d)` 
+
+`--dry-run (alias: -d)`
 
 `--force (alias: -f)`
 
@@ -71,8 +81,6 @@ config:
     dryRun: false
 ```
 
-
-
 ##### Running App
 
 For starting and building application we will use Parcel a new configuration-less web bundler [ParcelJS](https://parceljs.org/)
@@ -84,22 +92,23 @@ npm install -g parcel-bundler
 ```
 
 ##### Start App
+
 ```bash
 parcel ./src/index.html
 ```
 
 ##### Build App
+
 ```bash
 parcel build ./src/index.html
 ```
 
 ## Simplest app
 
-
-
 #### Main starting point
 
 src/main.ts
+
 ```typescript
 import { Bootstrap } from '@rxdi/core';
 import { AppModule } from './app/app.module';
@@ -107,7 +116,10 @@ import { AppModule } from './app/app.module';
 window.addEventListener('load', () => {
   Bootstrap(AppModule, {
     init: false,
-  }).subscribe(() => console.log('App Started!'), err => console.error(err));
+  }).subscribe(
+    () => console.log('App Started!'),
+    (err) => console.error(err)
+  );
 });
 
 if (module['hot']) {
@@ -121,45 +133,64 @@ src/app/app.module.ts
 
 ```typescript
 import { Module } from '@rxdi/core';
-import { GraphqlModule } from '@rxdi/graphql-client';
+import {
+  GraphqlModule,
+  InMemoryCache,
+  IntrospectionFragmentMatcher,
+} from '@rxdi/graphql-client';
 import { RouterModule } from '@rxdi/router';
 import { DOCUMENTS } from './@introspection/documents';
 import { AppComponent } from './app.component';
 import { HomeComponent } from './home/home.component';
-import { Components } from './shared/components';
 import { State } from './app.state';
 import { NavbarComponent } from './navbar/navbar.component';
 import { FooterComponent } from './footer/footer.component';
+import { GraphQLRequest } from 'apollo-link';
+import { introspectionQueryResultData } from '~/@introspection/fragmentTypes';
 
 @Module({
-  components: [
-    NavbarComponent,
-    HomeComponent,
-    FooterComponent
-  ],
+  components: [NavbarComponent, HomeComponent, FooterComponent],
   imports: [
     GraphqlModule.forRoot(
       {
-        uri: 'https://questups.com/api/graphql'
+        async onRequest(this: GraphQLRequest) {
+          return new Headers();
+        },
+        cache: new InMemoryCache({
+          fragmentMatcher: new IntrospectionFragmentMatcher({
+            introspectionQueryResultData,
+          }),
+        }),
+        uri: 'https://api.spacex.land/graphql/',
+        pubsub: 'wss://pubsub.graphql-server.com/subscriptions',
       },
       DOCUMENTS
     ),
-    RouterModule.forRoot<Components>([
-      {
-        path: '/',
-        component: HomeComponent
-      },
-      {
-        path: '/about',
-        children: () => import('./about/about.module')
-      },
-      {
-        path: '(.*)',
-        component: 'not-found-component',
-        action: () => import('./not-found/not-found.component')
-      }
-      //   { path: '/users/:user', component: 'x-user-profile' },
-    ], { log: true })
+    RouterModule.forRoot<
+      | 'app-component'
+      | 'not-found-component'
+      | 'navbar-component'
+      | 'home-component'
+      | 'about-component'
+    >(
+      [
+        {
+          path: '/',
+          component: HomeComponent,
+        },
+        {
+          path: '/about',
+          children: () => import('./about/about.module'),
+        },
+        {
+          path: '(.*)',
+          component: 'not-found-component',
+          action: () => import('./not-found/not-found.component'),
+        },
+        //   { path: '/users/:user', component: 'x-user-profile' },
+      ],
+      { log: true }
+    ),
   ],
   bootstrap: [AppComponent],
   providers: [State],
@@ -167,66 +198,70 @@ import { FooterComponent } from './footer/footer.component';
 export class AppModule {}
 ```
 
-
 #### Base component
 
 ```typescript
 import { Injector } from '@rxdi/core';
-import { GraphqlClient } from '@rxdi/graphql-client';
-import {
-  QueryOptions,
-  MutationOptions,
-  SubscriptionOptions
-} from 'apollo-boost';
-import { importQuery } from '@rxdi/graphql-client';
 import { DocumentTypes } from '../@introspection/documentTypes';
 import { from, Observable } from 'rxjs';
 import { IQuery, IMutation, ISubscription } from '../@introspection';
 import { LitElement } from '@rxdi/lit-html';
+import { DataProxy } from 'apollo-cache';
+import {
+  ApolloClient,
+  importQuery,
+  QueryOptions,
+  SubscriptionOptions,
+  MutationOptions,
+} from '@rxdi/graphql-client';
+
+type Without<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
+
+interface ImportQueryMixin extends Without<QueryOptions, 'query'> {
+  query: DocumentTypes;
+}
+
+interface ImportSubscriptionMixin
+  extends Without<SubscriptionOptions, 'query'> {
+  query: DocumentTypes;
+}
+
+interface ImportMutationMixin extends Without<MutationOptions, 'mutation'> {
+  mutation: DocumentTypes;
+  update?(proxy: DataProxy, res: { data: IMutation }): void;
+}
 
 export class BaseComponent extends LitElement {
-  @Injector(GraphqlClient) public graphql: GraphqlClient;
-
-  createRenderRoot() {
-    return this;
-  }
+  @Injector(ApolloClient) public graphql: ApolloClient;
 
   query<T = IQuery>(options: ImportQueryMixin) {
     options.query = importQuery(options.query);
-    return from((this.graphql.query.bind(this.graphql)(options) as any)) as Observable<{ data: T }>;
+    return from(this.graphql.query.bind(this.graphql)(options)) as Observable<{
+      data: T;
+    }>;
   }
 
   mutate<T = IMutation>(options: ImportMutationMixin) {
     options.mutation = importQuery(options.mutation);
-    return from((this.graphql.mutate.bind(this.graphql)(options) as any)) as Observable<{ data: T }>;
+    return from(this.graphql.mutate.bind(this.graphql)(options)) as Observable<{
+      data: T;
+    }>;
   }
 
   subscribe<T = ISubscription>(options: ImportSubscriptionMixin) {
     options.query = importQuery(options.query);
-    return from((this.graphql.subscribe.bind(this.graphql)(options) as any)) as Observable<{ data: T }>;
+    return from(
+      this.graphql.subscribe.bind(this.graphql)(options)
+    ) as Observable<{ data: T }>;
   }
 }
-
-interface ImportQueryMixin extends QueryOptions {
-  query: DocumentTypes;
-}
-
-interface ImportSubscriptionMixin extends SubscriptionOptions {
-  query: DocumentTypes;
-}
-
-interface ImportMutationMixin extends MutationOptions {
-  mutation: DocumentTypes;
-}
 ```
-
 
 #### index.html shoud have defined `body` tag since `app-component` will be rendered inside
 
 ```html
 <body></body>
 ```
-
 
 #### When RouterModule is set we can put our component `<router-component></router-component>` inside `AppComponent`
 
@@ -241,19 +276,15 @@ interface ImportMutationMixin extends MutationOptions {
 
 ```typescript
 @Module({
-  components: [
-    NavbarComponent,
-    FooterComponent,
-    HomeComponent,
-  ],
+  components: [NavbarComponent, FooterComponent, HomeComponent],
 })
 export class AppModule {}
 ```
 
 > Another way of importing modules is directly inside the Component `import './your.component.ts';`;
 
-
 #### App Component
+
 src/app/app.component.ts
 
 ```typescript
@@ -274,18 +305,25 @@ import { State } from './app.state';
       </router-outlet>
     `;
   },
-  container: document.body
+  container: document.body,
 })
 export class AppComponent extends HTMLElement {
   @Inject(State) private state: State;
 }
 ```
 
-
 #### Navbar component
+
 ```typescript
 import { Router } from '@rxdi/router';
-import { html, property, eventOptions, css, LitElement, Component } from '@rxdi/lit-html';
+import {
+  html,
+  property,
+  eventOptions,
+  css,
+  LitElement,
+  Component,
+} from '@rxdi/lit-html';
 
 /**
  * @customElement navbar-component
@@ -340,7 +378,7 @@ import { html, property, eventOptions, css, LitElement, Component } from '@rxdi/
         <li><a>${this.counter}</a></li>
       </ul>
     `;
-  }
+  },
 })
 export class NavbarComponent extends LitElement {
   @property() counter = 0;
@@ -359,8 +397,8 @@ export class NavbarComponent extends LitElement {
 }
 ```
 
-
 #### About Component
+
 src/app/app.component.ts
 
 ```typescript
@@ -386,31 +424,29 @@ import { map } from 'rxjs/operators';
         />
       </p>
     `;
-  }
+  },
 })
 export class AboutComponent extends LitElement {
-  private timer = timer(1, 1000).pipe(map(v => v));
+  private timer = timer(1, 1000).pipe(map((v) => v));
 }
-
 ```
 
-
 #### Home Component
+
 src/app/home/home.component.ts
 
 ```typescript
-import { BaseComponent } from '../shared/base.component';
+import { BaseComponent } from '@shared/base.component';
 import {
   Component,
   OnInit,
   OnDestroy,
   OnUpdate,
   html,
-  async
+  async,
 } from '@rxdi/lit-html';
-import { timer, from } from 'rxjs';
+import { timer } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { Observable } from 'apollo-link';
 
 /**
  * @customElement home-component
@@ -420,30 +456,23 @@ import { Observable } from 'apollo-link';
   template(this: HomeComponent) {
     return html`
       <header>
-        <h1>Hello world</h1>
+        <h1>Space X mission names:</h1>
       </header>
-      <img
-        src="https://www.w3schools.com/html/img_girl.jpg"
-        alt="Italian Trulli"
-      />
-      <p>
-        Server status ${async(this.getServerStatus)}
-      </p>
       <p>${async(this.timer)}</p>
-      <p>
-        Crowdsale info ${async(this.getCrowdsaleInfo)}
-      </p>
+      ${async(
+        this.getLaunches().pipe(
+          map((launches) =>
+            launches.map((launch) => html`<p>${launch.mission_name}</p>`)
+          )
+        )
+      )}
     `;
-  }
+  },
 })
-export class HomeComponent extends BaseComponent implements OnInit, OnDestroy, OnUpdate {
+export class HomeComponent
+  extends BaseComponent
+  implements OnInit, OnDestroy, OnUpdate {
   private timer = timer(100, 1000).pipe(map(() => new Date()));
-  private getServerStatus = this.getHomeQuery().pipe(
-    map(res => res.status.status)
-  );
-  private getCrowdsaleInfo = this.getHomeQuery().pipe(
-    map(res => JSON.stringify(res.getCrowdsaleInfo, null, 4))
-  );
 
   OnInit() {
     console.log('Home component init');
@@ -457,47 +486,56 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy, O
     console.log('Home component updated');
   }
 
-  subscription() {
-    return this.subscribe({ query: 'home.subscription.graphql' });
-  }
-
-  getHomeQuery() {
-    return this.query({ query: 'home.query.graphql' }).pipe(
-      map(res => res.data)
+  getLaunches() {
+    return this.query({ query: 'launches-past.query.graphql' }).pipe(
+      map((res) => res.data.launchesPast)
     );
   }
 }
-
 ```
 
+#### Launches past SpaceX graphql Query
 
-#### Home Graphql queries
-Batch of `getCrowdsaleInfo` and `status` queries
+Get all past launches for every mission
+
 ```graphql
-query {
-  status {
-    status
-  }
-  getCrowdsaleInfo {
-    startTime
-    endTime
-    hasEnded
-    token
-    weiRaised
-    wallet
-  }
-}
-```
-subscribeToUserMessagesBasic
-```graphql
-subscription {
-  subscribeToUserMessagesBasic {
-    message
+query launchesPast($limit: Int) {
+  launchesPast(limit: $limit) {
+    ...LaunchFragment
   }
 }
 ```
 
+And graphql `fragment`
 
+```graphql
+fragment LaunchFragment on Launch {
+  mission_name
+  launch_date_local
+  launch_site {
+    site_name_long
+  }
+  links {
+    article_link
+    video_link
+  }
+  rocket {
+    rocket_name
+    second_stage {
+      payloads {
+        payload_type
+        payload_mass_kg
+        payload_mass_lbs
+      }
+    }
+  }
+  ships {
+    name
+    home_port
+    image
+  }
+}
+```
 
 #### Footer component
 
@@ -527,7 +565,7 @@ import { html, css, Component } from '@rxdi/lit-html';
         <p>Footer</p>
       </div>
     `;
-  }
+  },
 })
 export class FooterComponent extends HTMLElement {}
 ```
@@ -546,36 +584,10 @@ import { html, Component } from '@rxdi/lit-html';
   template: () => html`
     <h1>Not found component!</h1>
     <p>Please check your URL.</p>
-  `
+  `,
 })
 export class NotFoundComponent extends HTMLElement {}
 ```
-
-
-
-#### Components.ts 
-List of all components inside the platform.
-
-```typescript
-
-function strEnum<T extends string>(o: Array<T>): {[K in T]: K} {
-    return o.reduce((res, key) => {
-        res[key] = key;
-        return res;
-    }, Object.create(null));
-}
-export const Components = strEnum([
-    'app-component',
-    'not-found-component',
-    'navbar-component',
-    'home-component',
-    'about-component'
-]);
-export type Components = keyof typeof Components;
-
-```
-
-
 
 #### Unit Testing
 
@@ -588,16 +600,15 @@ describe('State Injectable', () => {
   beforeAll(async () => {
     await createTestBed({
       imports: [],
-      providers: [State]
+      providers: [State],
     }).toPromise();
   });
 
-  it('should be defined', done => {
+  it('should be defined', (done) => {
     expect(Container.has(State)).toBeTruthy();
     done();
   });
 });
-
 ```
 
 #### Component testing
@@ -610,11 +621,11 @@ No testing at the moment or if you have proposal solution [pull](https://github.
 import { Container, createTestBed } from '@rxdi/core';
 import { HomeComponent } from './home.component';
 
-describe('State Injectable', () => {
+describe('Home component tests', () => {
   beforeAll(async () => {
     await createTestBed({
       imports: [],
-      components: [HomeComponent]
+      components: [HomeComponent],
     }).toPromise();
   });
 
@@ -625,7 +636,7 @@ describe('State Injectable', () => {
     }
   });
 
-  it('should be defined', done => {
+  it('should be defined', (done) => {
     expect(Container.has(HomeComponent)).toBeTruthy();
     done();
   });
@@ -638,13 +649,11 @@ describe('State Injectable', () => {
     expect(div.textContent).toBe('');
   });
 });
-
 ```
 
 #### Debug testing with VSCODE
 
 Go to Debug tab and hit `Jest Test`
-
 
 #### Firebase deploy
 
@@ -662,25 +671,19 @@ firebase init
 
 > Note `dist` is the output folder of command `npm run build` aka `parcel build` when choosing your `deploy` folder you should consider put `dist`
 
-
-
 This example is configurated to deploy with firebase so you need just to assign your `projectId`:
 
 ```bash
 firebase use --add
 ```
 
-
 `firebase.json`
+
 ```json
 {
   "hosting": {
     "public": "dist",
-    "ignore": [
-      "firebase.json",
-      "**/.*",
-      "**/node_modules/**"
-    ],
+    "ignore": ["firebase.json", "**/.*", "**/node_modules/**"],
     "rewrites": [
       {
         "source": "**",
@@ -690,7 +693,6 @@ firebase use --add
   }
 }
 ```
-
 
 `.firebaserc`
 
@@ -702,13 +704,12 @@ firebase use --add
 }
 ```
 
-
-
 #### Good practices
 
 > Keep templates really simple and use renderer to show them instead of writing logic inside
 
 Wrong
+
 ```typescript
 import { async } from '@rxdi/lit-html';
 import { map } from 'rxjs/operators';
@@ -718,31 +719,34 @@ const getCollection = async () => ({ collection: { name: '@rxdi/core' } });
 
 html`
   <div>
-  ${async(of(getCollection('@rxdi/core')).pipe(map(o => o.collection), map(c => c.name)))}
+    ${async(
+      of(getCollection('@rxdi/core')).pipe(
+        map((o) => o.collection),
+        map((c) => c.name)
+      )
+    )}
   </div>
-`
+`;
 ```
 
 > In this example the logic is testable
 
 Correct
+
 ```typescript
 import { async } from '@rxdi/lit-html';
 import { map } from 'rxjs/operators';
 import { of } from 'rxjs';
 
 const getCollection = async () => ({ collection: { name: '@rxdi/core' } });
-const something = () => of(getCollection()).pipe(map(o => o.collection), map(c => c.name));
+const something = () =>
+  of(getCollection()).pipe(
+    map((o) => o.collection),
+    map((c) => c.name)
+  );
 
-html`
-  <div>
-  ${async(something)}
-  </div>
-`
+html` <div>${async(something)}</div> `;
 ```
-
-
-
 
 #### Wiring up multiple Injectables with single InjectionToken
 
@@ -758,35 +762,34 @@ export type Actions = 'view-initialized' | 'user-logged-in';
 export const FactoryToken = new InjectionToken<FactoryToken>('factories');
 
 @Injectable({
-    id: FactoryToken,
-    init: true,
-    multiple: true
+  id: FactoryToken,
+  init: true,
+  multiple: true,
 })
 export class State implements FactoryToken {
-    dispatch(action: Actions) {}
+  dispatch(action: Actions) {}
 }
 
 @Injectable({
-    id: FactoryToken,
-    init: true,
-    multiple: true
+  id: FactoryToken,
+  init: true,
+  multiple: true,
 })
 export class State2 implements FactoryToken {
-    dispatch(action: Actions) {}
+  dispatch(action: Actions) {}
 }
 
 @Injectable({
-    id: FactoryToken,
-    init: true,
-    multiple: true
+  id: FactoryToken,
+  init: true,
+  multiple: true,
 })
 export class State3 implements FactoryToken {
   dispatch(action: Actions) {}
 }
 
-
 const factories = Container.getMany(FactoryToken); // factories is Factory[]
-factories.forEach(factory => factory.dispatch('user-logged-in'));
+factories.forEach((factory) => factory.dispatch('user-logged-in'));
 ```
 
 #### Injecting multiproviders inside Components
@@ -800,22 +803,18 @@ import { FactoryToken } from './app.state';
  * @customElement my-web-component
  */
 @Component({
-  selector: 'my-web-component'
+  selector: 'my-web-component',
 })
 export class MyWebComponent extends LitElement {
-
-  @InjectMany(FactoryToken) private states: FactoryToken
+  @InjectMany(FactoryToken) private states: FactoryToken;
 
   OnInit() {
     this.state.dispatch('user-logged-in');
   }
 }
-
 ```
 
-
 #### Code splitting
-
 
 Lets create our lazy loaded module with routes
 
@@ -829,34 +828,35 @@ import { RouterModule } from '@rxdi/router';
     RouterModule.forChild([
       {
         path: '/',
-        component: 'x-user-home'
+        component: 'x-user-home',
       },
       {
         path: '/:user',
-        component: 'x-user-profile'
-      }
-    ])
+        component: 'x-user-profile',
+      },
+    ]),
   ],
-  bootstrap: [AboutComponent]
+  bootstrap: [AboutComponent],
 })
 export class AboutModule {}
 ```
 
 #### Importing module
+
 Lets import this module inside AppModule
 
 ```typescript
 RouterModule.forRoot<Components>([
   {
     path: '/',
-    component: 'home-component'
+    component: 'home-component',
   },
   {
     path: '/about',
     component: 'about-component',
     children: () => import('./about/about.module'),
   },
-])
+]);
 ```
 
 Part with `children:` is really important since this will lazy load our module and load routes.
@@ -865,16 +865,15 @@ From where this `about-component` come from ? and how we actually load it ? Here
 
 Every `@rxdi/core` module has property `bootstrap`(check above `AboutModule`), putting Component inside, will add him automatically to `Dependency injection` and thus it will be registered inside `customComponents` collection from where Router will load it and redirect to.
 
-
 If you don't define `component` property the rendered view will be empty and then you can control the view from the child module config by defining empty slash path `/`
 
 ```typescript
 RouterModule.forChild([
   {
     path: '/',
-    component: 'x-user-home'
-  }
-])
+    component: 'x-user-home',
+  },
+]);
 ```
 
 If you define `component` property and the element present this will be the main element wrapper for all other views so it will present inside every child view.
@@ -885,35 +884,38 @@ You can define also components directly passing class instance since automatical
 RouterModule.forChild([
   {
     path: '/',
-    component: XUserHomeComponent
-  }
-])
+    component: XUserHomeComponent,
+  },
+]);
 ```
-
 
 #### Router Guards
 
 Defining Guard
 
- ```typescript
+```typescript
 import { Injectable, OnInit } from '@rxdi/core';
 import { Observable } from 'rxjs';
 import {
   CanActivateContext,
   CanActivateCommands,
   CanActivateResolver,
-  CanActivateRedirectResult
+  CanActivateRedirectResult,
 } from '@rxdi/router';
 
 @Injectable()
 export class LoggedInGuard implements CanActivateResolver, OnInit {
-
   OnInit() {}
 
   canActivate(
     context: CanActivateContext,
     commands: CanActivateCommands
-  ): CanActivateRedirectResult | boolean | Promise<boolean> | Observable<boolean> | void {
+  ):
+    | CanActivateRedirectResult
+    | boolean
+    | Promise<boolean>
+    | Observable<boolean>
+    | void {
     // return commands.redirect('/')
     // return false | true;
     // return new Promise((r) => r(true | false));
@@ -923,8 +925,6 @@ export class LoggedInGuard implements CanActivateResolver, OnInit {
     // });
     // throw new Error('error');
     // If everything is cool we can leave VOID
-
-    
   }
 }
 ```
@@ -938,16 +938,15 @@ When particular route resolver is triggered you will stop in this `Guard` before
 RouterModule.forRoot<Components>([
   {
     path: '/',
-    component: 'home-component'
+    component: 'home-component',
   },
   {
     path: '/about',
     component: 'about-component',
     children: () => import('./about/about.module'),
-    canActivate: LoggedInGuard
+    canActivate: LoggedInGuard,
   },
-])
+]);
 ```
 
 Njoy!
-

@@ -3,8 +3,11 @@ import { AppModule } from './app/app.module';
 
 window.addEventListener('load', () => {
   Bootstrap(AppModule, {
-    init: false
-  }).subscribe(() => console.log('App Started!'), err => console.error(err));
+    init: false,
+  }).subscribe(
+    () => console.log('App Started!'),
+    (err) => console.error(err)
+  );
 });
 
 if (module['hot']) {

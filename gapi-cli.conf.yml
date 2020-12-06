@@ -5,5 +5,5 @@ config:
     dryRun: false
 
   schema:
-    introspectionEndpoint: http://localhost:9000/graphql
+    introspectionEndpoint: https://api.spacex.land/graphql
     introspectionOutputFolder: ./src/app/@introspection

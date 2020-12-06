@@ -7,9 +7,9 @@ import { RouterModule } from '@rxdi/router';
     RouterModule.forChild([
       {
         path: '/',
-        component: AboutComponent
-      }
-    ])
-  ]
+        component: AboutComponent,
+      },
+    ]),
+  ],
 })
 export class AboutModule {}

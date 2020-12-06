@@ -21,6 +21,8 @@
     "last 1 chrome versions"
   ],
   "devDependencies": {
+    "@babel/core": "^7.10.2",
+    "babel-plugin-module-resolver": "^4.0.0",
     "graphql": "^14.4.2",
     "typescript": "^3.5.3"
   }

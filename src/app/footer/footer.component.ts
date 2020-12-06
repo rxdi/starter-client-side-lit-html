@@ -23,6 +23,6 @@ import { html, css, Component } from '@rxdi/lit-html';
         <p>Footer</p>
       </div>
     `;
-  }
+  },
 })
 export class FooterComponent extends HTMLElement {}

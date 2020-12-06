@@ -1,733 +1,1052 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable prettier/prettier */
 // tslint:disable
 // graphql typescript definitions
 
+export interface IGraphQLResponseRoot {
+  data?: IQuery | IMutation | ISubscription;
+  errors?: Array<IGraphQLResponseError>;
+}
 
-  export interface IGraphQLResponseRoot {
-    data?: IQuery | IMutation | ISubscription;
-    errors?: Array<IGraphQLResponseError>;
-  }
+export interface IGraphQLResponseError {
+  message: string; // Required for all errors
+  locations?: Array<IGraphQLResponseErrorLocation>;
+  [propName: string]: any; // 7.2.2 says 'GraphQL servers may provide additional entries to error'
+}
 
-  export interface IGraphQLResponseError {
-    message: string;            // Required for all errors
-    locations?: Array<IGraphQLResponseErrorLocation>;
-    [propName: string]: any;    // 7.2.2 says 'GraphQL servers may provide additional entries to error'
-  }
+export interface IGraphQLResponseErrorLocation {
+  line: number;
+  column: number;
+}
 
-  export interface IGraphQLResponseErrorLocation {
-    line: number;
-    column: number;
-  }
-
+export interface IQuery {
+  __typename?: 'Query';
   /**
-    description: Query type for all get requests which will not change persistent data
+    description?: fetch data from the table?: "users"
   */
-  export interface IQuery {
-    __typename?: "Query";
-    status: IStatusQueryType | null;
-    getCrowdsaleInfo: IEthereumCrowdsaleType | null;
-    checkTokenValidity: IUserCheckValidityType | null;
-    findUserByEmail: IUserType | null;
-    findUser: IUserType | null;
-    listUsers: IUserListType | null;
-    searchForUser: IUserType | null;
-    getClientId: IGetClientId | null;
-    setUserType: IUserTokenType | null;
-    listQuests: IQuestListType | null;
-    listSharedQuests: IQuestShareListType | null;
-    listAppliedQuests: IQuestApplicationListType | null;
-    listOrganizationQuests: IQuestListType | null;
-    findQuest: IQuestType | null;
-    listMyQuests: IQuestListType | null;
-    findWallet: IWalletType | null;
-    listWallets: IWalletListType | null;
-    findConsultant: IConsultantType | null;
-    listConsultants: IConsultantListType | null;
-    findOrganization: IOrganizationType | null;
-    listOrganizations: IOrganizationListType | null;
-    findQuestShare: IQuestShareType | null;
-    isQuestShared: IQuestShareType | null;
-    getConsultantSkills: IConsultantQuestSkillListType | null;
-    getHomepageStats: IStatisticsType | null;
-    getOrganizationSkills: IOrganizationQuestSkillListType | null;
-    listActivities: IActivityListType | null;
-    listActivitiesByUserId: IActivityListType | null;
-    isQuestApplied: IQuestApplicationType | null;
-    listQuestApplications: IQuestApplicationListType | null;
-    findQuizPage: IQuizPagesType | null;
-    listQuizPages: IQuizPagesListType | null;
-    listQuestSkillTemplates: IQuizPagesListType | null;
-    getQuestSkills: IQuestSkillTemplateListType | null;
-    serverStatus: IServerStatusType | null;
-    serverErrors: IServerErrorsType | null;
-}
-
-  
-  export interface IStatusQueryType {
-    __typename?: "StatusQueryType";
-    status: string | null;
-}
-
-  
-  export interface IEthereumCrowdsaleType {
-    __typename?: "EthereumCrowdsaleType";
-    startTime: number | null;
-    endTime: number | null;
-    hasEnded: boolean | null;
-    token: string | null;
-    weiRaised: number | null;
-    wallet: string | null;
-}
-
-  
-  export interface IUserCheckValidityType {
-    __typename?: "UserCheckValidityType";
-    validity: boolean | null;
-}
-
-  
-  export interface IUserType {
-    __typename?: "UserType";
-    id: string | null;
-    displayName: string | null;
-    type: string | null;
-    settings: IUserSettingsType | null;
-    interviewed: boolean | null;
-    email: string | null;
-    quests: Array<IQuestType> | null;
-    wallets: Array<IWalletType> | null;
-    consultantId: string | null;
-    consultant: IConsultantType | null;
-    organizationId: string | null;
-    organization: IOrganizationType | null;
-    organizations: Array<IOrganizationType> | null;
-    isFirstTimeLogin: boolean | null;
-}
-
-  
-  export interface IUserSettingsType {
-    __typename?: "UserSettingsType";
-    sidebar: boolean | null;
-    language: string | null;
-    avatar: string | null;
-}
-
-  
-  export interface IQuestType {
-    __typename?: "QuestType";
-    id: string | null;
-    title: string | null;
-    picture: string | null;
-    time: string | null;
-    bounty: string | null;
-    public: boolean | null;
-    description: string | null;
-    openedBefore: string | null;
-    timeLeft: string | null;
-    contributors: IUserType | null;
-    tags: string | null;
-    verifiedAsCompleted: boolean | null;
-    completed: boolean | null;
-    stage: number | null;
-    milestone: string | null;
-    opened: boolean | null;
-    userId: string | null;
-    organizationId: string | null;
-    percentage: number | null;
-    consultantId: string | null;
-    consultant: IConsultantType | null;
-    organization: IOrganizationType | null;
-    user: IUserType | null;
-    shared: boolean | null;
-    sharedWith: Array<IQuestShareType> | null;
-    applications: Array<IQuestApplicationType> | null;
-}
-
-  
-  export interface IConsultantType {
-    __typename?: "ConsultantType";
-    id: string | null;
-    linkedInProfile: string | null;
-    name: string | null;
-    biography: string | null;
-    email: string | null;
-    type: number | null;
-    stage: number | null;
-    industry: string | null;
-    xp: string | null;
-    bounties: string | null;
-    invitations: string | null;
-    endorsments: string | null;
-    followers: Array<IUserType> | null;
-    contacts: string | null;
-    recommendations: string | null;
-    userId: string | null;
-    user: IUserType | null;
-    clientsProjects: string | null;
-    totalQuestCompleted: number | null;
-    totalWonQST: number | null;
-}
-
-  
-  export interface IOrganizationType {
-    __typename?: "OrganizationType";
-    id: string | null;
-    userId: string | null;
-    user: IUserType | null;
-    name: string | null;
-    linkedInProfile: string | null;
-    email: string | null;
-    totalQuests: string | null;
-    clientsProjects: string | null;
-    size: number | null;
-    location: string | null;
-    recommendations: string | null;
-    phoneNumber: string | null;
-    stack: string | null;
-    bounties: string | null;
-    experience: string | null;
-    website: string | null;
-    skype: string | null;
-    founders: Array<IUserType> | null;
-    representative: IConsultantType | null;
-    industry: string | null;
-    type: number | null;
-    stage: number | null;
-    description: string | null;
-    quests: Array<IQuestType> | null;
-    questSkills: Array<IQuestType> | null;
-    team: Array<IUserType> | null;
-    advisors: Array<IUserType> | null;
-    products: string | null;
-}
-
-  
-  export interface IQuestShareType {
-    __typename?: "QuestShareType";
-    id: string | null;
-    message: string | null;
-    userId: string | null;
-    user: IUserType | null;
-    questId: string | null;
-    quest: IQuestType | null;
-}
-
-  
-  export interface IQuestApplicationType {
-    __typename?: "QuestApplicationType";
-    id: string | null;
-    userId: string | null;
-    user: IUserType | null;
-    questId: string | null;
-    quest: IQuestType | null;
-}
-
-  
-  export interface IWalletType {
-    __typename?: "WalletType";
-    id: string | null;
-    type: string | null;
-    userId: string | null;
-    address: string | null;
-}
-
+  users?: Array<IUsers>;
   /**
-    description: Simple user list with count and rows
+    description?: fetch aggregated fields from the table?: "users"
   */
-  export interface IUserListType {
-    __typename?: "UserListType";
-    count: number | null;
-    rows: Array<IUserType> | null;
-}
-
-  
-  export interface IGetClientId {
-    __typename?: "getClientId";
-    clientId: string | null;
-}
-
-  
-  export interface IUserTokenType {
-    __typename?: "UserTokenType";
-    token: string | null;
-    user: IUserType | null;
-}
-
-  
-  export interface IQuestListType {
-    __typename?: "QuestListType";
-    count: number | null;
-    rows: Array<IQuestType> | null;
-    offset: number | null;
-}
-
-  
-  export interface IQuestShareListType {
-    __typename?: "QuestShareListType";
-    count: number | null;
-    rows: Array<IQuestShareType> | null;
-}
-
-  
-  export interface IQuestApplicationListType {
-    __typename?: "QuestApplicationListType";
-    count: number | null;
-    rows: Array<IQuestApplicationType> | null;
-    offset: number | null;
-}
-
-  
-  export interface IWalletListType {
-    __typename?: "WalletListType";
-    count: number | null;
-    rows: Array<IWalletType> | null;
-}
-
-  
-  export interface IConsultantListType {
-    __typename?: "ConsultantListType";
-    count: number | null;
-    offset: number | null;
-    rows: Array<IConsultantType> | null;
-}
-
-  
-  export interface IOrganizationListType {
-    __typename?: "OrganizationListType";
-    count: number | null;
-    offset: number | null;
-    rows: Array<IOrganizationType> | null;
-}
-
-  
-  export interface IConsultantQuestSkillListType {
-    __typename?: "ConsultantQuestSkillListType";
-    count: number | null;
-    rows: Array<IConsultantQuestSkillType> | null;
-    offset: number | null;
-}
-
-  
-  export interface IConsultantQuestSkillType {
-    __typename?: "ConsultantQuestSkillType";
-    id: string | null;
-    description: string | null;
-    title: string | null;
-    percentage: number | null;
-    bounty: string | null;
-    userId: string | null;
-    stage: number | null;
-    key: string | null;
-}
-
-  
-  export interface IStatisticsType {
-    __typename?: "StatisticsType";
-    organizations: number | null;
-    players: number | null;
-    activeQuests: number | null;
-    completedQuests: number | null;
-}
-
-  
-  export interface IOrganizationQuestSkillListType {
-    __typename?: "OrganizationQuestSkillListType";
-    count: number | null;
-    rows: Array<IOrganizationQuestSkillType> | null;
-    offset: number | null;
-}
-
-  
-  export interface IOrganizationQuestSkillType {
-    __typename?: "OrganizationQuestSkillType";
-    id: string | null;
-    description: string | null;
-    title: string | null;
-    percentage: number | null;
-    bounty: string | null;
-    userId: string | null;
-    stage: number | null;
-    key: string | null;
-}
-
+  users_aggregate?: IUsersAggregate;
   /**
-    description: Simple activity list with count and rows
+    description?: fetch data from the table?: "users" using primary key columns
   */
-  export interface IActivityListType {
-    __typename?: "ActivityListType";
-    count: number | null;
-    rows: Array<IActivityType> | null;
+  users_by_pk?: IUsers | null;
+  capsules?: Array<ICapsule> | null;
+  capsulesPast?: Array<ICapsule> | null;
+  capsulesUpcoming?: Array<ICapsule> | null;
+  capsule?: ICapsule | null;
+  company?: IInfo | null;
+  cores?: Array<ICore> | null;
+  coresPast?: Array<ICore> | null;
+  coresUpcoming?: Array<ICore> | null;
+  core?: ICore | null;
+  dragons?: Array<IDragon> | null;
+  dragon?: IDragon | null;
+  histories?: Array<IHistory> | null;
+  historiesResult?: IHistoriesResult | null;
+  history?: IHistory | null;
+  landpads?: Array<ILandpad> | null;
+  landpad?: ILandpad | null;
+  launches?: Array<ILaunch> | null;
+  launchesPast?: Array<ILaunch> | null;
+  launchesPastResult?: ILaunchesPastResult | null;
+  launchesUpcoming?: Array<ILaunch> | null;
+  launch?: ILaunch | null;
+  launchLatest?: ILaunch | null;
+  launchNext?: ILaunch | null;
+  launchpads?: Array<ILaunchpad> | null;
+  launchpad?: ILaunchpad | null;
+  missions?: Array<IMission> | null;
+  missionsResult?: IMissionResult | null;
+  mission?: IMission | null;
+  payloads?: Array<IPayload> | null;
+  payload?: IPayload | null;
+  roadster?: IRoadster | null;
+  rockets?: Array<IRocket> | null;
+  rocketsResult?: IRocketsResult | null;
+  rocket?: IRocket | null;
+  ships?: Array<IShip> | null;
+  shipsResult?: IShipsResult | null;
+  ship?: IShip | null;
 }
 
-  
-  export interface IActivityType {
-    __typename?: "ActivityType";
-    id: string | null;
-    userId: string | null;
-    message: string | null;
-    type: string | null;
+export /**
+    description?: select columns of table "users"
+  */
+type IUsersSelectColumnEnum =
+  | 'id'
+  | 'name'
+  | 'rocket'
+  | 'timestamp'
+  | 'twitter';
+
+/**
+    description: ordering options when selecting data from "users"
+  */
+export interface IUsersOrderBy {
+  id?: IOrderByEnum | null;
+  name?: IOrderByEnum | null;
+  rocket?: IOrderByEnum | null;
+  timestamp?: IOrderByEnum | null;
+  twitter?: IOrderByEnum | null;
 }
 
+export /**
+    description?: column ordering options
+  */
+type IOrderByEnum =
+  | 'asc'
+  | 'asc_nulls_first'
+  | 'asc_nulls_last'
+  | 'desc'
+  | 'desc_nulls_first'
+  | 'desc_nulls_last';
+
+/**
+    description: Boolean expression to filter rows from the table "users". All fields are combined with a logical 'AND'.
+  */
+export interface IUsersBoolExp {
+  _and?: Array<IUsersBoolExp> | null;
+  _not?: IUsersBoolExp | null;
+  _or?: Array<IUsersBoolExp> | null;
+  id?: IUuidComparisonExp | null;
+  name?: IStringComparisonExp | null;
+  rocket?: IStringComparisonExp | null;
+  timestamp?: ITimestamptzComparisonExp | null;
+  twitter?: IStringComparisonExp | null;
+}
+
+/**
+    description: expression to compare columns of type uuid. All fields are combined with logical 'AND'.
+  */
+export interface IUuidComparisonExp {
+  _eq?: any | null;
+  _gt?: any | null;
+  _gte?: any | null;
+  _in: Array<any>;
+  _is_null?: boolean | null;
+  _lt?: any | null;
+  _lte?: any | null;
+  _neq?: any | null;
+  _nin: Array<any>;
+}
+
+/**
+    description: expression to compare columns of type String. All fields are combined with logical 'AND'.
+  */
+export interface IStringComparisonExp {
+  _eq?: string | null;
+  _gt?: string | null;
+  _gte?: string | null;
+  _ilike?: string | null;
+  _in: Array<string>;
+  _is_null?: boolean | null;
+  _like?: string | null;
+  _lt?: string | null;
+  _lte?: string | null;
+  _neq?: string | null;
+  _nilike?: string | null;
+  _nin: Array<string>;
+  _nlike?: string | null;
+  _nsimilar?: string | null;
+  _similar?: string | null;
+}
+
+/**
+    description: expression to compare columns of type timestamptz. All fields are combined with logical 'AND'.
+  */
+export interface ITimestamptzComparisonExp {
+  _eq?: any | null;
+  _gt?: any | null;
+  _gte?: any | null;
+  _in: Array<any>;
+  _is_null?: boolean | null;
+  _lt?: any | null;
+  _lte?: any | null;
+  _neq?: any | null;
+  _nin: Array<any>;
+}
+
+/**
+    description?: columns and relationships of "users"
+  */
+export interface IUsers {
+  __typename?: 'users';
+  id?: any;
+  name?: string | null;
+  rocket?: string | null;
+  timestamp?: any;
+  twitter?: string | null;
+}
+
+/**
+    description?: aggregated selection of "users"
+  */
+export interface IUsersAggregate {
+  __typename?: 'users_aggregate';
+  aggregate?: IUsersAggregateFields | null;
+  nodes?: Array<IUsers>;
+}
+
+/**
+    description?: aggregate fields of "users"
+  */
+export interface IUsersAggregateFields {
+  __typename?: 'users_aggregate_fields';
+  count?: number | null;
+  max?: IUsersMaxFields | null;
+  min?: IUsersMinFields | null;
+}
+
+/**
+    description?: aggregate max on columns
+  */
+export interface IUsersMaxFields {
+  __typename?: 'users_max_fields';
+  name?: string | null;
+  rocket?: string | null;
+  timestamp?: any | null;
+  twitter?: string | null;
+}
+
+/**
+    description?: aggregate min on columns
+  */
+export interface IUsersMinFields {
+  __typename?: 'users_min_fields';
+  name?: string | null;
+  rocket?: string | null;
+  timestamp?: any | null;
+  twitter?: string | null;
+}
+
+export interface ICapsulesFind {
+  id?: string | null;
+  landings?: number | null;
+  mission?: string | null;
+  original_launch?: any | null;
+  reuse_count?: number | null;
+  status?: string | null;
+  type?: string | null;
+}
+
+export interface ICapsule {
+  __typename?: 'Capsule';
+  id?: string | null;
+  landings?: number | null;
+  missions?: Array<ICapsuleMission> | null;
+  original_launch?: any | null;
+  reuse_count?: number | null;
+  status?: string | null;
+  type?: string | null;
+  dragon?: IDragon | null;
+}
+
+export interface ICapsuleMission {
+  __typename?: 'CapsuleMission';
+  flight?: number | null;
+  name?: string | null;
+}
+
+export interface IDragon {
+  __typename?: 'Dragon';
+  active?: boolean | null;
+  crew_capacity?: number | null;
+  description?: string | null;
+  diameter?: IDistance | null;
+  dry_mass_kg?: number | null;
+  dry_mass_lb?: number | null;
+  first_flight?: string | null;
+  heat_shield?: IDragonHeatShield | null;
+  height_w_trunk?: IDistance | null;
+  id?: string | null;
+  launch_payload_mass?: IMass | null;
+  launch_payload_vol?: IVolume | null;
+  name?: string | null;
+  orbit_duration_yr?: number | null;
+  pressurized_capsule?: IDragonPressurizedCapsule | null;
+  return_payload_mass?: IMass | null;
+  return_payload_vol?: IVolume | null;
+  sidewall_angle_deg?: number | null;
+  thrusters?: Array<IDragonThrust> | null;
+  trunk?: IDragonTrunk | null;
+  type?: string | null;
+  wikipedia?: string | null;
+}
+
+export interface IDistance {
+  __typename?: 'Distance';
+  feet?: number | null;
+  meters?: number | null;
+}
+
+export interface IDragonHeatShield {
+  __typename?: 'DragonHeatShield';
+  dev_partner?: string | null;
+  material?: string | null;
+  size_meters?: number | null;
+  temp_degrees?: number | null;
+}
+
+export interface IMass {
+  __typename?: 'Mass';
+  kg?: number | null;
+  lb?: number | null;
+}
+
+export interface IVolume {
+  __typename?: 'Volume';
+  cubic_feet?: number | null;
+  cubic_meters?: number | null;
+}
+
+export interface IDragonPressurizedCapsule {
+  __typename?: 'DragonPressurizedCapsule';
+  payload_volume?: IVolume | null;
+}
+
+export interface IDragonThrust {
+  __typename?: 'DragonThrust';
+  amount?: number | null;
+  fuel_1?: string | null;
+  fuel_2?: string | null;
+  pods?: number | null;
+  thrust?: IForce | null;
+  type?: string | null;
+}
+
+export interface IForce {
+  __typename?: 'Force';
+  kN?: number | null;
+  lbf?: number | null;
+}
+
+export interface IDragonTrunk {
+  __typename?: 'DragonTrunk';
+  cargo?: IDragonTrunkCargo | null;
+  trunk_volume?: IVolume | null;
+}
+
+export interface IDragonTrunkCargo {
+  __typename?: 'DragonTrunkCargo';
+  solar_array?: number | null;
+  unpressurized_cargo?: boolean | null;
+}
+
+export interface IInfo {
+  __typename?: 'Info';
+  ceo?: string | null;
+  coo?: string | null;
+  cto_propulsion?: string | null;
+  cto?: string | null;
+  employees?: number | null;
+  founded?: number | null;
+  founder?: string | null;
+  headquarters?: IAddress | null;
+  launch_sites?: number | null;
+  links?: IInfoLinks | null;
+  name?: string | null;
+  summary?: string | null;
+  test_sites?: number | null;
+  valuation?: number | null;
+  vehicles?: number | null;
+}
+
+export interface IAddress {
+  __typename?: 'Address';
+  address?: string | null;
+  city?: string | null;
+  state?: string | null;
+}
+
+export interface IInfoLinks {
+  __typename?: 'InfoLinks';
+  elon_twitter?: string | null;
+  flickr?: string | null;
+  twitter?: string | null;
+  website?: string | null;
+}
+
+export interface ICoresFind {
+  asds_attempts?: number | null;
+  asds_landings?: number | null;
+  block?: number | null;
+  id?: string | null;
+  missions?: string | null;
+  original_launch?: any | null;
+  reuse_count?: number | null;
+  rtls_attempts?: number | null;
+  rtls_landings?: number | null;
+  status?: string | null;
+  water_landing?: boolean | null;
+}
+
+export interface ICore {
+  __typename?: 'Core';
+  asds_attempts?: number | null;
+  asds_landings?: number | null;
+  block?: number | null;
+  id?: string | null;
+  missions?: Array<ICapsuleMission> | null;
+  original_launch?: any | null;
+  reuse_count?: number | null;
+  rtls_attempts?: number | null;
+  rtls_landings?: number | null;
+  status?: string | null;
+  water_landing?: boolean | null;
+}
+
+export interface IHistoryFind {
+  end?: any | null;
+  flight_number?: number | null;
+  id?: string | null;
+  start?: any | null;
+}
+
+export interface IHistory {
+  __typename?: 'History';
+  details?: string | null;
+  event_date_unix?: any | null;
+  event_date_utc?: any | null;
+  id?: string | null;
+  links?: ILink | null;
+  title?: string | null;
+  flight?: ILaunch | null;
+}
+
+export interface ILink {
+  __typename?: 'Link';
+  article?: string | null;
+  reddit?: string | null;
+  wikipedia?: string | null;
+}
+
+export interface ILaunch {
+  __typename?: 'Launch';
+  details?: string | null;
+  id?: string | null;
+  is_tentative?: boolean | null;
+  launch_date_local?: any | null;
+  launch_date_unix?: any | null;
+  launch_date_utc?: any | null;
+  launch_site?: ILaunchSite | null;
+  launch_success?: boolean | null;
+  launch_year?: string | null;
+  links?: ILaunchLinks | null;
+  mission_id?: Array<string> | null;
+  mission_name?: string | null;
+  rocket?: ILaunchRocket | null;
+  static_fire_date_unix?: any | null;
+  static_fire_date_utc?: any | null;
+  telemetry?: ILaunchTelemetry | null;
+  tentative_max_precision?: string | null;
+  upcoming?: boolean | null;
+  ships?: Array<IShip> | null;
+}
+
+export interface ILaunchSite {
+  __typename?: 'LaunchSite';
+  site_id?: string | null;
+  site_name_long?: string | null;
+  site_name?: string | null;
+}
+
+export interface ILaunchLinks {
+  __typename?: 'LaunchLinks';
+  article_link?: string | null;
+  flickr_images?: Array<string> | null;
+  mission_patch_small?: string | null;
+  mission_patch?: string | null;
+  presskit?: string | null;
+  reddit_campaign?: string | null;
+  reddit_launch?: string | null;
+  reddit_media?: string | null;
+  reddit_recovery?: string | null;
+  video_link?: string | null;
+  wikipedia?: string | null;
+}
+
+export interface ILaunchRocket {
+  __typename?: 'LaunchRocket';
+  fairings?: ILaunchRocketFairings | null;
+  first_stage?: ILaunchRocketFirstStage | null;
+  rocket_name?: string | null;
+  rocket_type?: string | null;
+  rocket?: IRocket | null;
+  second_stage?: ILaunchRocketSecondStage | null;
+}
+
+export interface ILaunchRocketFairings {
+  __typename?: 'LaunchRocketFairings';
+  recovered?: boolean | null;
+  recovery_attempt?: boolean | null;
+  reused?: boolean | null;
+  ship?: string | null;
+}
+
+export interface ILaunchRocketFirstStage {
+  __typename?: 'LaunchRocketFirstStage';
+  cores?: Array<ILaunchRocketFirstStageCore> | null;
+}
+
+export interface ILaunchRocketFirstStageCore {
+  __typename?: 'LaunchRocketFirstStageCore';
+  block?: number | null;
+  core?: ICore | null;
+  flight?: number | null;
+  gridfins?: boolean | null;
+  land_success?: boolean | null;
+  landing_intent?: boolean | null;
+  landing_type?: string | null;
+  landing_vehicle?: string | null;
+  legs?: boolean | null;
+  reused?: boolean | null;
+}
+
+export interface IRocket {
+  __typename?: 'Rocket';
+  active?: boolean | null;
+  boosters?: number | null;
+  company?: string | null;
+  cost_per_launch?: number | null;
+  country?: string | null;
+  description?: string | null;
+  diameter?: IDistance | null;
+  engines?: IRocketEngines | null;
+  first_flight?: any | null;
+  first_stage?: IRocketFirstStage | null;
+  height?: IDistance | null;
+  id?: string | null;
+  landing_legs?: IRocketLandingLegs | null;
+  mass?: IMass | null;
+  name?: string | null;
+  payload_weights?: Array<IRocketPayloadWeight> | null;
+  second_stage?: IRocketSecondStage | null;
+  stages?: number | null;
+  success_rate_pct?: number | null;
+  type?: string | null;
+  wikipedia?: string | null;
+}
+
+export interface IRocketEngines {
+  __typename?: 'RocketEngines';
+  number?: number | null;
+  type?: string | null;
+  version?: string | null;
+  layout?: string | null;
+  engine_loss_max?: string | null;
+  propellant_1?: string | null;
+  propellant_2?: string | null;
+  thrust_sea_level?: IForce | null;
+  thrust_vacuum?: IForce | null;
+  thrust_to_weight?: number | null;
+}
+
+export interface IRocketFirstStage {
+  __typename?: 'RocketFirstStage';
+  burn_time_sec?: number | null;
+  engines?: number | null;
+  fuel_amount_tons?: number | null;
+  reusable?: boolean | null;
+  thrust_sea_level?: IForce | null;
+  thrust_vacuum?: IForce | null;
+}
+
+export interface IRocketLandingLegs {
+  __typename?: 'RocketLandingLegs';
+  number?: number | null;
+  material?: string | null;
+}
+
+export interface IRocketPayloadWeight {
+  __typename?: 'RocketPayloadWeight';
+  id?: string | null;
+  kg?: number | null;
+  lb?: number | null;
+  name?: string | null;
+}
+
+export interface IRocketSecondStage {
+  __typename?: 'RocketSecondStage';
+  burn_time_sec?: number | null;
+  engines?: number | null;
+  fuel_amount_tons?: number | null;
+  payloads?: IRocketSecondStagePayloads | null;
+  thrust?: IForce | null;
+}
+
+export interface IRocketSecondStagePayloads {
+  __typename?: 'RocketSecondStagePayloads';
+  option_1?: string | null;
+  composite_fairing?: IRocketSecondStagePayloadCompositeFairing | null;
+}
+
+export interface IRocketSecondStagePayloadCompositeFairing {
+  __typename?: 'RocketSecondStagePayloadCompositeFairing';
+  height?: IDistance | null;
+  diameter?: IDistance | null;
+}
+
+export interface ILaunchRocketSecondStage {
+  __typename?: 'LaunchRocketSecondStage';
+  block?: number | null;
+  payloads?: Array<IPayload> | null;
+}
+
+export interface IPayload {
+  __typename?: 'Payload';
+  customers?: Array<string> | null;
+  id?: string | null;
+  manufacturer?: string | null;
+  nationality?: string | null;
+  norad_id?: Array<number> | null;
+  orbit_params?: IPayloadOrbitParams | null;
+  orbit?: string | null;
+  payload_mass_kg?: number | null;
+  payload_mass_lbs?: number | null;
+  payload_type?: string | null;
+  reused?: boolean | null;
+}
+
+export interface IPayloadOrbitParams {
+  __typename?: 'PayloadOrbitParams';
+  apoapsis_km?: number | null;
+  arg_of_pericenter?: number | null;
+  eccentricity?: number | null;
+  epoch?: any | null;
+  inclination_deg?: number | null;
+  lifespan_years?: number | null;
+  longitude?: number | null;
+  mean_anomaly?: number | null;
+  mean_motion?: number | null;
+  periapsis_km?: number | null;
+  period_min?: number | null;
+  raan?: number | null;
+  reference_system?: string | null;
+  regime?: string | null;
+  semi_major_axis_km?: number | null;
+}
+
+export interface ILaunchTelemetry {
+  __typename?: 'LaunchTelemetry';
+  flight_club?: string | null;
+}
+
+export interface IShip {
+  __typename?: 'Ship';
+  abs?: number | null;
+  active?: boolean | null;
+  attempted_landings?: number | null;
+  class?: number | null;
+  course_deg?: number | null;
+  home_port?: string | null;
+  id?: string | null;
+  image?: string | null;
+  imo?: number | null;
+  missions?: Array<IShipMission> | null;
+  mmsi?: number | null;
+  model?: string | null;
+  name?: string | null;
+  position?: IShipLocation | null;
+  roles?: Array<string> | null;
+  speed_kn?: number | null;
+  status?: string | null;
+  successful_landings?: number | null;
+  type?: string | null;
+  url?: string | null;
+  weight_kg?: number | null;
+  weight_lbs?: number | null;
+  year_built?: number | null;
+}
+
+export interface IShipMission {
+  __typename?: 'ShipMission';
+  flight?: string | null;
+  name?: string | null;
+}
+
+export interface IShipLocation {
+  __typename?: 'ShipLocation';
+  latitude?: number | null;
+  longitude?: number | null;
+}
+
+export interface IHistoriesResult {
+  __typename?: 'HistoriesResult';
+  result?: IResult | null;
+  data?: Array<IHistory> | null;
+}
+
+export interface IResult {
+  __typename?: 'Result';
+  totalCount?: number | null;
+}
+
+export interface ILandpad {
+  __typename?: 'Landpad';
+  attempted_landings?: string | null;
+  details?: string | null;
+  full_name?: string | null;
+  id?: string | null;
+  landing_type?: string | null;
+  location?: ILocation | null;
+  status?: string | null;
+  successful_landings?: string | null;
+  wikipedia?: string | null;
+}
+
+export interface ILocation {
+  __typename?: 'Location';
+  latitude?: number | null;
+  longitude?: number | null;
+  name?: string | null;
+  region?: string | null;
+}
+
+export interface ILaunchFind {
+  apoapsis_km?: number | null;
+  block?: number | null;
+  cap_serial?: string | null;
+  capsule_reuse?: string | null;
+  core_flight?: number | null;
+  core_reuse?: string | null;
+  core_serial?: string | null;
+  customer?: string | null;
+  eccentricity?: number | null;
+  end?: any | null;
+  epoch?: any | null;
+  fairings_recovered?: string | null;
+  fairings_recovery_attempt?: string | null;
+  fairings_reuse?: string | null;
+  fairings_reused?: string | null;
+  fairings_ship?: string | null;
+  gridfins?: string | null;
+  id?: string | null;
+  inclination_deg?: number | null;
+  land_success?: string | null;
+  landing_intent?: string | null;
+  landing_type?: string | null;
+  landing_vehicle?: string | null;
+  launch_date_local?: any | null;
+  launch_date_utc?: any | null;
+  launch_success?: string | null;
+  launch_year?: string | null;
+  legs?: string | null;
+  lifespan_years?: number | null;
+  longitude?: number | null;
+  manufacturer?: string | null;
+  mean_motion?: number | null;
+  mission_id?: string | null;
+  mission_name?: string | null;
+  nationality?: string | null;
+  norad_id?: number | null;
+  orbit?: string | null;
+  payload_id?: string | null;
+  payload_type?: string | null;
+  periapsis_km?: number | null;
+  period_min?: number | null;
+  raan?: number | null;
+  reference_system?: string | null;
+  regime?: string | null;
+  reused?: string | null;
+  rocket_id?: string | null;
+  rocket_name?: string | null;
+  rocket_type?: string | null;
+  second_stage_block?: string | null;
+  semi_major_axis_km?: number | null;
+  ship?: string | null;
+  side_core1_reuse?: string | null;
+  side_core2_reuse?: string | null;
+  site_id?: string | null;
+  site_name_long?: string | null;
+  site_name?: string | null;
+  start?: any | null;
+  tbd?: string | null;
+  tentative_max_precision?: string | null;
+  tentative?: string | null;
+}
+
+export interface ILaunchesPastResult {
+  __typename?: 'LaunchesPastResult';
+  result?: IResult | null;
+  data?: Array<ILaunch> | null;
+}
+
+export interface ILaunchpad {
+  __typename?: 'Launchpad';
+  attempted_launches?: number | null;
+  details?: string | null;
+  id?: string | null;
+  location?: ILocation | null;
+  name?: string | null;
+  status?: string | null;
+  successful_launches?: number | null;
+  vehicles_launched?: Array<IRocket> | null;
+  wikipedia?: string | null;
+}
+
+export interface IMissionsFind {
+  id?: string | null;
+  manufacturer?: string | null;
+  name?: string | null;
+  payload_id?: string | null;
+}
+
+export interface IMission {
+  __typename?: 'Mission';
+  description?: string | null;
+  id?: string | null;
+  manufacturers?: Array<string> | null;
+  name?: string | null;
+  twitter?: string | null;
+  website?: string | null;
+  wikipedia?: string | null;
+  payloads?: Array<IPayload> | null;
+}
+
+export interface IMissionResult {
+  __typename?: 'MissionResult';
+  result?: IResult | null;
+  data?: Array<IMission> | null;
+}
+
+export interface IPayloadsFind {
+  apoapsis_km?: number | null;
+  customer?: string | null;
+  eccentricity?: number | null;
+  epoch?: any | null;
+  inclination_deg?: number | null;
+  lifespan_years?: number | null;
+  longitude?: number | null;
+  manufacturer?: string | null;
+  mean_motion?: number | null;
+  nationality?: string | null;
+  norad_id?: number | null;
+  orbit?: string | null;
+  payload_id?: string | null;
+  payload_type?: string | null;
+  periapsis_km?: number | null;
+  period_min?: number | null;
+  raan?: number | null;
+  reference_system?: string | null;
+  regime?: string | null;
+  reused?: boolean | null;
+  semi_major_axis_km?: number | null;
+}
+
+export interface IRoadster {
+  __typename?: 'Roadster';
+  apoapsis_au?: number | null;
+  details?: string | null;
+  earth_distance_km?: number | null;
+  earth_distance_mi?: number | null;
+  eccentricity?: number | null;
+  epoch_jd?: number | null;
+  inclination?: number | null;
+  launch_date_unix?: any | null;
+  launch_date_utc?: any | null;
+  launch_mass_kg?: number | null;
+  launch_mass_lbs?: number | null;
+  longitude?: number | null;
+  mars_distance_km?: number | null;
+  mars_distance_mi?: number | null;
+  name?: string | null;
+  norad_id?: number | null;
+  orbit_type?: number | null;
+  periapsis_arg?: number | null;
+  periapsis_au?: number | null;
+  period_days?: number | null;
+  semi_major_axis_au?: number | null;
+  speed_kph?: number | null;
+  speed_mph?: number | null;
+  wikipedia?: string | null;
+}
+
+export interface IRocketsResult {
+  __typename?: 'RocketsResult';
+  result?: IResult | null;
+  data?: Array<IRocket> | null;
+}
+
+export interface IShipsFind {
+  id?: string | null;
+  name?: string | null;
+  model?: string | null;
+  type?: string | null;
+  role?: string | null;
+  active?: boolean | null;
+  imo?: number | null;
+  mmsi?: number | null;
+  abs?: number | null;
+  class?: number | null;
+  weight_lbs?: number | null;
+  weight_kg?: number | null;
+  year_built?: number | null;
+  home_port?: string | null;
+  status?: string | null;
+  speed_kn?: number | null;
+  course_deg?: number | null;
+  latitude?: number | null;
+  longitude?: number | null;
+  successful_landings?: number | null;
+  attempted_landings?: number | null;
+  mission?: string | null;
+}
+
+export interface IShipsResult {
+  __typename?: 'ShipsResult';
+  result?: IResult | null;
+  data?: Array<IShip> | null;
+}
+
+export interface IMutation {
+  __typename?: 'Mutation';
   /**
-    description: Simple user list with count and rows
+    description?: delete data from the table?: "users"
   */
-  export interface IQuizPagesType {
-    __typename?: "QuizPagesType";
-    id: number | null;
-    order: number | null;
-    title: string | null;
-    subTitle: string | null;
-    image: string | null;
-    questions: Array<IQuizQuestionType> | null;
-}
-
+  delete_users?: IUsersMutationResponse | null;
   /**
-    description: Simple user list with count and rows
+    description?: insert data into the table?: "users"
   */
-  export interface IQuizQuestionType {
-    __typename?: "QuizQuestionType";
-    id: number | null;
-    type: string | null;
-    key: string | null;
-    order: string | null;
-    name: string | null;
-    title: string | null;
-    image: string | null;
-    answers: Array<IQuizAnswerType> | null;
-}
-
-  
-  export interface IQuizAnswerType {
-    __typename?: "QuizAnswerType";
-    value: number;
-    text: string;
-}
-
-  
-  export interface IQuizPagesListType {
-    __typename?: "QuizPagesListType";
-    count: number | null;
-    rows: Array<IQuizPagesType> | null;
-}
-
-  
-  export interface IQuestSkillTemplateListType {
-    __typename?: "QuestSkillTemplateListType";
-    count: number | null;
-    rows: Array<IQuestSkillTemplateType> | null;
-    offset: number | null;
-}
-
-  
-  export interface IQuestSkillTemplateType {
-    __typename?: "QuestSkillTemplateType";
-    id: string | null;
-    key: IQuestSkillTemplateEnumTypeEnum | null;
-    stage: string | null;
-    title: string | null;
-}
-
-export   
-  type IQuestSkillTemplateEnumTypeEnum = 'FTF' | 'MCI' | 'VPF' | 'MVP' | 'ACC' | 'FFF' | 'MAB' | 'CFR' | 'IUG' | 'MAA' | 'SEF' | 'FKH' | 'PIV' | 'FPC' | 'PMF' | 'VPR' | 'UEO' | 'CFO' | 'VGA' | 'SSP' | 'LAR' | 'MCA' | 'BES' | 'FEH' | 'PRO' | 'EST';
-
+  insert_users?: IUsersMutationResponse | null;
   /**
-    description: Server status
+    description?: update data of the table?: "users"
   */
-  export interface IServerStatusType {
-    __typename?: "ServerStatusType";
-    status: boolean | null;
+  update_users?: IUsersMutationResponse | null;
 }
 
+/**
+    description?: response of any mutation on the table "users"
+  */
+export interface IUsersMutationResponse {
+  __typename?: 'users_mutation_response';
   /**
-    description: Server errors 
+    description?: number of affected rows by the mutation
   */
-  export interface IServerErrorsType {
-    __typename?: "ServerErrorsType";
-    errors: Array<IServerErrorMessagesType> | null;
-}
-
-  
-  export interface IServerErrorMessagesType {
-    __typename?: "ServerErrorMessagesType";
-    name: string | null;
-    data: IServerErrorMessageLanguages | null;
-}
-
-  
-  export interface IServerErrorMessageLanguages {
-    __typename?: "ServerErrorMessageLanguages";
-    en: IServerErrorMessagesDataType | null;
-    bg: IServerErrorMessagesDataType | null;
-}
-
-  
-  export interface IServerErrorMessagesDataType {
-    __typename?: "ServerErrorMessagesDataType";
-    message: string | null;
-}
-
+  affected_rows?: number;
   /**
-    description: Mutation type for all requests which will change persistent data
+    description?: data of the affected rows by the mutation
   */
-  export interface IMutation {
-    __typename?: "Mutation";
-    register: IUserTypeRegister | null;
-    login: IUserTokenType | null;
-    publishSignal: IUserMessage | null;
-    removeUser: IUserType | null;
-    updateUser: IUserType | null;
-    changePassword: IUserType | null;
-    updateUserProfile: IUserType | null;
-    addUser: IUserType | null;
-    loginWithLinkedIn: IUserTokenType | null;
-    forgotPassword: IGenericStatusType | null;
-    changePasswordWithToken: IGenericStatusType | null;
-    addQuest: IQuestType | null;
-    addQuestAdmin: IQuestType | null;
-    addQuestBulkOrganization: IQuestListType | null;
-    addSpecificQuest: IQuestType | null;
-    assignQuestToUser: IQuestType | null;
-    updateQuest: IQuestType | null;
-    removeQuest: IQuestType | null;
-    completeQuest: IQuestType | null;
-    verifyQuest: IQuestType | null;
-    applyForQuest: IQuestType | null;
-    addWallet: IWalletType | null;
-    assignWalletToUser: IWalletType | null;
-    updateWallet: IWalletType | null;
-    removeWallet: IWalletType | null;
-    removeConsultant: IConsultantType | null;
-    updateConsultant: IConsultantType | null;
-    addConsultant: IConsultantType | null;
-    assignToConsultant: IConsultantType | null;
-    addConsultantWithSpecificUser: IConsultantType | null;
-    removeOrganization: IOrganizationType | null;
-    addOrganization: IOrganizationType | null;
-    addOrganizationWithSpecificUser: IOrganizationType | null;
-    assignOrganizationToSpecificUser: IOrganizationType | null;
-    updateOrganization: IOrganizationType | null;
-    assignToOrganization: IOrganizationType | null;
-    shareQuest: IQuestShareType | null;
-    shareQuestWith: IQuestShareType | null;
-    unshareQuest: IQuestShareListType | null;
-    unshareQuestWithSingleUser: IQuestShareType | null;
-    removeQuestShare: IQuestShareType | null;
-    approveQuestApplication: IQuestShareType | null;
-    addQuestBulkConsultant: IConsultantQuestSkillListType | null;
-    updateConsultantSkills: IConsultantQuestSkillListType | null;
-    updateConsultantSkill: IConsultantQuestSkillListType | null;
-    removeConsultantQuestSkill: IConsultantQuestSkillType | null;
-    addQuestSkillBulkOrganization: IOrganizationQuestSkillListType | null;
-    updateOrganizationSkills: IOrganizationQuestSkillListType | null;
-    updateOrganizationQuestSkill: IOrganizationQuestSkillListType | null;
-    removeOrganizationQuestSkill: IOrganizationQuestSkillType | null;
-    subscribeToNewsletter: ISubscriptionType | null;
-    profilingRequest: ISubscriptionType | null;
-    removeActivity: IActivityType | null;
-    addActivity: IActivityType | null;
-    removeQuizPage: IQuizPagesType | null;
-    addQuizPage: IQuizPagesType | null;
-    addQuestion: IQuizQuestionType | null;
-    addQuizAnswer: IQuizAnswerUserType | null;
-    updateProfileState: IGenericResponseType | null;
+  returning?: Array<IUsers>;
 }
 
-  
-  export interface IUserTypeRegister {
-    __typename?: "UserTypeRegister";
-    id: string | null;
-    displayName: string | null;
-    email: string | null;
+/**
+    description: input type for inserting data into table "users"
+  */
+export interface IUsersInsertInput {
+  id?: any | null;
+  name?: string | null;
+  rocket?: string | null;
+  timestamp?: any | null;
+  twitter?: string | null;
 }
 
-  
-  export interface IUserMessage {
-    __typename?: "UserMessage";
-    message: string | null;
+/**
+    description?: on conflict condition type for table "users"
+  */
+export interface IUsersOnConflict {
+  constraint?: IUsersConstraintEnum;
+  update_columns?: Array<IUsersUpdateColumnEnum>;
 }
 
-  
-  export interface IUserPayloadType {
-    displayName?: string | null;
-    type?: string | null;
-    email?: string | null;
-    settings?: IUserInputSettingsType | null;
-    isFirstTimeLogin?: boolean | null;
+export /**
+    description?: unique or primary key constraints on table "users"
+  */
+type IUsersConstraintEnum = 'users_pkey';
+
+export /**
+    description?: update columns of table "users"
+  */
+type IUsersUpdateColumnEnum =
+  | 'id'
+  | 'name'
+  | 'rocket'
+  | 'timestamp'
+  | 'twitter';
+
+/**
+    description: input type for updating data in table "users"
+  */
+export interface IUsersSetInput {
+  id?: any | null;
+  name?: string | null;
+  rocket?: string | null;
+  timestamp?: any | null;
+  twitter?: string | null;
 }
 
-  
-  export interface IUserInputSettingsType {
-    sidebar?: boolean | null;
-    language?: string | null;
-    avatar?: string | null;
-}
-
-  
-  export interface IGenericStatusType {
-    __typename?: "GenericStatusType";
-    status: string | null;
-}
-
-  
-  export interface IAddQuestInputObject {
-    description?: string | null;
-    openedBefore?: string | null;
-    picture?: string | null;
-    time?: string | null;
-    public: boolean;
-    tags?: string | null;
-    verifiedAsCompleted?: boolean | null;
-    completed?: boolean | null;
-    timeLeft?: string | null;
-    title: string;
-    percentage?: number | null;
-    bounty: string;
-    contributors?: string | null;
-    stage?: number | null;
-    milestone?: string | null;
-    organizationId?: string | null;
-    opened?: boolean | null;
-    shared?: boolean | null;
-}
-
-  
-  export interface IWalletInputType {
-    type: string;
-    password: string;
-    userId: string;
-}
-
-  
-  export interface IConsultantInputType {
-    linkedInProfile?: string | null;
-    biography?: string | null;
-    industry?: string | null;
-    email?: string | null;
-    name?: string | null;
-    type?: number | null;
-    stage?: number | null;
-    xp?: string | null;
-    bounties?: string | null;
-    invitations?: string | null;
-    endorsments?: string | null;
-    contacts?: string | null;
-    recommendations?: string | null;
-    clientsProjects?: string | null;
-}
-
-  
-  export interface IAddOrganizationInputObject {
-    name?: string | null;
-    linkedInProfile?: string | null;
-    email?: string | null;
-    industry?: string | null;
-    type?: number | null;
-    stage?: number | null;
-    description?: string | null;
-    products?: string | null;
-    userId?: string | null;
-    totalQuests?: string | null;
-    clientsProjects?: string | null;
-    size?: number | null;
-    location?: string | null;
-    recommendations?: string | null;
-    phoneNumber?: string | null;
-    stack?: string | null;
-    bounties?: string | null;
-    experience?: string | null;
-    website?: string | null;
-    skype?: string | null;
-}
-
-  
-  export interface IQuestShareInputType {
-    userId?: string | null;
-    questId: string;
-    message?: string | null;
-}
-
-  
-  export interface IConsultantQuestSkillInputType {
-    id?: string | null;
-    description?: string | null;
-    title?: string | null;
-    percentage?: number | null;
-    bounty?: string | null;
-    userId?: string | null;
-    stage?: number | null;
-    key?: string | null;
-}
-
-  
-  export interface IOrganizationQuestSkillInputType {
-    id?: string | null;
-    description?: string | null;
-    title?: string | null;
-    percentage?: number | null;
-    bounty?: string | null;
-    userId?: string | null;
-    stage?: number | null;
-    key?: string | null;
-}
-
-  
-  export interface ISubscriptionType {
-    __typename?: "SubscriptionType";
-    status: string | null;
-}
-
-  
-  export interface IActivityPayloadType {
-    userId?: string | null;
-    message?: string | null;
-    type?: string | null;
-}
-
-  
-  export interface IQuizQuestionsInputType {
-    type?: string | null;
-    name?: string | null;
-    title?: string | null;
-    answers: Array<IQuizAnswerInputType>;
-}
-
-  
-  export interface IQuizAnswerInputType {
-    value: number;
-    text: string;
-}
-
-  
-  export interface IQuizAnswerUserInputType {
-    questionId: number;
-    key: string;
-    answers: Array<IQuizAnswerInputType>;
-}
-
-  
-  export interface IQuizAnswerUserType {
-    __typename?: "QuizAnswerUserType";
-    id: number | null;
-    questionId: number | null;
-    userId: number | null;
-    answers: Array<number> | null;
-}
-
-  
-  export interface IGenericResponseType {
-    __typename?: "GenericResponseType";
-    status: string | null;
-    code: string | null;
-    message: string | null;
-}
-
+export interface ISubscription {
+  __typename?: 'Subscription';
   /**
-    description: Subscription type for all subscriptions via pub sub
+    description?: fetch data from the table?: "users"
   */
-  export interface ISubscription {
-    __typename?: "Subscription";
-    subscribeToUserMessagesBasic: IUserMessage | null;
-    subscribeToUserMessagesWithFilter: IUserMessage | null;
+  users?: Array<IUsers>;
+  /**
+    description?: fetch aggregated fields from the table?: "users"
+  */
+  users_aggregate?: IUsersAggregate;
+  /**
+    description?: fetch data from the table?: "users" using primary key columns
+  */
+  users_by_pk?: IUsers | null;
 }
 
+export /**
+    description?: conflict action
+  */
+type IConflictActionEnum = 'ignore' | 'update';
+
+/**
+    description: order by aggregate values of table "users"
+  */
+export interface IUsersAggregateOrderBy {
+  count?: IOrderByEnum | null;
+  max?: IUsersMaxOrderBy | null;
+  min?: IUsersMinOrderBy | null;
+}
+
+/**
+    description: order by max() on columns of table "users"
+  */
+export interface IUsersMaxOrderBy {
+  name?: IOrderByEnum | null;
+  rocket?: IOrderByEnum | null;
+  timestamp?: IOrderByEnum | null;
+  twitter?: IOrderByEnum | null;
+}
+
+/**
+    description: order by min() on columns of table "users"
+  */
+export interface IUsersMinOrderBy {
+  name?: IOrderByEnum | null;
+  rocket?: IOrderByEnum | null;
+  timestamp?: IOrderByEnum | null;
+  twitter?: IOrderByEnum | null;
+}
+
+/**
+    description: input type for inserting array relation for remote table "users"
+  */
+export interface IUsersArrRelInsertInput {
+  data: Array<IUsersInsertInput>;
+  on_conflict?: IUsersOnConflict | null;
+}
+
+/**
+    description: input type for inserting object relation for remote table "users"
+  */
+export interface IUsersObjRelInsertInput {
+  data: IUsersInsertInput;
+  on_conflict?: IUsersOnConflict | null;
+}
+
+export interface ICoreMission {
+  __typename?: 'CoreMission';
+  name?: string | null;
+  flight?: number | null;
+}
 
 // tslint:enable

@@ -15,7 +15,7 @@ import { State } from './app.state';
       </router-outlet>
     `;
   },
-  container: document.body
+  container: document.body,
 })
 export class AppComponent extends HTMLElement {
   @Inject(State) private state: State;

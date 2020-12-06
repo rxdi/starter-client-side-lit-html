@@ -5,7 +5,7 @@ import {
   eventOptions,
   css,
   LitElement,
-  Component
+  Component,
 } from '@rxdi/lit-html';
 
 /**
@@ -61,7 +61,7 @@ import {
         <li><a>${this.counter}</a></li>
       </ul>
     `;
-  }
+  },
 })
 export class NavbarComponent extends LitElement {
   @property({ type: Number }) counter = 0;
