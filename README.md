@@ -12,9 +12,21 @@
 > Then because of the needs of the platform i decided to develop this Reactive Dependency Injection container helping me build progressive applications.
 > Hope you like my journey!
 > Any help and suggestions are appreciated!
-> Main repository [@rxdi/core](https://github.com/rxdi/core)
+> Main repository [@rxdi/core](https://github.com/rxdi/rxdi-monorepo)
 
 ---
+
+This starter can be used with every component library working with WebComponent specification
+For example web component can be created and defined using `customElements.define()`
+and imported inside the bundle
+
+```typescript
+import 'my-component';
+```
+
+After the import it is globally available and can be used all over the application using the tag provided
+
+Set of webcomponents can be found at [@rxdi/ui-kit](https://github.com/rxdi/ui-kit)
 
 [Demo Application](https://rxdi-pwa.firebaseapp.com/)
 
@@ -471,7 +483,8 @@ import { map } from 'rxjs/operators';
 })
 export class HomeComponent
   extends BaseComponent
-  implements OnInit, OnDestroy, OnUpdate {
+  implements OnInit, OnDestroy, OnUpdate
+{
   private timer = timer(100, 1000).pipe(map(() => new Date()));
 
   OnInit() {
