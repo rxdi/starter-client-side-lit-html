@@ -8,15 +8,16 @@
     "lint": "npx eslint ./src --ext .ts",
     "lint-fix": "npx eslint ./src --fix --ext .ts",
     "deploy": "firebase deploy",
+    "clean": "rm -rf .cache dist node_modules package-lock.json",
     "introspect": "npx @gapi/cli schema introspect --collect-documents --collect-types"
   },
   "author": "Kristiyan Tachev",
   "license": "MIT",
   "dependencies": {
-    "@rxdi/core": "^0.7.23",
-    "@rxdi/graphql-client": "^0.7.23",
-    "@rxdi/lit-html": "^0.7.23",
-    "@rxdi/router": "^0.7.23"
+    "@rxdi/core": "^0.7.131",
+    "@rxdi/graphql-client": "0.7.131",
+    "@rxdi/lit-html": "0.7.131",
+    "@rxdi/router": "0.7.131"
   },
   "browserslist": [
     "last 1 chrome versions"

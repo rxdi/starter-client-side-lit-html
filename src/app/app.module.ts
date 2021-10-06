@@ -1,11 +1,11 @@
 import { Module } from '@rxdi/core';
 import {
   GraphqlModule,
+  GraphQLRequest,
   InMemoryCache,
   IntrospectionFragmentMatcher,
 } from '@rxdi/graphql-client';
 import { RouterModule } from '@rxdi/router';
-import { GraphQLRequest } from 'apollo-link';
 
 import { introspectionQueryResultData } from '~/@introspection/fragmentTypes';
 
@@ -30,7 +30,7 @@ import { NavbarComponent } from './navbar/navbar.component';
           }),
         }),
         uri: 'https://api.spacex.land/graphql/',
-        pubsub: 'wss://pubsub.graphql-server.com/subscriptions',
+        pubsub: 'wss://my-graphql-server-subscriptions/subscriptions',
       },
       DOCUMENTS
     ),

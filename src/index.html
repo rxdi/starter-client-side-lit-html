@@ -33,18 +33,18 @@
               await worker.unregister();
             }
           } else {
-            window.addEventListener('load', function() {
+            window.addEventListener('load', function () {
               navigator.serviceWorker
                 .register('service-worker.js', {
-                  scope: '/'
+                  scope: '/',
                 })
-                .then(function(registration) {
+                .then(function (registration) {
                   console.log(
                     'Registration successful, scope is:',
                     registration.scope
                   );
                 })
-                .catch(function(error) {
+                .catch(function (error) {
                   console.log(
                     'Service worker registration failed, error:',
                     error
@@ -67,12 +67,14 @@
           type: 'error',
           title: 'Oops...',
           text,
-          footer: `<p><strong>File:</strong> ${url}</p>&nbsp<p><strong>Line:</strong> ${lineNumber}</p>`
+          footer: `<p><strong>File:</strong> ${url}</p>&nbsp<p><strong>Line:</strong> ${lineNumber}</p>`,
         });
         return true;
       };
     </script>
   </head>
-  <loading-screen-component></loading-screen-component>
-  <script type="text/javascript" src="./main.ts"></script>
+  <body>
+    <loading-screen-component></loading-screen-component>
+    <script type="text/javascript" src="./main.ts"></script>
+  </body>
 </html>

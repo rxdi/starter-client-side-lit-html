@@ -20,4 +20,9 @@ import { State } from './app.state';
 })
 export class AppComponent extends HTMLElement {
   @Inject(State) private state: State;
+
+  OnInit() {
+    const loadingElement = document.querySelector('loading-screen-component');
+    loadingElement?.remove();
+  }
 }
