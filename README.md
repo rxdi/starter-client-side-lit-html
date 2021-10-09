@@ -178,13 +178,7 @@ import { introspectionQueryResultData } from '~/@introspection/fragmentTypes';
       },
       DOCUMENTS
     ),
-    RouterModule.forRoot<
-      | 'app-component'
-      | 'not-found-component'
-      | 'navbar-component'
-      | 'home-component'
-      | 'about-component'
-    >(
+    RouterModule.forRoot(
       [
         {
           path: '/',

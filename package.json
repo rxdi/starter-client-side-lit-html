@@ -14,10 +14,10 @@
   "author": "Kristiyan Tachev",
   "license": "MIT",
   "dependencies": {
-    "@rxdi/core": "^0.7.133",
-    "@rxdi/graphql-client": "^0.7.133",
-    "@rxdi/lit-html": "^0.7.133",
-    "@rxdi/router": "^0.7.133"
+    "@rxdi/core": "^0.7.134",
+    "@rxdi/graphql-client": "^0.7.134",
+    "@rxdi/lit-html": "^0.7.134",
+    "@rxdi/router": "^0.7.134"
   },
   "browserslist": [
     "last 1 chrome versions"
