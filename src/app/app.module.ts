@@ -1,9 +1,9 @@
 import { Module } from '@rxdi/core';
 import {
+  convertToPossibleTypes,
   GraphqlModule,
   GraphQLRequest,
-  InMemoryCache,
-  IntrospectionFragmentMatcher,
+  InMemoryCache
 } from '@rxdi/graphql-client';
 import { RouterModule } from '@rxdi/router';
 
@@ -25,9 +25,7 @@ import { NavbarComponent } from './navbar/navbar.component';
           return new Headers();
         },
         cache: new InMemoryCache({
-          fragmentMatcher: new IntrospectionFragmentMatcher({
-            introspectionQueryResultData,
-          }),
+          possibleTypes: convertToPossibleTypes(introspectionQueryResultData),
         }),
         uri: 'https://api.spacex.land/graphql/',
         pubsub: 'wss://my-graphql-server-subscriptions/subscriptions',
@@ -57,4 +55,4 @@ import { NavbarComponent } from './navbar/navbar.component';
   bootstrap: [AppComponent],
   providers: [State],
 })
-export class AppModule {}
+export class AppModule { }
