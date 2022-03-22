@@ -14,12 +14,11 @@
   "author": "Kristiyan Tachev",
   "license": "MIT",
   "dependencies": {
-    "@rhtml/modifiers": "0.0.90",
+    "@rhtml/modifiers": "0.0.91",
     "@rxdi/core": "^0.7.140",
-    "@rxdi/graphql-client": "^0.7.140",
     "@rxdi/lit-html": "^0.7.140",
     "@rxdi/router": "^0.7.140",
-    "@rxdi/ui-kit": "^0.7.133"
+    "@rxdi/ui-kit": "^0.7.134"
   },
   "browserslist": [
     "last 1 chrome versions"
@@ -27,8 +26,6 @@
   "devDependencies": {
     "@babel/core": "^7.10.2",
     "babel-plugin-module-resolver": "^4.0.0",
-    "cssnano": "^4.1.10",
-    "graphql": "^14.4.2",
     "typescript": "^4.1.2",
     "@typescript-eslint/eslint-plugin": "^2.10.0",
     "@typescript-eslint/parser": "^2.10.0",

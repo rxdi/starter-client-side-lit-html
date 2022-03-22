@@ -18,7 +18,13 @@ function recursion(div: HTMLElement) {
     subscribeToAttributeChanges(Attributes.NgIf)(
       (element) => {
         const attribute = element.getAttribute(Attributes.NgIf);
-        element.style.display = attribute === 'true' ? 'block' : 'none';
+        console.log(attribute)
+        element.style.display = 'none;'
+        if (attribute === 'false') {
+          element.style.display = 'none';
+        } else {
+          element.style.display = 'inherit';
+        }
 
       }
     )(div);

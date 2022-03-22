@@ -1,7 +1,4 @@
-import { Inject } from '@rxdi/core';
 import { Component, html } from '@rxdi/lit-html';
-
-import { State } from './app.state';
 
 /**
  * @customElement app-component
@@ -18,11 +15,4 @@ import { State } from './app.state';
   },
   container: document.body,
 })
-export class AppComponent extends HTMLElement {
-  @Inject(State) private state: State;
-
-  OnInit() {
-    const loadingElement = document.querySelector('loading-screen-component');
-    loadingElement?.remove();
-  }
-}
+export class AppComponent extends HTMLElement { }

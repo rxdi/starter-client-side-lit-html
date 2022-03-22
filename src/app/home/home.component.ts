@@ -22,13 +22,17 @@ import { AngularLayout, FlexLayout } from './modifiers';
 
     .fill {
       background: red;
-      margin-bottom: 10px;
+      /* margin-bottom: 10px; */
     }
     .fill2 {
       background: green;
       flex: 1;
     }
-
+    .flex-align div {
+      min-height: 50px;
+      color: #fff;
+      background-color: #292929;
+    }
     .height {
       height: 100px;
     }
@@ -36,15 +40,11 @@ import { AngularLayout, FlexLayout } from './modifiers';
   modifiers: [FlexLayout, AngularLayout],
   template(this: HomeComponent) {
     return html`
-    <rx-button ngIf=${!!this.test}>
-      Test
-    </rx-button>
-    <rx-button palette="primary" @click=${() => this.changeTest()}>
-      If condition test
-    </rx-button>
 
     <rx-divider type="icon"></rx-divider>
     
+    <h3 fxLayoutAlign="center">Flex layout align dynamically (fxLayoutAlign)</h3>
+
     <div fxLayout="row wrap" fxLayoutAlign="space-evenly stretch" fxLayoutGap="10px">
       <rx-button palette="primary" @click=${() => this.setFxLayoutAlign('space-between start')}>
         Space Between Start
@@ -83,7 +83,9 @@ import { AngularLayout, FlexLayout } from './modifiers';
       <div class="blocks">3</div>
     </div>
  
-    <rx-divider></rx-divider>
+    <rx-divider type="icon"></rx-divider>
+
+    <h3 fxLayoutAlign="center">Flex max-width (fxFlex)</h3>
 
     <div fxLayout="row" >
       <div fxFlex="20%" class="blocks">1</div>
@@ -91,7 +93,8 @@ import { AngularLayout, FlexLayout } from './modifiers';
       <div fxFlex class="blocks">3</div>
     </div>
 
-    <rx-divider></rx-divider>
+    <rx-divider type="icon"></rx-divider>
+    <h3 fxLayoutAlign="center">Layout row wrap (fxLayout)</h3>
 
     <div style="padding-top: 10px;height: 200px" fxLayout="row wrap" fxLayoutGap="10px">
       <div><div class="fill" fxLayoutAlign="center center" fxFlexFill>A</div></div>
@@ -100,7 +103,8 @@ import { AngularLayout, FlexLayout } from './modifiers';
       <div><div class="fill" fxLayoutAlign="center center" fxFlexFill>D</div></div>
     </div>
 
-    <rx-divider></rx-divider>
+    <rx-divider type="icon"></rx-divider>
+    <h3 fxLayoutAlign="center">Flex Fill (fxFlexFill)</h3>
 
     <div style="padding-top: 10px;height: 200px" fxLayout="row" fxLayoutGap="10px">
       <div><div style="background: red;" fxLayoutAlign="center center" fxFlexFill>A</div></div>
@@ -109,22 +113,65 @@ import { AngularLayout, FlexLayout } from './modifiers';
       <div><div style="background: gray;" fxLayoutAlign="center center" fxFlexFill>D</div></div>
     </div>
 
-    <rx-divider></rx-divider>
+    <rx-divider type="icon"></rx-divider>
+    <h3 fxLayoutAlign="center">Dynamic directive change (fxFlexAlign)</h3>
 
     <div fxLayout="row wrap" fxLayoutAlign="space-evenly stretch" fxLayoutGap="10px">
       <rx-button palette="primary" @click=${() => this.setFxLayout('row')}>Row</rx-button>
       <rx-button palette="primary" @click=${() => this.setFxLayout('column')}>Column</rx-button>
-      <rx-button palette="primary" @click=${() => this.setFxLayout('row wrap')}>Row Wrap</rx-button>
     </div>
 
     <rx-divider></rx-divider>
 
-    <mat-card fxLayout=${this.fxLayout} >
-        <mat-card class="fill"><div fxLayoutAlign="center center"  class="height">1. Children</div></mat-card> 
-        <mat-card class="fill "><div fxLayoutAlign="center center"  class="height">2. Children</div></mat-card> 
-        <mat-card class="fill"><div fxLayoutAlign="center center"  class="height">3. Children</div></mat-card>
+    <mat-card fxLayout=${this.fxLayout} fxLayoutGap="10px">
+      <mat-card class="fill">
+        <div fxLayoutAlign="center center"  class="height">A</div>
+      </mat-card> 
+      <mat-card class="fill">
+        <div fxLayoutAlign="center center"  class="height">B</div>
+      </mat-card> 
+      <mat-card class="fill">
+        <div fxLayoutAlign="center center"  class="height">C</div>
+      </mat-card>
     </mat-card>
 
+    <rx-divider type="icon"></rx-divider>
+
+    <h3 fxLayoutAlign="center">Flex Align (fxFlexAlign)</h3>
+
+    <div
+      style="min-height: 200px;"
+      fxLayout="row"
+      fxLayoutGap="5px"
+      class="flex-align"
+    >
+      <div fxLayoutAlign="center" fxFlexAlign="flex-start">A</div>
+      <div fxLayoutAlign="center" fxFlexAlign="stretch">B</div>
+      <div fxLayoutAlign="center" fxFlexAlign="center">C</div>
+      <div fxLayoutAlign="center" fxFlexAlign="flex-end">D</div>
+    </div>
+
+    <rx-divider type="icon"></rx-divider>
+
+    <h3 fxLayoutAlign="center">Flex Offset (fxFlexOffset)</h3>
+
+    <div fxLayout="row">
+      <div fxFlexOffset="10px">1. One</div>
+      <div fxFlexOffset="5%">2. Two</div>
+      <div fxFlexOffset="10vw">3. Three</div>
+      <div fxFlexOffset="5vh">4. Four</div>
+    </div>
+
+    <rx-divider type="icon"></rx-divider>
+
+    <h3 fxLayoutAlign="center">Flex Ordering (fxFlexOrder)</h3>
+
+    <div fxLayout="row">
+      <div fxFlexOrder="4">1. One</div>
+      <div fxFlexOrder="2">2. Two</div>
+      <div fxFlexOrder="3">3. Three</div>
+      <div fxFlexOrder="1">4. Four</div>
+    </div>
     `;
   },
 })
