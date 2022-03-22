@@ -12,7 +12,7 @@
     "target": "es6",
     "outDir": "dist",
     "typeRoots": ["node_modules/@types", "index.d.ts"],
-    "lib": ["es2015", "es2016", "es6", "es2017", "dom"],
+    "lib": ["es2015", "es2016", "es6", "es2017", "dom", "dom.Iterable"],
     "types": ["./types"],
     "paths": {
       "@shared/*": ["app/shared/*"],

@@ -6,6 +6,9 @@ import {
   InMemoryCache
 } from '@rxdi/graphql-client';
 import { RouterModule } from '@rxdi/router';
+import { ReactiveUiModule } from '@rxdi/ui-kit';
+import { ButtonComponent } from '@rxdi/ui-kit/button';
+import { DividerComponent } from '@rxdi/ui-kit/divider';
 
 import { introspectionQueryResultData } from '~/@introspection/fragmentTypes';
 
@@ -17,8 +20,9 @@ import { HomeComponent } from './home/home.component';
 import { NavbarComponent } from './navbar/navbar.component';
 
 @Module({
-  components: [NavbarComponent, HomeComponent, FooterComponent],
+  components: [NavbarComponent, HomeComponent, FooterComponent, ButtonComponent, DividerComponent],
   imports: [
+    ReactiveUiModule.forRoot(),
     GraphqlModule.forRoot(
       {
         async onRequest(this: GraphQLRequest) {

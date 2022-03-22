@@ -2,16 +2,11 @@ import {
   Component,
   css,
   html,
-  OnDestroy,
-  OnInit,
-  OnUpdate,
+  LitElement,
+  state,
 } from '@rxdi/lit-html';
-import { BaseComponent } from '@shared/base.component';
-import { map } from 'rxjs/operators';
 
-import { fx } from './fx';
-import { layout } from './layout';
-import { fxFlexFill, fxLayout, fxLayoutAlign, fxLayoutGap } from './parts';
+import { AngularLayout, FlexLayout } from './modifiers';
 
 /**
  * @customElement home-component
@@ -27,81 +22,133 @@ import { fxFlexFill, fxLayout, fxLayoutAlign, fxLayoutGap } from './parts';
 
     .fill {
       background: red;
-      flex: 1;
+      margin-bottom: 10px;
     }
     .fill2 {
       background: green;
       flex: 1;
     }
+
+    .height {
+      height: 100px;
+    }
   `,
+  modifiers: [FlexLayout, AngularLayout],
   template(this: HomeComponent) {
     return html`
-    <div ${fx} fxLayout="row" fxLayoutAlign="space-between stretch">
+    <rx-button ngIf=${!!this.test}>
+      Test
+    </rx-button>
+    <rx-button palette="primary" @click=${() => this.changeTest()}>
+      If condition test
+    </rx-button>
+
+    <rx-divider type="icon"></rx-divider>
+    
+    <div fxLayout="row wrap" fxLayoutAlign="space-evenly stretch" fxLayoutGap="10px">
+      <rx-button palette="primary" @click=${() => this.setFxLayoutAlign('space-between start')}>
+        Space Between Start
+      </rx-button>
+      <rx-button palette="primary" @click=${() => this.setFxLayoutAlign('space-between center')}>
+        Space Between Center
+      </rx-button>
+      <rx-button palette="primary" @click=${() => this.setFxLayoutAlign('space-between end')}>
+        Space Between End
+      </rx-button>
+      <rx-button palette="primary" @click=${() => this.setFxLayoutAlign('space-around start')}>
+        Space Between Start
+      </rx-button>
+      <rx-button palette="primary" @click=${() => this.setFxLayoutAlign('space-around center')}>
+        Space Between Center
+      </rx-button>
+      <rx-button palette="primary" @click=${() => this.setFxLayoutAlign('space-around end')}>
+        Space Between End
+      </rx-button>
+      <rx-button palette="primary" @click=${() => this.setFxLayoutAlign('center start')}>
+        Start Center
+      </rx-button>
+      <rx-button palette="primary" @click=${() => this.setFxLayoutAlign('center center')}>
+        Center Center
+      </rx-button>
+      <rx-button palette="primary" @click=${() => this.setFxLayoutAlign('center end')}>
+        End Center
+      </rx-button>
+    </div>
+
+    <rx-divider></rx-divider>
+
+    <div fxLayout="row" fxLayoutAlign=${this.fxLayoutAlign} >
       <div class="blocks">1</div>
       <div style="height: 100px" class="blocks">2</div>
       <div class="blocks">3</div>
     </div>
-    <br>
-    <div ${fx} fxLayout="row" fxLayoutAlign="space-evenly stretch">
-      <div class="blocks">1</div>
-      <div style="height: 100px" class="blocks">2</div>
-      <div class="blocks">3</div>
-    </div>
-    <br>
-    <div ${fx} fxLayout="row" fxFlexFill>
+ 
+    <rx-divider></rx-divider>
+
+    <div fxLayout="row" >
       <div fxFlex="20%" class="blocks">1</div>
       <div fxFlex="25%" class="blocks">2</div>
       <div fxFlex class="blocks">3</div>
     </div>
 
-    <div ${fx} style="padding-top: 10px;height: 200px" fxLayout="row" fxLayoutGap="10px">
-      <div ${fx}><div class="fill" fxLayoutAlign="center center" fxFlexFill>A</div></div>
-      <div ${fx}><div class="fill" fxLayoutAlign="center center" fxFlexFill>B</div></div>
+    <rx-divider></rx-divider>
 
-      <div ${fx}><div class="fill" fxLayoutAlign="center center" fxFlexFill>C</div></div>
-
-      <div ${fx}><div class="fill" fxLayoutAlign="center center" fxFlexFill>D</div></div>
+    <div style="padding-top: 10px;height: 200px" fxLayout="row wrap" fxLayoutGap="10px">
+      <div><div class="fill" fxLayoutAlign="center center" fxFlexFill>A</div></div>
+      <div><div class="fill" fxLayoutAlign="center center" fxFlexFill>B</div></div>
+      <div><div class="fill" fxLayoutAlign="center center" fxFlexFill>C</div></div>
+      <div><div class="fill" fxLayoutAlign="center center" fxFlexFill>D</div></div>
     </div>
 
+    <rx-divider></rx-divider>
 
-    <div style="padding-top: 10px;height: 200px" ${fxLayout('row')} ${fxLayoutGap('10px')}>
-      <div><div class="fill2" ${fxLayoutAlign('center center')} ${fxFlexFill}>A</div></div>
-      <div><div class="fill2" ${fxLayoutAlign('center center')} ${fxFlexFill}>B</div></div>
-      <div><div class="fill2" ${fxLayoutAlign('center center')} ${fxFlexFill}>C</div></div>
-      <div><div class="fill2" ${fxLayoutAlign('center center')} ${fxFlexFill}>D</div></div>
+    <div style="padding-top: 10px;height: 200px" fxLayout="row" fxLayoutGap="10px">
+      <div><div style="background: red;" fxLayoutAlign="center center" fxFlexFill>A</div></div>
+      <div><div style="background: green;" fxLayoutAlign="center center" fxFlexFill>B</div></div>
+      <div><div style="background: purple;" fxLayoutAlign="center center" fxFlexFill>C</div></div>
+      <div><div style="background: gray;" fxLayoutAlign="center center" fxFlexFill>D</div></div>
     </div>
 
+    <rx-divider></rx-divider>
 
-    <div ${layout}>
-      <div style="padding-top: 10px;height: 200px" fxLayout="row" fxLayoutGap="10px">
-        <div><div style="background: red;" fxLayoutAlign="center center" fxFlexFill>A</div></div>
-        <div><div style="background: green;" fxLayoutAlign="center center" fxFlexFill>B</div></div>
-        <div><div style="background: purple;" fxLayoutAlign="center center" fxFlexFill>C</div></div>
-        <div><div style="background: gray;" fxLayoutAlign="center center" fxFlexFill>D</div></div>
-      </div>
+    <div fxLayout="row wrap" fxLayoutAlign="space-evenly stretch" fxLayoutGap="10px">
+      <rx-button palette="primary" @click=${() => this.setFxLayout('row')}>Row</rx-button>
+      <rx-button palette="primary" @click=${() => this.setFxLayout('column')}>Column</rx-button>
+      <rx-button palette="primary" @click=${() => this.setFxLayout('row wrap')}>Row Wrap</rx-button>
     </div>
+
+    <rx-divider></rx-divider>
+
+    <mat-card fxLayout=${this.fxLayout} >
+        <mat-card class="fill"><div fxLayoutAlign="center center"  class="height">1. Children</div></mat-card> 
+        <mat-card class="fill "><div fxLayoutAlign="center center"  class="height">2. Children</div></mat-card> 
+        <mat-card class="fill"><div fxLayoutAlign="center center"  class="height">3. Children</div></mat-card>
+    </mat-card>
+
     `;
   },
 })
-export class HomeComponent
-  extends BaseComponent
-  implements OnInit, OnDestroy, OnUpdate {
+export class HomeComponent extends LitElement {
 
-  OnInit() {
-    console.log('Home component init');
+  @state()
+  test = true;
+
+  changeTest() {
+    this.test = !this.test;
   }
 
-  OnDestroy() {
-    console.log('Home component destroyed');
+  @state()
+  fxLayout = 'column';
+
+
+  @state()
+  fxLayoutAlign = 'space-between stretch';
+
+  setFxLayout(fxLayout: string) {
+    this.fxLayout = fxLayout;
   }
 
-  OnUpdate() {
-    console.log('Home component updated');
-  }
-
-  getLaunches() {
-    return this.query({ query: 'launches-past.query.graphql' }).pipe(
-      map((res) => res.data.launchesPast)
-    );
+  setFxLayoutAlign(fxLayout: string) {
+    this.fxLayoutAlign = fxLayout;
   }
 }
