@@ -1,5 +1,4 @@
-import { CustomAttributeRegistry } from '@rhtml/custom-attributes';
-import { FlexLayout } from '@rhtml/modifiers';
+import { AngularLayout, FlexLayout } from '@rhtml/modifiers';
 import {
   Component,
   css,
@@ -11,8 +10,6 @@ import {
 import { Background } from './modifiers/background';
 import { Color } from './modifiers/color';
 import { Padding } from './modifiers/padding';
-
-
 
 /**
  * @customElement flex-component
@@ -42,12 +39,22 @@ import { Padding } from './modifiers/padding';
       height: 100px;
     }
 `,
-  registry(this) {
-    return new CustomAttributeRegistry(this.shadowRoot);
-  },
-  modifiers: [...FlexLayout, Background, Color, Padding],
+
+  modifiers: [
+    ...FlexLayout,
+    ...AngularLayout,
+    Background,
+    Color,
+    Padding
+  ],
   template(this) {
     return html`
+    <rx-divider type="icon"></rx-divider>
+
+    <h3 fxLayoutAlign="center">Custom Angular like Modifier <div ngIf=${this.toggler}>(ngIf)</div></h3>
+    
+    <rx-button palette="danger" @click=${() => this.toggle()}>Toggle</rx-button>
+
     <rx-divider type="icon"></rx-divider>
     <h3 fxLayoutAlign="center">Custom Attributes aka Modifiers</h3>
     <article background="green" color="white" padding="10px">
@@ -168,10 +175,10 @@ import { Padding } from './modifiers/padding';
 export class FlexComponent extends LitElement {
 
   @state()
-  test = true;
+  toggler = true;
 
-  changeTest() {
-    this.test = !this.test;
+  toggle() {
+    this.toggler = !this.toggler;
   }
 
   @state()
