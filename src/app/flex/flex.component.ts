@@ -17,19 +17,17 @@ import { Padding } from './modifiers/padding';
 @Component<FlexComponent>({
   selector: 'flex-component',
   style: css`
+
     .blocks {
       width: 50px;
       height: 50px;
       background-color: #c1daf6;
     }
+
     .fill {
       background: red;
-      /* margin-bottom: 10px; */
     }
-    .fill2 {
-      background: green;
-      flex: 1;
-    }
+
     .flex-align div {
       min-height: 50px;
       color: #fff;
@@ -38,8 +36,8 @@ import { Padding } from './modifiers/padding';
     .height {
       height: 100px;
     }
-`,
 
+`,
   modifiers: [
     ...FlexLayout,
     ...AngularLayout,
@@ -53,9 +51,10 @@ import { Padding } from './modifiers/padding';
 
     <h3 fxLayoutAlign="center">Custom Angular like Modifier <div ngIf=${this.toggler}>(ngIf)</div></h3>
     
-    <rx-button palette="danger" @click=${() => this.toggle()}>Toggle</rx-button>
+    <rx-button fxLayoutAlign="center center" palette="danger" @click=${() => this.toggle()}>Toggle</rx-button>
 
     <rx-divider type="icon"></rx-divider>
+
     <h3 fxLayoutAlign="center">Custom Attributes aka Modifiers</h3>
     <article background="green" color="white" padding="10px">
       <p>This will be shown in a green background!</p>
@@ -92,7 +91,9 @@ import { Padding } from './modifiers/padding';
         End Center
       </rx-button>
     </div>
+
     <rx-divider></rx-divider>
+
     <div fxLayout="row" fxLayoutAlign=${this.fxLayoutAlign} >
       <div class="blocks">1</div>
       <div style="height: 100px" class="blocks">2</div>
@@ -100,35 +101,48 @@ import { Padding } from './modifiers/padding';
     </div>
  
     <rx-divider type="icon"></rx-divider>
+
     <h3 fxLayoutAlign="center">Flex max-width (fxFlex)</h3>
+
     <div fxLayout="row" >
       <div fxFlex="20%" class="blocks">1</div>
       <div fxFlex="25%" class="blocks">2</div>
       <div fxFlex class="blocks">3</div>
     </div>
+
     <rx-divider type="icon"></rx-divider>
+
     <h3 fxLayoutAlign="center">Layout row wrap (fxLayout)</h3>
+
     <div style="padding-top: 10px;height: 200px" fxLayout="row wrap" fxLayoutGap="10px">
       <div><div class="fill" fxLayoutAlign="center center" fxFlexFill>A</div></div>
       <div><div class="fill" fxLayoutAlign="center center" fxFlexFill>B</div></div>
       <div><div class="fill" fxLayoutAlign="center center" fxFlexFill>C</div></div>
       <div><div class="fill" fxLayoutAlign="center center" fxFlexFill>D</div></div>
     </div>
+
     <rx-divider type="icon"></rx-divider>
+
     <h3 fxLayoutAlign="center">Flex Fill (fxFlexFill)</h3>
+
     <div style="padding-top: 10px;height: 200px" fxLayout="row" fxLayoutGap="10px">
       <div><div style="background: red;" fxLayoutAlign="center center" fxFlexFill>A</div></div>
       <div><div style="background: green;" fxLayoutAlign="center center" fxFlexFill>B</div></div>
       <div><div style="background: purple;" fxLayoutAlign="center center" fxFlexFill>C</div></div>
       <div><div style="background: gray;" fxLayoutAlign="center center" fxFlexFill>D</div></div>
     </div>
+
     <rx-divider type="icon"></rx-divider>
+
     <h3 fxLayoutAlign="center">Dynamic directive change (fxFlexAlign)</h3>
+
     <div fxLayout="row wrap" fxLayoutAlign="space-evenly stretch" fxLayoutGap="10px">
       <rx-button palette="primary" @click=${() => this.setFxLayout('row')}>Row</rx-button>
       <rx-button palette="primary" @click=${() => this.setFxLayout('column')}>Column</rx-button>
     </div>
+
     <rx-divider></rx-divider>
+
     <mat-card fxLayout=${this.fxLayout} fxLayoutGap="10px">
       <mat-card class="fill">
         <div fxLayoutAlign="center center"  class="height">A</div>
@@ -140,8 +154,11 @@ import { Padding } from './modifiers/padding';
         <div fxLayoutAlign="center center"  class="height">C</div>
       </mat-card>
     </mat-card>
+
     <rx-divider type="icon"></rx-divider>
+
     <h3 fxLayoutAlign="center">Flex Align (fxFlexAlign)</h3>
+
     <div
       style="min-height: 200px;"
       fxLayout="row"
@@ -153,16 +170,22 @@ import { Padding } from './modifiers/padding';
       <div fxLayoutAlign="center" fxFlexAlign="center">C</div>
       <div fxLayoutAlign="center" fxFlexAlign="flex-end">D</div>
     </div>
+
     <rx-divider type="icon"></rx-divider>
+
     <h3 fxLayoutAlign="center">Flex Offset (fxFlexOffset)</h3>
+
     <div fxLayout="row">
       <div fxFlexOffset="10px">1. One</div>
       <div fxFlexOffset="5%">2. Two</div>
       <div fxFlexOffset="10vw">3. Three</div>
       <div fxFlexOffset="5vh">4. Four</div>
     </div>
+
     <rx-divider type="icon"></rx-divider>
+
     <h3 fxLayoutAlign="center">Flex Ordering (fxFlexOrder)</h3>
+
     <div fxLayout="row">
       <div fxFlexOrder="4">1. One</div>
       <div fxFlexOrder="2">2. Two</div>
