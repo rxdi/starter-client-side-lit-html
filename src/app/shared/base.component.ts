@@ -1,13 +1,13 @@
 import { Injector } from '@rxdi/core';
 import {
   ApolloClient,
+  DataProxy,
   importQuery,
   MutationOptions,
   QueryOptions,
-  SubscriptionOptions,
+  SubscriptionOptions
 } from '@rxdi/graphql-client';
 import { LitElement } from '@rxdi/lit-html';
-import { DataProxy } from 'apollo-cache';
 import { from, Observable } from 'rxjs';
 
 import { IMutation, IQuery, ISubscription } from '../@introspection';

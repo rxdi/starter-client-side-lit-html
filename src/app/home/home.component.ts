@@ -1,40 +1,59 @@
+import { ILaunch } from '@introspection/index';
+import { AngularLayout, FlexLayout } from '@rhtml/modifiers';
 import {
   async,
   Component,
+  css,
   html,
   OnDestroy,
   OnInit,
   OnUpdate,
 } from '@rxdi/lit-html';
 import { BaseComponent } from '@shared/base.component';
-import { timer } from 'rxjs';
+import { Observable, timer } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 /**
  * @customElement home-component
  */
-@Component({
+@Component<HomeComponent>({
   selector: 'home-component',
-  template(this: HomeComponent) {
+  style: css`
+    .launch {
+      color: white;
+      background: #467792;
+      height: 100px;
+    }
+`,
+
+  modifiers: [...FlexLayout, ...AngularLayout],
+  template(this) {
     return html`
+      <h4>Time is ${async(this.timer)}</h4>
       <header>
         <h1>Space X mission names:</h1>
       </header>
-      <p>${async(this.timer)}</p>
-      ${async(
-        this.getLaunches().pipe(
-          map((launches) =>
-            launches.map((launch) => html`<p>${launch.mission_name}</p>`)
-          )
-        )
-      )}
+      <div fxLayout="row wrap" fxLayoutAlign="space-evenly stretch" fxLayoutGap="10px">
+        <r-for .of=${this.launches}>
+          <r-let .item=${(launch: ILaunch) => html`
+            <div class="launch" fxLayout="column" fxLayoutAlign="center center" >
+              <div>${launch.mission_name}</div>
+              <a ngIf=${!!launch.links.article_link} target="_blank" .href=${launch.links.article_link}>Article</a>
+              <a ngIf=${!!launch.links.video_link} target="_blank" .href=${launch.links.video_link} >Video</a>
+            </div>
+          `}></r-let>
+        </r-for>
+      </div>
     `;
   },
 })
-export class HomeComponent
-  extends BaseComponent
-  implements OnInit, OnDestroy, OnUpdate {
-  private timer = timer(100, 1000).pipe(map(() => new Date()));
+export class HomeComponent extends BaseComponent implements OnInit, OnDestroy, OnUpdate {
+  private timer = timer(100, 1000).pipe(map(() => {
+    const date = new Date();
+    return [[date.getHours(), 'hours'].join(' '), [date.getSeconds(), ' seconds'].join(' ')].join(' - ')
+  }));
+
+  private launches: Observable<ILaunch[]> = this.getLaunches()
 
   OnInit() {
     console.log('Home component init');
@@ -50,7 +69,7 @@ export class HomeComponent
 
   getLaunches() {
     return this.query({ query: 'launches-past.query.graphql' }).pipe(
-      map((res) => res.data.launchesPast)
+      map((res) => res.data.launchesPast),
     );
   }
 }

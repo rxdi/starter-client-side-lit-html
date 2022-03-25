@@ -54,6 +54,7 @@ import { Router } from '@rxdi/router';
     return html`
       <ul class="container">
         <li><a @click=${() => this.router.go('/')}>Home</a></li>
+        <li><a @click=${() => this.router.go('/flex')}>Flex</a></li>
         <li><a @click=${() => this.router.go('/about')}>About</a></li>
         <span class="spacer"></span>
         <li><a @click=${this.onIncrement}>Increment</a></li>

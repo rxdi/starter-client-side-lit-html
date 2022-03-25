@@ -6,6 +6,7 @@ import {
   InMemoryCache
 } from '@rxdi/graphql-client';
 import { RouterModule } from '@rxdi/router';
+import { SharedModule } from '@shared/shared.module';
 
 import { introspectionQueryResultData } from '~/@introspection/fragmentTypes';
 
@@ -19,6 +20,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 @Module({
   components: [NavbarComponent, HomeComponent, FooterComponent],
   imports: [
+    SharedModule,
     GraphqlModule.forRoot(
       {
         async onRequest(this: GraphQLRequest) {
@@ -41,6 +43,10 @@ import { NavbarComponent } from './navbar/navbar.component';
         {
           path: '/about',
           children: () => import('./about/about.module'),
+        },
+        {
+          path: '/flex',
+          children: () => import('./flex/flex.module'),
         },
         {
           path: '(.*)',
