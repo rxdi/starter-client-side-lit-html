@@ -1,16 +1,18 @@
+import { SpaceXService } from '@core/spacex/spacex.service';
 import { ILaunch } from '@introspection/index';
 import { AngularLayout, FlexLayout } from '@rhtml/modifiers';
+import { Inject } from '@rxdi/core';
 import {
   async,
   Component,
   css,
   html,
+  LitElement,
   OnDestroy,
   OnInit,
   OnUpdate,
 } from '@rxdi/lit-html';
-import { BaseComponent } from '@shared/base.component';
-import { Observable, timer } from 'rxjs';
+import { defer, Observable, timer } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 /**
@@ -25,7 +27,6 @@ import { map } from 'rxjs/operators';
       height: 100px;
     }
 `,
-
   modifiers: [...FlexLayout, ...AngularLayout],
   template(this) {
     return html`
@@ -47,13 +48,16 @@ import { map } from 'rxjs/operators';
     `;
   },
 })
-export class HomeComponent extends BaseComponent implements OnInit, OnDestroy, OnUpdate {
+export class HomeComponent extends LitElement implements OnInit, OnDestroy, OnUpdate {
   private timer = timer(100, 1000).pipe(map(() => {
     const date = new Date();
     return [[date.getHours(), 'hours'].join(' '), [date.getSeconds(), ' seconds'].join(' ')].join(' - ')
   }));
 
-  private launches: Observable<ILaunch[]> = this.getLaunches()
+  @Inject(SpaceXService)
+  private spacexService: SpaceXService;
+
+  private launches: Observable<ILaunch[]> = defer(() => this.spacexService.getLaunches())
 
   OnInit() {
     console.log('Home component init');
@@ -67,9 +71,5 @@ export class HomeComponent extends BaseComponent implements OnInit, OnDestroy, O
     console.log('Home component updated');
   }
 
-  getLaunches() {
-    return this.query({ query: 'launches-past.query.graphql' }).pipe(
-      map((res) => res.data.launchesPast),
-    );
-  }
+
 }

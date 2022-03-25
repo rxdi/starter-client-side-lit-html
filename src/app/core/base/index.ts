@@ -7,11 +7,10 @@ import {
   QueryOptions,
   SubscriptionOptions
 } from '@rxdi/graphql-client';
-import { LitElement } from '@rxdi/lit-html';
 import { from, Observable } from 'rxjs';
 
-import { IMutation, IQuery, ISubscription } from '../@introspection';
-import { DocumentTypes } from '../@introspection/documentTypes';
+import { IMutation, IQuery, ISubscription } from '~/@introspection';
+import { DocumentTypes } from '~/@introspection/documentTypes';
 
 type Without<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 
@@ -29,7 +28,7 @@ interface ImportMutationMixin extends Without<MutationOptions, 'mutation'> {
   update?(proxy: DataProxy, res: { data: IMutation }): void;
 }
 
-export class BaseComponent extends LitElement {
+export class BaseGraphqlLayer {
   @Injector(ApolloClient) public graphql: ApolloClient;
 
   query<T = IQuery>(options: ImportQueryMixin) {

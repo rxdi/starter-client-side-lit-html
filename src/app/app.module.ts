@@ -1,3 +1,4 @@
+import { CoreModule } from '@core/core.module';
 import { Module } from '@rxdi/core';
 import {
   convertToPossibleTypes,
@@ -21,6 +22,7 @@ import { NavbarComponent } from './navbar/navbar.component';
   components: [NavbarComponent, HomeComponent, FooterComponent],
   imports: [
     SharedModule,
+    CoreModule,
     GraphqlModule.forRoot(
       {
         async onRequest(this: GraphQLRequest) {

@@ -9,7 +9,7 @@
     "lint-fix": "npx eslint ./src --fix --ext .ts",
     "deploy": "firebase deploy",
     "clean": "rm -rf .cache dist node_modules package-lock.json",
-    "introspect": "npx @gapi/cli schema introspect --collect-documents --collect-types"
+    "introspect": "npx gapi schema introspect --collect-documents --collect-types"
   },
   "author": "Kristiyan Tachev",
   "license": "MIT",
