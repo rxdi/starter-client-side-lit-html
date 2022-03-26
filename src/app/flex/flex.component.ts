@@ -1,4 +1,3 @@
-// import { CustomAttributeRegistry } from '@rhtml/custom-attributes';
 import { CustomAttributeRegistry } from '@rhtml/custom-attributes';
 import { HostListener } from '@rhtml/decorators';
 import { AngularLayout, FlexLayout } from '@rhtml/modifiers';

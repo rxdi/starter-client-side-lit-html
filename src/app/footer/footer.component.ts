@@ -1,4 +1,4 @@
-import { Component, css, html } from '@rxdi/lit-html';
+import { Component, css, html, LitElement } from '@rxdi/lit-html';
 
 /**
  * @customElement footer-component
@@ -7,13 +7,12 @@ import { Component, css, html } from '@rxdi/lit-html';
   selector: 'footer-component',
   style: css`
     .footer {
-      position: fixed;
-      left: 0;
-      bottom: 0;
-      width: 100%;
       background-color: #03a9f4;
       color: white;
       text-align: center;
+    }
+    p {
+      margin: 0;
     }
   `,
   template() {
@@ -24,4 +23,4 @@ import { Component, css, html } from '@rxdi/lit-html';
     `;
   }
 })
-export class FooterComponent extends HTMLElement {}
+export class FooterComponent extends LitElement { }
