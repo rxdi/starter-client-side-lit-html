@@ -1,17 +1,13 @@
-import { Attribute, CustomAttributeRegistry } from '@rhtml/custom-attributes';
+import { Attribute, Modifier } from '@rhtml/custom-attributes';
 
 interface Style {
   color: string;
 }
 
+@Modifier({
+  selector: 'color',
+})
 export class Color extends Attribute<Style> {
-
-  static options(this: HTMLElement) {
-    return {
-      name: 'color',
-      registry: new CustomAttributeRegistry(this.shadowRoot)
-    };
-  }
 
   OnInit() {
     this.modify();

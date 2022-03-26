@@ -1,3 +1,6 @@
+// import { CustomAttributeRegistry } from '@rhtml/custom-attributes';
+import { CustomAttributeRegistry } from '@rhtml/custom-attributes';
+import { HostListener } from '@rhtml/decorators'
 import { AngularLayout, FlexLayout } from '@rhtml/modifiers';
 import {
   Component,
@@ -38,12 +41,21 @@ import { Padding } from './modifiers/padding';
     }
 
 `,
+  /**
+   * All Modifiers will be defined inside this registry
+   * If removed every modifier should specify own registry
+   * If one modifier is creating a registry every other modifier
+   * will use this registry to define attributes
+   */
+  registry(this) {
+    return new CustomAttributeRegistry(this)
+  },
   modifiers: [
     ...FlexLayout,
     ...AngularLayout,
+    Padding,
     Background,
-    Color,
-    Padding
+    Color
   ],
   template(this) {
     return html`
@@ -207,7 +219,6 @@ export class FlexComponent extends LitElement {
   @state()
   fxLayout = 'column';
 
-
   @state()
   fxLayoutAlign = 'space-between stretch';
 
@@ -218,4 +229,14 @@ export class FlexComponent extends LitElement {
   setFxLayoutAlign(fxLayout: string) {
     this.fxLayoutAlign = fxLayout;
   }
+
+
+  @HostListener('mouseenter') onEnter() {
+    console.log('Enter');
+  }
+
+  @HostListener('mouseleave') onLeave() {
+    console.log('Leave');
+  }
+
 }
