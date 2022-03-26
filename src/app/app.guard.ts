@@ -3,7 +3,7 @@ import {
   CanActivateCommands,
   CanActivateContext,
   CanActivateRedirectResult,
-  CanActivateResolver,
+  CanActivateResolver
 } from '@rxdi/router';
 // import { Observable } from 'rxjs';
 

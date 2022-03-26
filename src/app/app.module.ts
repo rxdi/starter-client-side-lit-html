@@ -13,7 +13,6 @@ import { introspectionQueryResultData } from '~/@introspection/fragmentTypes';
 
 import { DOCUMENTS } from './@introspection/documents';
 import { AppComponent } from './app.component';
-import { State } from './app.state';
 import { FooterComponent } from './footer/footer.component';
 import { HomeComponent } from './home/home.component';
 import { NavbarComponent } from './navbar/navbar.component';
@@ -29,10 +28,10 @@ import { NavbarComponent } from './navbar/navbar.component';
           return new Headers();
         },
         cache: new InMemoryCache({
-          possibleTypes: convertToPossibleTypes(introspectionQueryResultData),
+          possibleTypes: convertToPossibleTypes(introspectionQueryResultData)
         }),
         uri: 'https://api.spacex.land/graphql/',
-        pubsub: 'wss://my-graphql-server-subscriptions/subscriptions',
+        pubsub: 'wss://my-graphql-server-subscriptions/subscriptions'
       },
       DOCUMENTS
     ),
@@ -40,27 +39,26 @@ import { NavbarComponent } from './navbar/navbar.component';
       [
         {
           path: '/',
-          component: HomeComponent,
+          component: HomeComponent
         },
         {
           path: '/about',
-          children: () => import('./about/about.module'),
+          children: () => import('./about/about.module')
         },
         {
           path: '/flex',
-          children: () => import('./flex/flex.module'),
+          children: () => import('./flex/flex.module')
         },
         {
           path: '(.*)',
           component: 'not-found-component',
-          action: () => import('./not-found/not-found.component'),
-        },
+          action: () => import('./not-found/not-found.component')
+        }
         //   { path: '/users/:user', component: 'x-user-profile' },
       ],
       { log: true }
-    ),
+    )
   ],
-  bootstrap: [AppComponent],
-  providers: [State],
+  bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

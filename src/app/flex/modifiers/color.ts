@@ -5,16 +5,15 @@ interface Style {
 }
 
 @Modifier({
-  selector: 'color',
+  selector: 'color'
 })
 export class Color extends Attribute<Style> {
-
   OnInit() {
     this.modify();
   }
 
   OnDestroy() {
-    this.setStyles({ color: null })(this.element)
+    this.setStyles({ color: null })(this.element);
   }
 
   OnUpdate() {
@@ -22,6 +21,6 @@ export class Color extends Attribute<Style> {
   }
 
   modify() {
-    this.setStyles({ color: this.value })(this.element)
+    this.setStyles({ color: this.value })(this.element);
   }
 }

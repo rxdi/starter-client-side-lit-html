@@ -1,27 +1,27 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable prettier/prettier */
- // tslint:disable
+// tslint:disable
 // graphql typescript definitions
 
 
-  export interface IGraphQLResponseRoot {
+export interface IGraphQLResponseRoot {
     data?: IQuery | IMutation | ISubscription;
     errors?: Array<IGraphQLResponseError>;
   }
 
-  export interface IGraphQLResponseError {
+export interface IGraphQLResponseError {
     message: string;            // Required for all errors
     locations?: Array<IGraphQLResponseErrorLocation>;
     [propName: string]: any;    // 7.2.2 says 'GraphQL servers may provide additional entries to error'
   }
 
-  export interface IGraphQLResponseErrorLocation {
+export interface IGraphQLResponseErrorLocation {
     line: number;
     column: number;
   }
 
   
-  export interface IQuery {
+export interface IQuery {
     __typename?: "Query";
     /**
     description?: fetch data from the table?: "users"
@@ -79,10 +79,10 @@ export   /**
   */
   type IUsersSelectColumnEnum = 'id' | 'name' | 'rocket' | 'timestamp' | 'twitter';
 
-  /**
+/**
     description: ordering options when selecting data from "users"
   */
-  export interface IUsersOrderBy {
+export interface IUsersOrderBy {
     id?: IOrderByEnum | null;
     name?: IOrderByEnum | null;
     rocket?: IOrderByEnum | null;
@@ -95,10 +95,10 @@ export   /**
   */
   type IOrderByEnum = 'asc' | 'asc_nulls_first' | 'asc_nulls_last' | 'desc' | 'desc_nulls_first' | 'desc_nulls_last';
 
-  /**
+/**
     description: Boolean expression to filter rows from the table "users". All fields are combined with a logical 'AND'.
   */
-  export interface IUsersBoolExp {
+export interface IUsersBoolExp {
     _and?: Array<IUsersBoolExp> | null;
     _not?: IUsersBoolExp | null;
     _or?: Array<IUsersBoolExp> | null;
@@ -109,10 +109,10 @@ export   /**
     twitter?: IStringComparisonExp | null;
 }
 
-  /**
+/**
     description: expression to compare columns of type uuid. All fields are combined with logical 'AND'.
   */
-  export interface IUuidComparisonExp {
+export interface IUuidComparisonExp {
     _eq?: any | null;
     _gt?: any | null;
     _gte?: any | null;
@@ -124,10 +124,10 @@ export   /**
     _nin: Array<any>;
 }
 
-  /**
+/**
     description: expression to compare columns of type String. All fields are combined with logical 'AND'.
   */
-  export interface IStringComparisonExp {
+export interface IStringComparisonExp {
     _eq?: string | null;
     _gt?: string | null;
     _gte?: string | null;
@@ -145,10 +145,10 @@ export   /**
     _similar?: string | null;
 }
 
-  /**
+/**
     description: expression to compare columns of type timestamptz. All fields are combined with logical 'AND'.
   */
-  export interface ITimestamptzComparisonExp {
+export interface ITimestamptzComparisonExp {
     _eq?: any | null;
     _gt?: any | null;
     _gte?: any | null;
@@ -160,10 +160,10 @@ export   /**
     _nin: Array<any>;
 }
 
-  /**
+/**
     description?: columns and relationships of "users"
   */
-  export interface IUsers {
+export interface IUsers {
     __typename?: "users";
     id?: any;
     name?: string | null;
@@ -172,29 +172,29 @@ export   /**
     twitter?: string | null;
 }
 
-  /**
+/**
     description?: aggregated selection of "users"
   */
-  export interface IUsersAggregate {
+export interface IUsersAggregate {
     __typename?: "users_aggregate";
     aggregate?: IUsersAggregateFields | null;
     nodes?: Array<IUsers>;
 }
 
-  /**
+/**
     description?: aggregate fields of "users"
   */
-  export interface IUsersAggregateFields {
+export interface IUsersAggregateFields {
     __typename?: "users_aggregate_fields";
     count?: number | null;
     max?: IUsersMaxFields | null;
     min?: IUsersMinFields | null;
 }
 
-  /**
+/**
     description?: aggregate max on columns
   */
-  export interface IUsersMaxFields {
+export interface IUsersMaxFields {
     __typename?: "users_max_fields";
     name?: string | null;
     rocket?: string | null;
@@ -202,10 +202,10 @@ export   /**
     twitter?: string | null;
 }
 
-  /**
+/**
     description?: aggregate min on columns
   */
-  export interface IUsersMinFields {
+export interface IUsersMinFields {
     __typename?: "users_min_fields";
     name?: string | null;
     rocket?: string | null;
@@ -214,7 +214,7 @@ export   /**
 }
 
   
-  export interface ICapsulesFind {
+export interface ICapsulesFind {
     id?: string | null;
     landings?: number | null;
     mission?: string | null;
@@ -225,7 +225,7 @@ export   /**
 }
 
   
-  export interface ICapsule {
+export interface ICapsule {
     __typename?: "Capsule";
     id?: string | null;
     landings?: number | null;
@@ -238,14 +238,14 @@ export   /**
 }
 
   
-  export interface ICapsuleMission {
+export interface ICapsuleMission {
     __typename?: "CapsuleMission";
     flight?: number | null;
     name?: string | null;
 }
 
   
-  export interface IDragon {
+export interface IDragon {
     __typename?: "Dragon";
     active?: boolean | null;
     crew_capacity?: number | null;
@@ -272,14 +272,14 @@ export   /**
 }
 
   
-  export interface IDistance {
+export interface IDistance {
     __typename?: "Distance";
     feet?: number | null;
     meters?: number | null;
 }
 
   
-  export interface IDragonHeatShield {
+export interface IDragonHeatShield {
     __typename?: "DragonHeatShield";
     dev_partner?: string | null;
     material?: string | null;
@@ -288,27 +288,27 @@ export   /**
 }
 
   
-  export interface IMass {
+export interface IMass {
     __typename?: "Mass";
     kg?: number | null;
     lb?: number | null;
 }
 
   
-  export interface IVolume {
+export interface IVolume {
     __typename?: "Volume";
     cubic_feet?: number | null;
     cubic_meters?: number | null;
 }
 
   
-  export interface IDragonPressurizedCapsule {
+export interface IDragonPressurizedCapsule {
     __typename?: "DragonPressurizedCapsule";
     payload_volume?: IVolume | null;
 }
 
   
-  export interface IDragonThrust {
+export interface IDragonThrust {
     __typename?: "DragonThrust";
     amount?: number | null;
     fuel_1?: string | null;
@@ -319,28 +319,28 @@ export   /**
 }
 
   
-  export interface IForce {
+export interface IForce {
     __typename?: "Force";
     kN?: number | null;
     lbf?: number | null;
 }
 
   
-  export interface IDragonTrunk {
+export interface IDragonTrunk {
     __typename?: "DragonTrunk";
     cargo?: IDragonTrunkCargo | null;
     trunk_volume?: IVolume | null;
 }
 
   
-  export interface IDragonTrunkCargo {
+export interface IDragonTrunkCargo {
     __typename?: "DragonTrunkCargo";
     solar_array?: number | null;
     unpressurized_cargo?: boolean | null;
 }
 
   
-  export interface IInfo {
+export interface IInfo {
     __typename?: "Info";
     ceo?: string | null;
     coo?: string | null;
@@ -360,7 +360,7 @@ export   /**
 }
 
   
-  export interface IAddress {
+export interface IAddress {
     __typename?: "Address";
     address?: string | null;
     city?: string | null;
@@ -368,7 +368,7 @@ export   /**
 }
 
   
-  export interface IInfoLinks {
+export interface IInfoLinks {
     __typename?: "InfoLinks";
     elon_twitter?: string | null;
     flickr?: string | null;
@@ -377,7 +377,7 @@ export   /**
 }
 
   
-  export interface ICoresFind {
+export interface ICoresFind {
     asds_attempts?: number | null;
     asds_landings?: number | null;
     block?: number | null;
@@ -392,7 +392,7 @@ export   /**
 }
 
   
-  export interface ICore {
+export interface ICore {
     __typename?: "Core";
     asds_attempts?: number | null;
     asds_landings?: number | null;
@@ -408,7 +408,7 @@ export   /**
 }
 
   
-  export interface IHistoryFind {
+export interface IHistoryFind {
     end?: any | null;
     flight_number?: number | null;
     id?: string | null;
@@ -416,7 +416,7 @@ export   /**
 }
 
   
-  export interface IHistory {
+export interface IHistory {
     __typename?: "History";
     details?: string | null;
     event_date_unix?: any | null;
@@ -428,7 +428,7 @@ export   /**
 }
 
   
-  export interface ILink {
+export interface ILink {
     __typename?: "Link";
     article?: string | null;
     reddit?: string | null;
@@ -436,7 +436,7 @@ export   /**
 }
 
   
-  export interface ILaunch {
+export interface ILaunch {
     __typename?: "Launch";
     details?: string | null;
     id?: string | null;
@@ -460,7 +460,7 @@ export   /**
 }
 
   
-  export interface ILaunchSite {
+export interface ILaunchSite {
     __typename?: "LaunchSite";
     site_id?: string | null;
     site_name_long?: string | null;
@@ -468,7 +468,7 @@ export   /**
 }
 
   
-  export interface ILaunchLinks {
+export interface ILaunchLinks {
     __typename?: "LaunchLinks";
     article_link?: string | null;
     flickr_images?: Array<string> | null;
@@ -484,7 +484,7 @@ export   /**
 }
 
   
-  export interface ILaunchRocket {
+export interface ILaunchRocket {
     __typename?: "LaunchRocket";
     fairings?: ILaunchRocketFairings | null;
     first_stage?: ILaunchRocketFirstStage | null;
@@ -495,7 +495,7 @@ export   /**
 }
 
   
-  export interface ILaunchRocketFairings {
+export interface ILaunchRocketFairings {
     __typename?: "LaunchRocketFairings";
     recovered?: boolean | null;
     recovery_attempt?: boolean | null;
@@ -504,13 +504,13 @@ export   /**
 }
 
   
-  export interface ILaunchRocketFirstStage {
+export interface ILaunchRocketFirstStage {
     __typename?: "LaunchRocketFirstStage";
     cores?: Array<ILaunchRocketFirstStageCore> | null;
 }
 
   
-  export interface ILaunchRocketFirstStageCore {
+export interface ILaunchRocketFirstStageCore {
     __typename?: "LaunchRocketFirstStageCore";
     block?: number | null;
     core?: ICore | null;
@@ -525,7 +525,7 @@ export   /**
 }
 
   
-  export interface IRocket {
+export interface IRocket {
     __typename?: "Rocket";
     active?: boolean | null;
     boosters?: number | null;
@@ -551,7 +551,7 @@ export   /**
 }
 
   
-  export interface IRocketEngines {
+export interface IRocketEngines {
     __typename?: "RocketEngines";
     number?: number | null;
     type?: string | null;
@@ -566,7 +566,7 @@ export   /**
 }
 
   
-  export interface IRocketFirstStage {
+export interface IRocketFirstStage {
     __typename?: "RocketFirstStage";
     burn_time_sec?: number | null;
     engines?: number | null;
@@ -577,14 +577,14 @@ export   /**
 }
 
   
-  export interface IRocketLandingLegs {
+export interface IRocketLandingLegs {
     __typename?: "RocketLandingLegs";
     number?: number | null;
     material?: string | null;
 }
 
   
-  export interface IRocketPayloadWeight {
+export interface IRocketPayloadWeight {
     __typename?: "RocketPayloadWeight";
     id?: string | null;
     kg?: number | null;
@@ -593,7 +593,7 @@ export   /**
 }
 
   
-  export interface IRocketSecondStage {
+export interface IRocketSecondStage {
     __typename?: "RocketSecondStage";
     burn_time_sec?: number | null;
     engines?: number | null;
@@ -603,28 +603,28 @@ export   /**
 }
 
   
-  export interface IRocketSecondStagePayloads {
+export interface IRocketSecondStagePayloads {
     __typename?: "RocketSecondStagePayloads";
     option_1?: string | null;
     composite_fairing?: IRocketSecondStagePayloadCompositeFairing | null;
 }
 
   
-  export interface IRocketSecondStagePayloadCompositeFairing {
+export interface IRocketSecondStagePayloadCompositeFairing {
     __typename?: "RocketSecondStagePayloadCompositeFairing";
     height?: IDistance | null;
     diameter?: IDistance | null;
 }
 
   
-  export interface ILaunchRocketSecondStage {
+export interface ILaunchRocketSecondStage {
     __typename?: "LaunchRocketSecondStage";
     block?: number | null;
     payloads?: Array<IPayload> | null;
 }
 
   
-  export interface IPayload {
+export interface IPayload {
     __typename?: "Payload";
     customers?: Array<string> | null;
     id?: string | null;
@@ -640,7 +640,7 @@ export   /**
 }
 
   
-  export interface IPayloadOrbitParams {
+export interface IPayloadOrbitParams {
     __typename?: "PayloadOrbitParams";
     apoapsis_km?: number | null;
     arg_of_pericenter?: number | null;
@@ -660,13 +660,13 @@ export   /**
 }
 
   
-  export interface ILaunchTelemetry {
+export interface ILaunchTelemetry {
     __typename?: "LaunchTelemetry";
     flight_club?: string | null;
 }
 
   
-  export interface IShip {
+export interface IShip {
     __typename?: "Ship";
     abs?: number | null;
     active?: boolean | null;
@@ -694,34 +694,34 @@ export   /**
 }
 
   
-  export interface IShipMission {
+export interface IShipMission {
     __typename?: "ShipMission";
     flight?: string | null;
     name?: string | null;
 }
 
   
-  export interface IShipLocation {
+export interface IShipLocation {
     __typename?: "ShipLocation";
     latitude?: number | null;
     longitude?: number | null;
 }
 
   
-  export interface IHistoriesResult {
+export interface IHistoriesResult {
     __typename?: "HistoriesResult";
     result?: IResult | null;
     data?: Array<IHistory> | null;
 }
 
   
-  export interface IResult {
+export interface IResult {
     __typename?: "Result";
     totalCount?: number | null;
 }
 
   
-  export interface ILandpad {
+export interface ILandpad {
     __typename?: "Landpad";
     attempted_landings?: string | null;
     details?: string | null;
@@ -735,7 +735,7 @@ export   /**
 }
 
   
-  export interface ILocation {
+export interface ILocation {
     __typename?: "Location";
     latitude?: number | null;
     longitude?: number | null;
@@ -744,7 +744,7 @@ export   /**
 }
 
   
-  export interface ILaunchFind {
+export interface ILaunchFind {
     apoapsis_km?: number | null;
     block?: number | null;
     cap_serial?: string | null;
@@ -808,14 +808,14 @@ export   /**
 }
 
   
-  export interface ILaunchesPastResult {
+export interface ILaunchesPastResult {
     __typename?: "LaunchesPastResult";
     result?: IResult | null;
     data?: Array<ILaunch> | null;
 }
 
   
-  export interface ILaunchpad {
+export interface ILaunchpad {
     __typename?: "Launchpad";
     attempted_launches?: number | null;
     details?: string | null;
@@ -829,7 +829,7 @@ export   /**
 }
 
   
-  export interface IMissionsFind {
+export interface IMissionsFind {
     id?: string | null;
     manufacturer?: string | null;
     name?: string | null;
@@ -837,7 +837,7 @@ export   /**
 }
 
   
-  export interface IMission {
+export interface IMission {
     __typename?: "Mission";
     description?: string | null;
     id?: string | null;
@@ -850,14 +850,14 @@ export   /**
 }
 
   
-  export interface IMissionResult {
+export interface IMissionResult {
     __typename?: "MissionResult";
     result?: IResult | null;
     data?: Array<IMission> | null;
 }
 
   
-  export interface IPayloadsFind {
+export interface IPayloadsFind {
     apoapsis_km?: number | null;
     customer?: string | null;
     eccentricity?: number | null;
@@ -882,7 +882,7 @@ export   /**
 }
 
   
-  export interface IRoadster {
+export interface IRoadster {
     __typename?: "Roadster";
     apoapsis_au?: number | null;
     details?: string | null;
@@ -911,14 +911,14 @@ export   /**
 }
 
   
-  export interface IRocketsResult {
+export interface IRocketsResult {
     __typename?: "RocketsResult";
     result?: IResult | null;
     data?: Array<IRocket> | null;
 }
 
   
-  export interface IShipsFind {
+export interface IShipsFind {
     id?: string | null;
     name?: string | null;
     model?: string | null;
@@ -944,14 +944,14 @@ export   /**
 }
 
   
-  export interface IShipsResult {
+export interface IShipsResult {
     __typename?: "ShipsResult";
     result?: IResult | null;
     data?: Array<IShip> | null;
 }
 
   
-  export interface IMutation {
+export interface IMutation {
     __typename?: "Mutation";
     /**
     description?: delete data from the table?: "users"
@@ -967,10 +967,10 @@ export   /**
     update_users?: IUsersMutationResponse | null;
 }
 
-  /**
+/**
     description?: response of any mutation on the table "users"
   */
-  export interface IUsersMutationResponse {
+export interface IUsersMutationResponse {
     __typename?: "users_mutation_response";
     /**
     description?: number of affected rows by the mutation
@@ -982,10 +982,10 @@ export   /**
     returning?: Array<IUsers>;
 }
 
-  /**
+/**
     description: input type for inserting data into table "users"
   */
-  export interface IUsersInsertInput {
+export interface IUsersInsertInput {
     id?: any | null;
     name?: string | null;
     rocket?: string | null;
@@ -993,10 +993,10 @@ export   /**
     twitter?: string | null;
 }
 
-  /**
+/**
     description?: on conflict condition type for table "users"
   */
-  export interface IUsersOnConflict {
+export interface IUsersOnConflict {
     constraint?: IUsersConstraintEnum;
     update_columns?: Array<IUsersUpdateColumnEnum>;
 }
@@ -1011,10 +1011,10 @@ export   /**
   */
   type IUsersUpdateColumnEnum = 'id' | 'name' | 'rocket' | 'timestamp' | 'twitter';
 
-  /**
+/**
     description: input type for updating data in table "users"
   */
-  export interface IUsersSetInput {
+export interface IUsersSetInput {
     id?: any | null;
     name?: string | null;
     rocket?: string | null;
@@ -1023,7 +1023,7 @@ export   /**
 }
 
   
-  export interface ISubscription {
+export interface ISubscription {
     __typename?: "Subscription";
     /**
     description?: fetch data from the table?: "users"
@@ -1044,53 +1044,53 @@ export   /**
   */
   type IConflictActionEnum = 'ignore' | 'update';
 
-  /**
+/**
     description: order by aggregate values of table "users"
   */
-  export interface IUsersAggregateOrderBy {
+export interface IUsersAggregateOrderBy {
     count?: IOrderByEnum | null;
     max?: IUsersMaxOrderBy | null;
     min?: IUsersMinOrderBy | null;
 }
 
-  /**
+/**
     description: order by max() on columns of table "users"
   */
-  export interface IUsersMaxOrderBy {
+export interface IUsersMaxOrderBy {
     name?: IOrderByEnum | null;
     rocket?: IOrderByEnum | null;
     timestamp?: IOrderByEnum | null;
     twitter?: IOrderByEnum | null;
 }
 
-  /**
+/**
     description: order by min() on columns of table "users"
   */
-  export interface IUsersMinOrderBy {
+export interface IUsersMinOrderBy {
     name?: IOrderByEnum | null;
     rocket?: IOrderByEnum | null;
     timestamp?: IOrderByEnum | null;
     twitter?: IOrderByEnum | null;
 }
 
-  /**
+/**
     description: input type for inserting array relation for remote table "users"
   */
-  export interface IUsersArrRelInsertInput {
+export interface IUsersArrRelInsertInput {
     data: Array<IUsersInsertInput>;
     on_conflict?: IUsersOnConflict | null;
 }
 
-  /**
+/**
     description: input type for inserting object relation for remote table "users"
   */
-  export interface IUsersObjRelInsertInput {
+export interface IUsersObjRelInsertInput {
     data: IUsersInsertInput;
     on_conflict?: IUsersOnConflict | null;
 }
 
   
-  export interface ICoreMission {
+export interface ICoreMission {
     __typename?: "CoreMission";
     name?: string | null;
     flight?: number | null;

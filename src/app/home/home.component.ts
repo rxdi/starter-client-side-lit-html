@@ -10,7 +10,7 @@ import {
   LitElement,
   OnDestroy,
   OnInit,
-  OnUpdate,
+  OnUpdate
 } from '@rxdi/lit-html';
 import { defer, Observable, timer } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -26,7 +26,7 @@ import { map } from 'rxjs/operators';
       background: #467792;
       height: 100px;
     }
-`,
+  `,
   modifiers: [...FlexLayout, ...AngularLayout],
   template(this) {
     return html`
@@ -34,30 +34,58 @@ import { map } from 'rxjs/operators';
       <header>
         <h1>Space X mission names:</h1>
       </header>
-      <div fxLayout="row wrap" fxLayoutAlign="space-evenly stretch" fxLayoutGap="10px">
+      <div
+        fxLayout="row wrap"
+        fxLayoutAlign="space-evenly stretch"
+        fxLayoutGap="10px"
+      >
         <r-for .of=${this.launches}>
-          <r-let .item=${(launch: ILaunch) => html`
-            <div class="launch" fxLayout="column" fxLayoutAlign="center center" >
-              <div>${launch.mission_name}</div>
-              <a ngIf=${!!launch.links.article_link} target="_blank" .href=${launch.links.article_link}>Article</a>
-              <a ngIf=${!!launch.links.video_link} target="_blank" .href=${launch.links.video_link} >Video</a>
-            </div>
-          `}></r-let>
+          <r-let
+            .item=${(launch: ILaunch) => html`
+              <div
+                class="launch"
+                fxLayout="column"
+                fxLayoutAlign="center center"
+              >
+                <div>${launch.mission_name}</div>
+                <a
+                  ngIf=${!!launch.links.article_link}
+                  target="_blank"
+                  .href=${launch.links.article_link}
+                  >Article</a
+                >
+                <a
+                  ngIf=${!!launch.links.video_link}
+                  target="_blank"
+                  .href=${launch.links.video_link}
+                  >Video</a
+                >
+              </div>
+            `}
+          ></r-let>
         </r-for>
       </div>
     `;
-  },
+  }
 })
-export class HomeComponent extends LitElement implements OnInit, OnDestroy, OnUpdate {
-  private timer = timer(100, 1000).pipe(map(() => {
-    const date = new Date();
-    return [[date.getHours(), 'hours'].join(' '), [date.getSeconds(), ' seconds'].join(' ')].join(' - ')
-  }));
+export class HomeComponent extends LitElement
+  implements OnInit, OnDestroy, OnUpdate {
+  private timer = timer(100, 1000).pipe(
+    map(() => {
+      const date = new Date();
+      return [
+        [date.getHours(), 'hours'].join(' '),
+        [date.getSeconds(), ' seconds'].join(' ')
+      ].join(' - ');
+    })
+  );
 
   @Inject(SpaceXService)
   private spacexService: SpaceXService;
 
-  private launches: Observable<ILaunch[]> = defer(() => this.spacexService.getLaunches())
+  private launches: Observable<ILaunch[]> = defer(() =>
+    this.spacexService.getLaunches()
+  );
 
   OnInit() {
     console.log('Home component init');
@@ -70,6 +98,4 @@ export class HomeComponent extends LitElement implements OnInit, OnDestroy, OnUp
   OnUpdate() {
     console.log('Home component updated');
   }
-
-
 }

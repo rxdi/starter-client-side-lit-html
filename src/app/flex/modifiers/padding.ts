@@ -9,7 +9,7 @@ interface Style {
 }
 
 @Modifier({
-  selector: 'padding',
+  selector: 'padding'
   /**
    * If "registry" is specified , modifier will create own registry
    * If no registry present on the root component this will be used
@@ -20,13 +20,12 @@ interface Style {
   // }
 })
 export class Padding extends Attribute<Style> {
-
   OnInit() {
     this.modify();
   }
 
   OnDestroy() {
-    this.setStyles({ padding: null })(this.element)
+    this.setStyles({ padding: null })(this.element);
   }
 
   OnUpdate() {
@@ -34,6 +33,6 @@ export class Padding extends Attribute<Style> {
   }
 
   modify() {
-    this.setStyles({ padding: this.value })(this.element)
+    this.setStyles({ padding: this.value })(this.element);
   }
 }

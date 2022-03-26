@@ -5,9 +5,7 @@ import { ButtonComponent } from '@rxdi/ui-kit/button';
 import { DividerComponent } from '@rxdi/ui-kit/divider';
 
 @Module({
-  imports: [
-    ReactiveUiModule.forRoot()
-  ],
+  imports: [ReactiveUiModule.forRoot()],
   components: [
     ButtonComponent,
     DividerComponent,
@@ -16,4 +14,4 @@ import { DividerComponent } from '@rxdi/ui-kit/divider';
     LetOperator
   ]
 })
-export class SharedModule { }
+export class SharedModule {}

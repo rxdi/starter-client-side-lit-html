@@ -20,8 +20,8 @@ import { map } from 'rxjs/operators';
         />
       </p>
     `;
-  },
+  }
 })
 export class AboutComponent extends LitElement {
-  private timer = timer(1, 1000).pipe(map((v) => v));
+  private timer = timer(1, 1000).pipe(map(v => v));
 }

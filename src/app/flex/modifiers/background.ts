@@ -5,16 +5,15 @@ interface Styles {
 }
 
 @Modifier({
-  selector: 'background',
+  selector: 'background'
 })
 export class Background extends Attribute<Styles> {
-
   OnInit() {
     this.modify();
   }
 
   OnDestroy() {
-    this.setStyles({ backgroundColor: null })(this.element)
+    this.setStyles({ backgroundColor: null })(this.element);
   }
 
   OnUpdate() {
@@ -22,6 +21,6 @@ export class Background extends Attribute<Styles> {
   }
 
   modify() {
-    this.setStyles({ backgroundColor: this.value })(this.element)
+    this.setStyles({ backgroundColor: this.value })(this.element);
   }
 }

@@ -5,4 +5,4 @@ import { SpaceXService } from './spacex/spacex.service';
 @Module({
   providers: [SpaceXService]
 })
-export class CoreModule { }
+export class CoreModule {}

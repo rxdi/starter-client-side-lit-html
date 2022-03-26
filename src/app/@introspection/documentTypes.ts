@@ -7,5 +7,5 @@ function strEnum<T extends string>(o: Array<T>): { [K in T]: K } {
   }, Object.create(null));
 }
 export const DocumentTypes = strEnum(['launch.fragment.graphql',
-'launches-past.query.graphql']);
+  'launches-past.query.graphql']);
 export type DocumentTypes = keyof typeof DocumentTypes;

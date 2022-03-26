@@ -5,7 +5,6 @@ import { Component, css, html } from '@rxdi/lit-html';
  */
 @Component({
   selector: 'footer-component',
-  useShadow: true,
   style: css`
     .footer {
       position: fixed;
@@ -23,6 +22,6 @@ import { Component, css, html } from '@rxdi/lit-html';
         <p>Footer</p>
       </div>
     `;
-  },
+  }
 })
 export class FooterComponent extends HTMLElement {}
