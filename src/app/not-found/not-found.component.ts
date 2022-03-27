@@ -11,4 +11,4 @@ import { Component, html, LitElement } from '@rxdi/lit-html';
     <p>Please check your URL.</p>
   `
 })
-export class NotFoundComponent extends LitElement {}
+export class NotFoundComponent extends LitElement { }

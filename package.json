@@ -14,14 +14,14 @@
   "author": "Kristiyan Tachev",
   "license": "MIT",
   "dependencies": {
-    "@rhtml/modifiers": "^0.0.104",
-    "@rhtml/operators": "^0.0.104",
-    "@rhtml/custom-attributes": "^0.0.104",
-    "@rhtml/decorators": "^0.0.104",
-    "@rxdi/core": "^0.7.145",
-    "@rxdi/graphql-client": "^0.7.145",
-    "@rxdi/lit-html": "^0.7.145",
-    "@rxdi/router": "^0.7.145",
+    "@rhtml/custom-attributes": "^0.0.110",
+    "@rhtml/decorators": "^0.0.110",
+    "@rhtml/modifiers": "^0.0.110",
+    "@rhtml/operators": "^0.0.110",
+    "@rxdi/core": "^0.7.146",
+    "@rxdi/graphql-client": "^0.7.146",
+    "@rxdi/lit-html": "^0.7.146",
+    "@rxdi/router": "^0.7.146",
     "@rxdi/ui-kit": "^0.7.134"
   },
   "browserslist": [

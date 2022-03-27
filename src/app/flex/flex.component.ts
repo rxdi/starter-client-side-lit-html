@@ -3,6 +3,7 @@ import { HostListener } from '@rhtml/decorators';
 import { AngularLayout, FlexLayout } from '@rhtml/modifiers';
 import { Component, css, html, LitElement, state } from '@rxdi/lit-html';
 
+import { Animation } from './modifiers/animation';
 import { Background } from './modifiers/background';
 import { Color } from './modifiers/color';
 import { Padding } from './modifiers/padding';
@@ -12,26 +13,28 @@ import { Padding } from './modifiers/padding';
  */
 @Component<FlexComponent>({
   selector: 'flex-component',
-  style: css`
-    .blocks {
-      width: 50px;
-      height: 50px;
-      background-color: #c1daf6;
-    }
+  styles: [
+    css`
+      .blocks {
+        width: 50px;
+        height: 50px;
+        background-color: #c1daf6;
+      }
 
-    .fill {
-      background: red;
-    }
+      .fill {
+        background: red;
+      }
 
-    .flex-align div {
-      min-height: 50px;
-      color: #fff;
-      background-color: #292929;
-    }
-    .height {
-      height: 100px;
-    }
-  `,
+      .flex-align div {
+        min-height: 50px;
+        color: #fff;
+        background-color: #292929;
+      }
+      .height {
+        height: 100px;
+      }
+    `
+  ],
   /**
    * All Modifiers will be defined inside this registry
    * If removed every modifier should specify own registry
@@ -41,9 +44,20 @@ import { Padding } from './modifiers/padding';
   registry(this) {
     return new CustomAttributeRegistry(this);
   },
-  modifiers: [...FlexLayout, ...AngularLayout, Padding, Background, Color],
+  modifiers: [
+    ...FlexLayout,
+    ...AngularLayout,
+    Padding,
+    Background,
+    Color,
+    Animation
+  ],
   template(this) {
     return html`
+      <h2 animated="slideInLeft" delay="1s">
+        Your ultimate Solution
+      </h2>
+
       <rx-divider type="icon"></rx-divider>
 
       <h3 fxLayoutAlign="center">
