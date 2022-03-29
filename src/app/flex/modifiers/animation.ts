@@ -4,12 +4,9 @@ import {
   Input,
   Modifier
 } from '@rhtml/custom-attributes';
+import { HostBinding } from '@rhtml/decorators';
 
-import { Animations, AnimationsType } from './animate.css';
-
-interface Styles {
-  animationDelay: string;
-}
+import { Animations } from './animate.css';
 
 @Modifier({
   selector: 'animated',
@@ -17,33 +14,37 @@ interface Styles {
     return new CustomAttributeRegistry(this);
   }
 })
-export class Animation extends Attribute<Styles> {
+export class Animation extends Attribute {
   @Input({ observe: true })
+  @HostBinding('style.animationDelay')
   delay: string;
 
-  value: AnimationsType;
+  @HostBinding('class.animated')
+  animated: boolean;
+
+  private prevValue: string;
 
   OnInit() {
+    this.animated = true;
+    this.prevValue = this.value;
     this.pushStylesToParent();
     this.modify();
   }
 
   OnDestroy() {
-    this.element.classList.remove('animated', this.value);
-    this.setStyles({ animationDelay: null })(this.element);
+    this.element.classList.remove(this.value);
+    this.element.classList.remove(this.prevValue);
+    this.animated = false;
   }
 
   OnUpdate() {
     this.modify();
-  }
-
-  OnUpdateAttribute() {
-    this.modify();
+    this.prevValue = this.value;
   }
 
   private modify() {
-    this.element.classList.add('animated', this.value);
-    this.setStyles({ animationDelay: this.delay })(this.element);
+    this.element.classList.remove(this.prevValue);
+    this.element.classList.add(this.value);
   }
 
   private pushStylesToParent() {

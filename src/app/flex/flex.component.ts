@@ -4,9 +4,7 @@ import { AngularLayout, FlexLayout } from '@rhtml/modifiers';
 import { Component, css, html, LitElement, state } from '@rxdi/lit-html';
 
 import { Animation } from './modifiers/animation';
-import { Background } from './modifiers/background';
-import { Color } from './modifiers/color';
-import { Padding } from './modifiers/padding';
+import { CustomLayout } from './modifiers/custom-layout';
 
 /**
  * @customElement flex-component
@@ -44,14 +42,7 @@ import { Padding } from './modifiers/padding';
   registry(this) {
     return new CustomAttributeRegistry(this);
   },
-  modifiers: [
-    ...FlexLayout,
-    ...AngularLayout,
-    Padding,
-    Background,
-    Color,
-    Animation
-  ],
+  modifiers: [...FlexLayout, ...AngularLayout, CustomLayout, Animation],
   template(this) {
     return html`
       <h2 animated="slideInLeft" delay="1s">
@@ -75,7 +66,7 @@ import { Padding } from './modifiers/padding';
       <rx-divider type="icon"></rx-divider>
 
       <h3 fxLayoutAlign="center">Custom Attributes aka Modifiers</h3>
-      <article background="green" color="white" padding="10px">
+      <article layout background="green" color="white" padding="10px">
         <p>This will be shown in a green background!</p>
       </article>
 
@@ -326,10 +317,10 @@ export class FlexComponent extends LitElement {
   }
 
   @HostListener('mouseenter') onEnter() {
-    console.log('Enter');
+    // console.log('Enter');
   }
 
   @HostListener('mouseleave') onLeave() {
-    console.log('Leave');
+    // console.log('Leave');
   }
 }
