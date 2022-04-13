@@ -148,8 +148,10 @@ import { CustomLayout } from './modifiers/custom-layout';
       <h3 fxLayoutAlign="center">Flex max-width (fxFlex)</h3>
 
       <div fxLayout="row">
-        <div fxFlex="20%" class="blocks">1</div>
-        <div fxFlex="25%" class="blocks">2</div>
+        <div fxFlex="10%" fxFlex.xs="20%" fxFlex.md="40%" class="blocks">
+          1
+        </div>
+        <div fxFlex class="blocks">2</div>
         <div fxFlex class="blocks">3</div>
       </div>
 
@@ -159,7 +161,9 @@ import { CustomLayout } from './modifiers/custom-layout';
 
       <div
         style="padding-top: 10px;height: 200px"
-        fxLayout="row wrap"
+        fxLayout="row"
+        fxLayout.xs="column"
+        fxLayout.md="row wrap"
         fxLayoutGap="10px"
       >
         <div>

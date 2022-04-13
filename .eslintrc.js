@@ -23,7 +23,11 @@ module.exports = {
       "prettier/prettier": ["warn", { "endOfLine": "auto" }],
       "indent": [ "warn", 2 ],
       "@typescript-eslint/interface-name-prefix" : "off",
-      "@typescript-eslint/camelcase": 0
+      "@typescript-eslint/camelcase": 0,
+      "no-unused-vars": "off",
+      "@typescript-eslint/no-unused-vars": ["off"],
+      "no-use-before-define": "off",
+      "@typescript-eslint/no-use-before-define": "off"
   },
   plugins: ["simple-import-sort"]
 };

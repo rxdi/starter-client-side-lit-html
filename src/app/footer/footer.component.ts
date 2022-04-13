@@ -23,4 +23,4 @@ import { Component, css, html, LitElement } from '@rxdi/lit-html';
     `;
   }
 })
-export class FooterComponent extends LitElement { }
+export class FooterComponent extends LitElement {}
