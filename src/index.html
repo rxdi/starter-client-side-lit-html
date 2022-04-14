@@ -33,18 +33,18 @@
               await worker.unregister();
             }
           } else {
-            window.addEventListener('load', function() {
+            window.addEventListener('load', function () {
               navigator.serviceWorker
                 .register('service-worker.js', {
-                  scope: '/'
+                  scope: '/',
                 })
-                .then(function(registration) {
+                .then(function (registration) {
                   console.log(
                     'Registration successful, scope is:',
                     registration.scope
                   );
                 })
-                .catch(function(error) {
+                .catch(function (error) {
                   console.log(
                     'Service worker registration failed, error:',
                     error
@@ -61,7 +61,7 @@
       src="./app/loading-screen/loading-screen.component.ts"
     ></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
-    <script async>
+    <!-- <script async>
       window.onerror = (text, url, lineNumber) => {
         Swal.fire({
           type: 'error',
@@ -71,7 +71,7 @@
         });
         return true;
       };
-    </script>
+    </script> -->
   </head>
   <body>
     <loading-screen-component></loading-screen-component>

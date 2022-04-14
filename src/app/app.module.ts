@@ -7,6 +7,7 @@ import {
   InMemoryCache,
 } from '@rxdi/graphql-client';
 import { RouterModule } from '@rxdi/router';
+import { ReactiveUiModule } from '@rxdi/ui-kit';
 import { SharedModule } from '@shared/shared.module';
 
 import { introspectionQueryResultData } from '~/@introspection/fragmentTypes';
@@ -20,6 +21,7 @@ import { NavbarComponent } from './navbar/navbar.component';
 @Module({
   components: [NavbarComponent, HomeComponent, FooterComponent],
   imports: [
+    ReactiveUiModule.forRoot(),
     SharedModule,
     CoreModule,
     GraphqlModule.forRoot(
@@ -50,6 +52,10 @@ import { NavbarComponent } from './navbar/navbar.component';
           children: () => import('./flex/flex.module'),
         },
         {
+          path: '/forms',
+          children: () => import('./forms/forms.module'),
+        },
+        {
           path: '(.*)',
           component: 'not-found-component',
           action: () => import('./not-found/not-found.component'),
@@ -61,4 +67,4 @@ import { NavbarComponent } from './navbar/navbar.component';
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule {}
+export class AppModule { }
