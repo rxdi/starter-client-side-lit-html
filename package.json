@@ -1,6 +1,6 @@
 {
   "name": "@rxdi/starter-client-lit-html",
-  "version": "0.7.24",
+  "version": "1.0.0",
   "main": "src/main.ts",
   "scripts": {
     "start": "npx parcel ./src/index.html",
