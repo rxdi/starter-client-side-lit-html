@@ -204,22 +204,22 @@ import { introspectionQueryResultData } from '~/@introspection/fragmentTypes';
 export class AppModule {}
 ```
 
-#### Base component
+#### Base Graphql Layer
 
 ```typescript
 import { Injector } from '@rxdi/core';
-import { DocumentTypes } from '../@introspection/documentTypes';
-import { from, Observable } from 'rxjs';
-import { IQuery, IMutation, ISubscription } from '../@introspection';
-import { LitElement } from '@rxdi/lit-html';
-import { DataProxy } from 'apollo-cache';
 import {
   ApolloClient,
+  DataProxy,
   importQuery,
+  MutationOptions,
   QueryOptions,
   SubscriptionOptions,
-  MutationOptions,
 } from '@rxdi/graphql-client';
+import { from, Observable } from 'rxjs';
+
+import { IMutation, IQuery, ISubscription } from '~/@introspection';
+import { DocumentTypes } from '~/@introspection/documentTypes';
 
 type Without<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>;
 
@@ -237,7 +237,7 @@ interface ImportMutationMixin extends Without<MutationOptions, 'mutation'> {
   update?(proxy: DataProxy, res: { data: IMutation }): void;
 }
 
-export class BaseComponent extends LitElement {
+export class BaseGraphqlLayer {
   @Injector(ApolloClient) public graphql: ApolloClient;
 
   query<T = IQuery>(options: ImportQueryMixin) {
@@ -442,44 +442,96 @@ export class AboutComponent extends LitElement {
 src/app/home/home.component.ts
 
 ```typescript
-import { BaseComponent } from '@shared/base.component';
+import { SpaceXService } from '@core/spacex/spacex.service';
+import { ILaunch } from '@introspection/index';
+import { AngularLayout, FlexLayout } from '@rhtml/modifiers';
+import { Inject } from '@rxdi/core';
 import {
-  Component,
-  OnInit,
-  OnDestroy,
-  OnUpdate,
-  html,
   async,
+  Component,
+  css,
+  html,
+  LitElement,
+  OnDestroy,
+  OnInit,
+  OnUpdate,
 } from '@rxdi/lit-html';
-import { timer } from 'rxjs';
+import { defer, Observable, timer } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 /**
  * @customElement home-component
  */
-@Component({
+@Component<HomeComponent>({
   selector: 'home-component',
-  template(this: HomeComponent) {
+  style: css`
+    .launch {
+      color: white;
+      background: #467792;
+      height: 100px;
+    }
+  `,
+  modifiers: [...FlexLayout, ...AngularLayout],
+  template(this) {
     return html`
+      <h4>Time is ${async(this.timer)}</h4>
       <header>
         <h1>Space X mission names:</h1>
       </header>
-      <p>${async(this.timer)}</p>
-      ${async(
-        this.getLaunches().pipe(
-          map((launches) =>
-            launches.map((launch) => html`<p>${launch.mission_name}</p>`)
-          )
-        )
-      )}
+      <div
+        fxLayout="row wrap"
+        fxLayoutAlign="space-evenly stretch"
+        fxLayoutGap="10px"
+      >
+        <r-for .of=${this.launches}>
+          <r-let
+            .item=${(launch: ILaunch) => html`
+              <div
+                class="launch"
+                fxLayout="column"
+                fxLayoutAlign="center center"
+              >
+                <div>${launch.mission_name}</div>
+                <a
+                  ngIf=${!!launch.links.article_link}
+                  target="_blank"
+                  .href=${launch.links.article_link}
+                  >Article</a
+                >
+                <a
+                  ngIf=${!!launch.links.video_link}
+                  target="_blank"
+                  .href=${launch.links.video_link}
+                  >Video</a
+                >
+              </div>
+            `}
+          ></r-let>
+        </r-for>
+      </div>
     `;
   },
 })
 export class HomeComponent
-  extends BaseComponent
+  extends LitElement
   implements OnInit, OnDestroy, OnUpdate
 {
-  private timer = timer(100, 1000).pipe(map(() => new Date()));
+  private timer = timer(100, 1000).pipe(
+    map(() => {
+      const date = new Date();
+      return [
+        [date.getHours(), 'hours'].join(' '),
+        [date.getSeconds(), ' seconds'].join(' '),
+      ].join(' - ');
+    })
+  );
+
+  @Inject(SpaceXService)
+  private spacexService: SpaceXService;
+
+  private launches: Observable<ILaunch[]> = defer(() =>
+    this.spacexService.getLaunches()
+  );
 
   OnInit() {
     console.log('Home component init');
@@ -491,12 +543,6 @@ export class HomeComponent
 
   OnUpdate() {
     console.log('Home component updated');
-  }
-
-  getLaunches() {
-    return this.query({ query: 'launches-past.query.graphql' }).pipe(
-      map((res) => res.data.launchesPast)
-    );
   }
 }
 ```
@@ -547,7 +593,7 @@ fragment LaunchFragment on Launch {
 #### Footer component
 
 ```typescript
-import { html, css, Component } from '@rxdi/lit-html';
+import { html, css, Component, LitElement } from '@rxdi/lit-html';
 
 /**
  * @customElement footer-component
@@ -574,13 +620,13 @@ import { html, css, Component } from '@rxdi/lit-html';
     `;
   },
 })
-export class FooterComponent extends HTMLElement {}
+export class FooterComponent extends LitElement {}
 ```
 
 #### Not fund component
 
 ```typescript
-import { html, Component } from '@rxdi/lit-html';
+import { html, Component, LitElement } from '@rxdi/lit-html';
 
 /**
  * @customElement not-found-component
@@ -593,7 +639,7 @@ import { html, Component } from '@rxdi/lit-html';
     <p>Please check your URL.</p>
   `,
 })
-export class NotFoundComponent extends HTMLElement {}
+export class NotFoundComponent extends LitElement {}
 ```
 
 #### Unit Testing
@@ -758,45 +804,53 @@ html` <div>${async(something)}</div> `;
 #### Wiring up multiple Injectables with single InjectionToken
 
 ```typescript
-import { Injectable, InjectionToken, Container } from '@rxdi/core';
+import { Container, Injectable, InjectionToken } from '@rxdi/core';
 
-export interface FactoryToken {
-  dispatch(action: Actions): void;
+export interface CoffeeFactoryToken {
+  make(action: CoffeeType): void;
 }
 
-export type Actions = 'view-initialized' | 'user-logged-in';
+export type CoffeeType = 'cappuccino' | 'espresso';
 
-export const FactoryToken = new InjectionToken<FactoryToken>('factories');
+export const CoffeeFactoryToken = new InjectionToken<CoffeeFactoryToken>(
+  'factories'
+);
 
 @Injectable({
-  id: FactoryToken,
+  id: CoffeeFactoryToken,
   init: true,
   multiple: true,
 })
-export class State implements FactoryToken {
-  dispatch(action: Actions) {}
+export class CoffeeFactory1 implements CoffeeFactoryToken {
+  make(type: CoffeeType) {
+    console.log('Coffee factory 1', type);
+  }
 }
 
 @Injectable({
-  id: FactoryToken,
+  id: CoffeeFactoryToken,
   init: true,
   multiple: true,
 })
-export class State2 implements FactoryToken {
-  dispatch(action: Actions) {}
+export class CoffeeFactory2 implements CoffeeFactoryToken {
+  make(type: CoffeeType) {
+    console.log('Coffee factory 2', type);
+  }
 }
 
 @Injectable({
-  id: FactoryToken,
+  id: CoffeeFactoryToken,
   init: true,
   multiple: true,
 })
-export class State3 implements FactoryToken {
-  dispatch(action: Actions) {}
+export class CoffeeFactory3 implements CoffeeFactoryToken {
+  make(type: CoffeeType) {
+    console.log('Coffee factory 3', type);
+  }
 }
 
-const factories = Container.getMany(FactoryToken); // factories is Factory[]
-factories.forEach((factory) => factory.dispatch('user-logged-in'));
+const factories = Container.getMany(CoffeeFactoryToken);
+factories.forEach((factory) => factory.make('cappuccino'));
 ```
 
 #### Injecting multiproviders inside Components
@@ -804,7 +858,7 @@ factories.forEach((factory) => factory.dispatch('user-logged-in'));
 ```typescript
 import { InjectMany, Component } from '@rxdi/core';
 import { html, render, Component } from '@rxdi/lit-html';
-import { FactoryToken } from './app.state';
+import { CoffeeFactoryToken } from './coffee-factory';
 
 /**
  * @customElement my-web-component
@@ -813,10 +867,13 @@ import { FactoryToken } from './app.state';
   selector: 'my-web-component',
 })
 export class MyWebComponent extends LitElement {
-  @InjectMany(FactoryToken) private states: FactoryToken;
+  @InjectMany(CoffeeFactoryToken)
+  private factories: CoffeeFactoryToken;
 
   OnInit() {
-    this.state.dispatch('user-logged-in');
+    for (const factory of this.factories) {
+      factory.make('cappuccino');
+    }
   }
 }
 ```

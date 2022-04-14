@@ -1,7 +1,6 @@
-
 config:
   schematics:
-    name: @rxdi/schematics
+    name: '@rxdi/schematics'
     dryRun: false
 
   schema:
