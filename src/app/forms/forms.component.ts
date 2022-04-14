@@ -27,6 +27,7 @@ import {
       <form
         name="user"
         style="margin: 10px;"
+        novalidate
         @submit=${() => this.onSubmitForm()}
       >
         <p>Firstname</p>
@@ -82,15 +83,18 @@ export class FormsComponent extends LitElement {
   @Form({
     name: 'user',
     strategy: 'input',
-    // strict: true,
+    strict: true,
   })
   userForm = new FormGroup({
-    firstName: ['Kristiyan', [RequiredValidator]],
-    lastName: ['Tachev', [RequiredValidator]],
-    email: ['kristiqn.tachev@gmail.com', [EmailValidator]],
+    firstName: ['', [RequiredValidator]],
+    lastName: ['', [RequiredValidator]],
+    email: ['', [RequiredValidator, EmailValidator]],
   });
 
   onSubmitForm() {
-    alert(JSON.stringify(this.userForm.value));
+    this.userForm.updateValueAndValidity();
+    if (this.userForm.valid) {
+      alert(JSON.stringify(this.userForm.value));
+    }
   }
 }

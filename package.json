@@ -18,11 +18,11 @@
     "@rhtml/decorators": "^0.0.116",
     "@rhtml/modifiers": "^0.0.116",
     "@rhtml/operators": "^0.0.116",
-    "@rxdi/core": "^0.7.147",
-    "@rxdi/forms": "^0.7.147",
-    "@rxdi/graphql-client": "^0.7.147",
-    "@rxdi/lit-html": "^0.7.147",
-    "@rxdi/router": "^0.7.147",
+    "@rxdi/core": "^0.7.148",
+    "@rxdi/forms": "^0.7.148",
+    "@rxdi/graphql-client": "^0.7.148",
+    "@rxdi/lit-html": "^0.7.148",
+    "@rxdi/router": "^0.7.148",
     "@rxdi/ui-kit": "^0.7.134"
   },
   "browserslist": [
