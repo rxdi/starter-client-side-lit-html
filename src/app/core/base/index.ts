@@ -33,22 +33,22 @@ export class BaseGraphqlLayer {
 
   query<T = IQuery>(options: ImportQueryMixin) {
     options.query = importQuery(options.query);
-    return from(this.graphql.query.bind(this.graphql)(options)) as Observable<{
+    return from(this.graphql.query(options as never)) as Observable<{
       data: T;
     }>;
   }
 
   mutate<T = IMutation>(options: ImportMutationMixin) {
     options.mutation = importQuery(options.mutation);
-    return from(this.graphql.mutate.bind(this.graphql)(options)) as Observable<{
+    return from(this.graphql.mutate(options as never)) as Observable<{
       data: T;
     }>;
   }
 
   subscribe<T = ISubscription>(options: ImportSubscriptionMixin) {
     options.query = importQuery(options.query);
-    return from(
-      this.graphql.subscribe.bind(this.graphql)(options)
-    ) as Observable<{ data: T }>;
+    return from(this.graphql.subscribe(options as never)) as Observable<{
+      data: T;
+    }>;
   }
 }
