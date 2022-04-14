@@ -8,9 +8,9 @@ import { FlexComponent } from './flex.component';
     RouterModule.forChild([
       {
         path: '/',
-        component: FlexComponent
-      }
-    ])
-  ]
+        component: FlexComponent,
+      },
+    ]),
+  ],
 })
 export class FlexModule {}

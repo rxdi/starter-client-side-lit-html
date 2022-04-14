@@ -8,9 +8,9 @@ import { AboutComponent } from './about.component';
     RouterModule.forChild([
       {
         path: '/',
-        component: AboutComponent
-      }
-    ])
-  ]
+        component: AboutComponent,
+      },
+    ]),
+  ],
 })
 export class AboutModule {}

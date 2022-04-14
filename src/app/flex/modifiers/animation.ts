@@ -2,7 +2,7 @@ import {
   Attribute,
   CustomAttributeRegistry,
   Input,
-  Modifier
+  Modifier,
 } from '@rhtml/custom-attributes';
 import { HostBinding } from '@rhtml/decorators';
 
@@ -12,7 +12,7 @@ import { Animations } from './animate.css';
   selector: 'animated',
   registry(this: HTMLElement) {
     return new CustomAttributeRegistry(this);
-  }
+  },
 })
 export class Animation extends Attribute {
   @Input({ observe: true })

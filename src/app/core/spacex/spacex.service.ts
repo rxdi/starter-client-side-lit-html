@@ -6,7 +6,7 @@ import { map } from 'rxjs/operators';
 export class SpaceXService extends BaseGraphqlLayer {
   getLaunches() {
     return this.query({ query: 'launches-past.query.graphql' }).pipe(
-      map(res => res.data.launchesPast)
+      map((res) => res.data.launchesPast)
     );
   }
 }

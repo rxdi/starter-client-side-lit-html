@@ -21,6 +21,6 @@ import { Component, css, html, LitElement } from '@rxdi/lit-html';
         <p>Footer</p>
       </div>
     `;
-  }
+  },
 })
 export class FooterComponent extends LitElement {}

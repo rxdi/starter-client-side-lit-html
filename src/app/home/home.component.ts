@@ -10,7 +10,7 @@ import {
   LitElement,
   OnDestroy,
   OnInit,
-  OnUpdate
+  OnUpdate,
 } from '@rxdi/lit-html';
 import { defer, Observable, timer } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -66,16 +66,18 @@ import { map } from 'rxjs/operators';
         </r-for>
       </div>
     `;
-  }
+  },
 })
-export class HomeComponent extends LitElement
-  implements OnInit, OnDestroy, OnUpdate {
+export class HomeComponent
+  extends LitElement
+  implements OnInit, OnDestroy, OnUpdate
+{
   private timer = timer(100, 1000).pipe(
     map(() => {
       const date = new Date();
       return [
         [date.getHours(), 'hours'].join(' '),
-        [date.getSeconds(), ' seconds'].join(' ')
+        [date.getSeconds(), ' seconds'].join(' '),
       ].join(' - ');
     })
   );

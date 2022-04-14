@@ -11,7 +11,7 @@ import { DividerComponent } from '@rxdi/ui-kit/divider';
     DividerComponent,
     ForOperator,
     IfOperator,
-    LetOperator
-  ]
+    LetOperator,
+  ],
 })
 export class SharedModule {}

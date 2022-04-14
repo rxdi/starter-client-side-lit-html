@@ -5,7 +5,7 @@ import {
   importQuery,
   MutationOptions,
   QueryOptions,
-  SubscriptionOptions
+  SubscriptionOptions,
 } from '@rxdi/graphql-client';
 import { from, Observable } from 'rxjs';
 

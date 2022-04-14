@@ -2,12 +2,12 @@ import {
   Attribute,
   Input,
   /*   CustomAttributeRegistry, */
-  Modifier
+  Modifier,
 } from '@rhtml/custom-attributes';
 import { HostBinding } from '@rhtml/decorators';
 
 @Modifier({
-  selector: 'layout'
+  selector: 'layout',
   /**
    * If "registry" is specified , modifier will create own registry
    * If no registry present on the root component specificed registry will be used

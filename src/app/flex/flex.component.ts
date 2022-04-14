@@ -31,7 +31,7 @@ import { CustomLayout } from './modifiers/custom-layout';
       .height {
         height: 100px;
       }
-    `
+    `,
   ],
   /**
    * All Modifiers will be defined inside this registry
@@ -45,9 +45,7 @@ import { CustomLayout } from './modifiers/custom-layout';
   modifiers: [...FlexLayout, ...AngularLayout, CustomLayout, Animation],
   template(this) {
     return html`
-      <h2 animated="slideInLeft" delay="1s">
-        Your ultimate Solution
-      </h2>
+      <h2 animated="slideInLeft" delay="1s">Your ultimate Solution</h2>
 
       <rx-divider type="icon"></rx-divider>
 
@@ -148,9 +146,7 @@ import { CustomLayout } from './modifiers/custom-layout';
       <h3 fxLayoutAlign="center">Flex max-width (fxFlex)</h3>
 
       <div fxLayout="row">
-        <div fxFlex="10%" fxFlex.xs="20%" fxFlex.md="40%" class="blocks">
-          1
-        </div>
+        <div fxFlex="10%" fxFlex.xs="20%" fxFlex.md="40%" class="blocks">1</div>
         <div fxFlex class="blocks">2</div>
         <div fxFlex class="blocks">3</div>
       </div>
@@ -296,7 +292,7 @@ import { CustomLayout } from './modifiers/custom-layout';
         <div fxFlexOrder="1">4. Four</div>
       </div>
     `;
-  }
+  },
 })
 export class FlexComponent extends LitElement {
   @state()

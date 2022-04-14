@@ -13,7 +13,7 @@ import { Component, html } from '@rxdi/lit-html';
       </router-outlet>
     `;
   },
-  container: document.body
+  container: document.body,
 })
 export class AppComponent extends HTMLElement {
   OnInit() {
