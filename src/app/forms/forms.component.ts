@@ -1,8 +1,7 @@
 import { FlexLayout } from '@rhtml/modifiers';
 import { Form, FormGroup } from '@rxdi/forms';
-import { async, Component, css, html, LitElement } from '@rxdi/lit-html';
+import { Component, css, html, LitElement } from '@rxdi/lit-html';
 import { InputStyle } from '@rxdi/ui-kit/styles/form/input';
-import { map } from 'rxjs/operators';
 
 import {
   EmailValidator,
@@ -27,7 +26,6 @@ import {
       <form
         name="user"
         style="margin: 10px;"
-        novalidate
         @submit=${() => this.onSubmitForm()}
       >
         <p>Firstname</p>
@@ -58,19 +56,18 @@ import {
       <div fxLayout="row wrap" fxLayoutGap="20px">
         <rx-card palette="primary">
           <div fxLayoutAlign="center" style="padding: 20px;">
-            "${async(this.userForm.valueChanges.pipe(map((v) => v.firstName)))}"
+            "${this.userForm.value.firstName}"
           </div>
         </rx-card>
 
         <rx-card palette="warning">
           <div fxLayoutAlign="center" style="padding: 20px;">
-            "${async(this.userForm.valueChanges.pipe(map((v) => v.lastName)))}"
+            "${this.userForm.value.lastName}"
           </div>
         </rx-card>
-
         <rx-card palette="danger">
           <div fxLayoutAlign="center" style="padding: 20px;">
-            "${async(this.userForm.valueChanges.pipe(map((v) => v.email)))}"
+            "${this.userForm.value.email}"
           </div>
         </rx-card>
       </div>
@@ -82,8 +79,8 @@ import {
 export class FormsComponent extends LitElement {
   @Form({
     name: 'user',
-    strategy: 'input',
-    strict: true,
+    strategy: 'blur',
+    // strict: true,
   })
   userForm = new FormGroup({
     firstName: ['', [RequiredValidator]],
@@ -91,8 +88,12 @@ export class FormsComponent extends LitElement {
     email: ['', [RequiredValidator, EmailValidator]],
   });
 
-  onSubmitForm() {
-    this.userForm.updateValueAndValidity();
+  // OnUpdateFirst() {
+  //   this.userForm.valueChanges.subscribe(console.log);
+  // }
+
+  async onSubmitForm() {
+    await this.userForm.updateValueAndValidity();
     if (this.userForm.valid) {
       alert(JSON.stringify(this.userForm.value));
     }

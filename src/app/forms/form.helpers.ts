@@ -1,6 +1,6 @@
 import { html } from '@rxdi/lit-html';
 
-export const EmailValidator = (element: HTMLInputElement) => {
+export const EmailValidator = async (element: HTMLInputElement) => {
   const regex = /^([a-zA-Z0-9_\.\-]+)@([a-zA-Z0-9_\.\-]+)\.([a-zA-Z]{2,5})$/;
   if (!regex.test(element.value)) {
     element.classList.add('rx-danger');
@@ -12,7 +12,7 @@ export const EmailValidator = (element: HTMLInputElement) => {
   element.classList.remove('rx-danger');
 };
 
-export const RequiredValidator = (element: HTMLInputElement) => {
+export const RequiredValidator = async (element: HTMLInputElement) => {
   if (!element.value) {
     element.classList.add('rx-danger');
     return {
