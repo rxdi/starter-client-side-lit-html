@@ -1,11 +1,4 @@
-import {
-  Component,
-  css,
-  eventOptions,
-  html,
-  LitElement,
-  property,
-} from '@rxdi/lit-html';
+import { Component, css, eventOptions, html, LitElement, property } from '@rxdi/lit-html';
 import { Router } from '@rxdi/router';
 
 /**

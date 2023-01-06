@@ -1,9 +1,4 @@
-import {
-  Attribute,
-  CustomAttributeRegistry,
-  Input,
-  Modifier,
-} from '@rhtml/custom-attributes';
+import { Attribute, CustomAttributeRegistry, Input, Modifier } from '@rhtml/custom-attributes';
 import { HostBinding } from '@rhtml/decorators';
 
 import { Animations } from './animate.css';

@@ -54,12 +54,7 @@ import { CustomLayout } from './modifiers/custom-layout';
         <div ngIf=${this.toggler}>(ngIf)</div>
       </h3>
 
-      <rx-button
-        fxLayoutAlign="center center"
-        palette="danger"
-        @click=${() => this.toggle()}
-        >Toggle</rx-button
-      >
+      <rx-button fxLayoutAlign="center center" palette="danger" @click=${() => this.toggle()}>Toggle</rx-button>
 
       <rx-divider type="icon"></rx-divider>
 
@@ -69,68 +64,29 @@ import { CustomLayout } from './modifiers/custom-layout';
       </article>
 
       <rx-divider type="icon"></rx-divider>
-      <h3 fxLayoutAlign="center">
-        Flex layout align dynamically (fxLayoutAlign)
-      </h3>
-      <div
-        fxLayout="row wrap"
-        fxLayoutAlign="space-evenly stretch"
-        fxLayoutGap="10px"
-      >
-        <rx-button
-          palette="primary"
-          @click=${() => this.setFxLayoutAlign('space-between start')}
-        >
+      <h3 fxLayoutAlign="center">Flex layout align dynamically (fxLayoutAlign)</h3>
+      <div fxLayout="row wrap" fxLayoutAlign="space-evenly stretch" fxLayoutGap="10px">
+        <rx-button palette="primary" @click=${() => this.setFxLayoutAlign('space-between start')}>
           Space Between Start
         </rx-button>
-        <rx-button
-          palette="primary"
-          @click=${() => this.setFxLayoutAlign('space-between center')}
-        >
+        <rx-button palette="primary" @click=${() => this.setFxLayoutAlign('space-between center')}>
           Space Between Center
         </rx-button>
-        <rx-button
-          palette="primary"
-          @click=${() => this.setFxLayoutAlign('space-between end')}
-        >
+        <rx-button palette="primary" @click=${() => this.setFxLayoutAlign('space-between end')}>
           Space Between End
         </rx-button>
-        <rx-button
-          palette="primary"
-          @click=${() => this.setFxLayoutAlign('space-around start')}
-        >
+        <rx-button palette="primary" @click=${() => this.setFxLayoutAlign('space-around start')}>
           Space Between Start
         </rx-button>
-        <rx-button
-          palette="primary"
-          @click=${() => this.setFxLayoutAlign('space-around center')}
-        >
+        <rx-button palette="primary" @click=${() => this.setFxLayoutAlign('space-around center')}>
           Space Between Center
         </rx-button>
-        <rx-button
-          palette="primary"
-          @click=${() => this.setFxLayoutAlign('space-around end')}
-        >
+        <rx-button palette="primary" @click=${() => this.setFxLayoutAlign('space-around end')}>
           Space Between End
         </rx-button>
-        <rx-button
-          palette="primary"
-          @click=${() => this.setFxLayoutAlign('center start')}
-        >
-          Start Center
-        </rx-button>
-        <rx-button
-          palette="primary"
-          @click=${() => this.setFxLayoutAlign('center center')}
-        >
-          Center Center
-        </rx-button>
-        <rx-button
-          palette="primary"
-          @click=${() => this.setFxLayoutAlign('center end')}
-        >
-          End Center
-        </rx-button>
+        <rx-button palette="primary" @click=${() => this.setFxLayoutAlign('center start')}> Start Center </rx-button>
+        <rx-button palette="primary" @click=${() => this.setFxLayoutAlign('center center')}> Center Center </rx-button>
+        <rx-button palette="primary" @click=${() => this.setFxLayoutAlign('center end')}> End Center </rx-button>
       </div>
 
       <rx-divider></rx-divider>
@@ -180,46 +136,18 @@ import { CustomLayout } from './modifiers/custom-layout';
 
       <h3 fxLayoutAlign="center">Flex Fill (fxFlexFill)</h3>
 
-      <div
-        style="padding-top: 10px;height: 200px"
-        fxLayout="row"
-        fxLayoutGap="10px"
-      >
+      <div style="padding-top: 10px;height: 200px" fxLayout="row" fxLayoutGap="10px">
         <div>
-          <div
-            style="background: red;"
-            fxLayoutAlign="center center"
-            fxFlexFill
-          >
-            A
-          </div>
+          <div style="background: red;" fxLayoutAlign="center center" fxFlexFill>A</div>
         </div>
         <div>
-          <div
-            style="background: green;"
-            fxLayoutAlign="center center"
-            fxFlexFill
-          >
-            B
-          </div>
+          <div style="background: green;" fxLayoutAlign="center center" fxFlexFill>B</div>
         </div>
         <div>
-          <div
-            style="background: purple;"
-            fxLayoutAlign="center center"
-            fxFlexFill
-          >
-            C
-          </div>
+          <div style="background: purple;" fxLayoutAlign="center center" fxFlexFill>C</div>
         </div>
         <div>
-          <div
-            style="background: gray;"
-            fxLayoutAlign="center center"
-            fxFlexFill
-          >
-            D
-          </div>
+          <div style="background: gray;" fxLayoutAlign="center center" fxFlexFill>D</div>
         </div>
       </div>
 
@@ -227,17 +155,9 @@ import { CustomLayout } from './modifiers/custom-layout';
 
       <h3 fxLayoutAlign="center">Dynamic directive change (fxFlexAlign)</h3>
 
-      <div
-        fxLayout="row wrap"
-        fxLayoutAlign="space-evenly stretch"
-        fxLayoutGap="10px"
-      >
-        <rx-button palette="primary" @click=${() => this.setFxLayout('row')}
-          >Row</rx-button
-        >
-        <rx-button palette="primary" @click=${() => this.setFxLayout('column')}
-          >Column</rx-button
-        >
+      <div fxLayout="row wrap" fxLayoutAlign="space-evenly stretch" fxLayoutGap="10px">
+        <rx-button palette="primary" @click=${() => this.setFxLayout('row')}>Row</rx-button>
+        <rx-button palette="primary" @click=${() => this.setFxLayout('column')}>Column</rx-button>
       </div>
 
       <rx-divider></rx-divider>
@@ -258,12 +178,7 @@ import { CustomLayout } from './modifiers/custom-layout';
 
       <h3 fxLayoutAlign="center">Flex Align (fxFlexAlign)</h3>
 
-      <div
-        style="min-height: 200px;"
-        fxLayout="row"
-        fxLayoutGap="5px"
-        class="flex-align"
-      >
+      <div style="min-height: 200px;" fxLayout="row" fxLayoutGap="5px" class="flex-align">
         <div fxLayoutAlign="center" fxFlexAlign="flex-start">A</div>
         <div fxLayoutAlign="center" fxFlexAlign="stretch">B</div>
         <div fxLayoutAlign="center" fxFlexAlign="center">C</div>

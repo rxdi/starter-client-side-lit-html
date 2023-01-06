@@ -13,4 +13,4 @@ import { FormsComponent } from './forms.component';
     ]),
   ],
 })
-export class FormsModule { }
+export class FormsModule {}

@@ -3,11 +3,7 @@ import { Form, FormGroup } from '@rxdi/forms';
 import { Component, css, html, LitElement } from '@rxdi/lit-html';
 import { InputStyle } from '@rxdi/ui-kit/styles/form/input';
 
-import {
-  EmailValidator,
-  InputErrorTemplate,
-  RequiredValidator,
-} from './form.helpers';
+import { EmailValidator, InputErrorTemplate, RequiredValidator } from './form.helpers';
 
 @Component<FormsComponent>({
   selector: 'forms-view',
@@ -23,11 +19,7 @@ import {
   modifiers: [...FlexLayout],
   template(this) {
     return html`
-      <form
-        name="user"
-        style="margin: 10px;"
-        @submit=${() => this.onSubmitForm()}
-      >
+      <form name="user" style="margin: 10px;" @submit=${() => this.onSubmitForm()}>
         <p>Firstname</p>
         <input name="firstName" class="rx-input" type="text" />
         ${InputErrorTemplate(this.userForm.get('firstName'))}
@@ -40,11 +32,7 @@ import {
         <input name="email" class="rx-input" type="text" />
         ${InputErrorTemplate(this.userForm.get('email'))}
 
-        <rx-button
-          fxLayoutAlign="center center"
-          style="margin-top: 20px;"
-          palette="danger"
-          type="submit"
+        <rx-button fxLayoutAlign="center center" style="margin-top: 20px;" palette="danger" type="submit"
           >SUBMIT</rx-button
         >
       </form>
@@ -55,20 +43,14 @@ import {
 
       <div fxLayout="row wrap" fxLayoutGap="20px">
         <rx-card palette="primary">
-          <div fxLayoutAlign="center" style="padding: 20px;">
-            "${this.userForm.value.firstName}"
-          </div>
+          <div fxLayoutAlign="center" style="padding: 20px;">"${this.userForm.value.firstName}"</div>
         </rx-card>
 
         <rx-card palette="warning">
-          <div fxLayoutAlign="center" style="padding: 20px;">
-            "${this.userForm.value.lastName}"
-          </div>
+          <div fxLayoutAlign="center" style="padding: 20px;">"${this.userForm.value.lastName}"</div>
         </rx-card>
         <rx-card palette="danger">
-          <div fxLayoutAlign="center" style="padding: 20px;">
-            "${this.userForm.value.email}"
-          </div>
+          <div fxLayoutAlign="center" style="padding: 20px;">"${this.userForm.value.email}"</div>
         </rx-card>
       </div>
 

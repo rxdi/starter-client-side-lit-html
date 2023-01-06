@@ -18,8 +18,7 @@ interface ImportQueryMixin extends Without<QueryOptions, 'query'> {
   query: DocumentTypes;
 }
 
-interface ImportSubscriptionMixin
-  extends Without<SubscriptionOptions, 'query'> {
+interface ImportSubscriptionMixin extends Without<SubscriptionOptions, 'query'> {
   query: DocumentTypes;
 }
 

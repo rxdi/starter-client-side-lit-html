@@ -3,7 +3,9 @@
     [
       "module-resolver",
       {
-        "root": ["./src"],
+        "root": [
+          "./src"
+        ],
         "alias": {
           "@shared": "./src/app/shared",
           "@introspection": "./src/app/@introspection",

@@ -4,7 +4,7 @@
     "editor.formatOnSave": false
   },
   "[typescript]": {
-    "editor.formatOnSave": true
+    "editor.formatOnSave": false
   },
   "prettier.singleQuote": true,
   "typescript.tsdk": "node_modules/typescript/lib",

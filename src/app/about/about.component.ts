@@ -14,10 +14,7 @@ import { map } from 'rxjs/operators';
       </header>
       ${async(this.timer)}
       <p>
-        <img
-          src="https://www.w3schools.com/html/pic_trulli.jpg"
-          alt="Italian Trulli"
-        />
+        <img src="https://www.w3schools.com/html/pic_trulli.jpg" alt="Italian Trulli" />
       </p>
     `;
   },

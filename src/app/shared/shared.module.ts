@@ -7,13 +7,6 @@ import { DividerComponent } from '@rxdi/ui-kit/divider';
 
 @Module({
   imports: [ReactiveUiModule.forRoot()],
-  components: [
-    ButtonComponent,
-    DividerComponent,
-    ForOperator,
-    IfOperator,
-    LetOperator,
-    CardComponent,
-  ],
+  components: [ButtonComponent, DividerComponent, ForOperator, IfOperator, LetOperator, CardComponent],
 })
-export class SharedModule { }
+export class SharedModule {}

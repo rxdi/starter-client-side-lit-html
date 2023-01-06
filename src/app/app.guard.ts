@@ -1,10 +1,5 @@
 import { Injectable, OnInit } from '@rxdi/core';
-import {
-  CanActivateCommands,
-  CanActivateContext,
-  CanActivateRedirectResult,
-  CanActivateResolver,
-} from '@rxdi/router';
+import { CanActivateCommands, CanActivateContext, CanActivateRedirectResult, CanActivateResolver } from '@rxdi/router';
 // import { Observable } from 'rxjs';
 
 @Injectable()
@@ -13,10 +8,7 @@ export class LoggedInGuard implements CanActivateResolver, OnInit {
     //
   }
 
-  canActivate(
-    context: CanActivateContext,
-    commands: CanActivateCommands
-  ): CanActivateRedirectResult {
+  canActivate(context: CanActivateContext, commands: CanActivateCommands): CanActivateRedirectResult {
     return commands.redirect('/about');
     // return false | true;
     // return new Promise((r) => r(true | false));

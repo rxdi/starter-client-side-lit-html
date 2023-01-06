@@ -1,11 +1,6 @@
 import { CoreModule } from '@core/core.module';
 import { Module } from '@rxdi/core';
-import {
-  convertToPossibleTypes,
-  GraphqlModule,
-  GraphQLRequest,
-  InMemoryCache,
-} from '@rxdi/graphql-client';
+import { convertToPossibleTypes, GraphqlModule, GraphQLRequest, InMemoryCache } from '@rxdi/graphql-client';
 import { RouterModule } from '@rxdi/router';
 import { ReactiveUiModule } from '@rxdi/ui-kit';
 import { SharedModule } from '@shared/shared.module';
@@ -67,4 +62,4 @@ import { NavbarComponent } from './navbar/navbar.component';
   ],
   bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}
