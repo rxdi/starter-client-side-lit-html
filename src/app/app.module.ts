@@ -27,7 +27,7 @@ import { NavbarComponent } from './navbar/navbar.component';
         cache: new InMemoryCache({
           possibleTypes: convertToPossibleTypes(introspectionQueryResultData),
         }),
-        uri: 'https://api.spacex.land/graphql/',
+        uri: 'https://main--spacex-l4uc6p.apollographos.net/graphql',
         pubsub: 'wss://my-graphql-server-subscriptions/subscriptions',
       },
       DOCUMENTS
