@@ -4,7 +4,7 @@
   "main": "src/main.ts",
   "scripts": {
     "start": "npx parcel ./src/index.html",
-    "build": "npx parcel build ./src/index.html",
+    "build": "npx parcel@1.12.3 build ./src/index.html",
     "lint": "npx eslint ./src --ext .ts",
     "lint-fix": "npx eslint ./src --fix --ext .ts",
     "deploy": "firebase deploy",
