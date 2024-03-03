@@ -4,7 +4,7 @@
   "main": "src/main.ts",
   "scripts": {
     "start": "npx parcel ./src/index.html",
-    "build": "npx parcel@1.12.3 build ./src/index.html",
+    "build": "npx parcel build ./src/index.html",
     "lint": "npx eslint ./src --ext .ts",
     "lint-fix": "npx eslint ./src --fix --ext .ts",
     "deploy": "firebase deploy",
@@ -14,10 +14,10 @@
   "author": "Kristiyan Tachev",
   "license": "MIT",
   "dependencies": {
+    "@rhtml/component": "^0.0.126",
     "@rhtml/custom-attributes": "^0.0.126",
     "@rhtml/decorators": "^0.0.126",
     "@rhtml/modifiers": "^0.0.126",
-    "@rhtml/component": "^0.0.126",
     "@rhtml/operators": "^0.0.126",
     "@rxdi/core": "^0.7.178",
     "@rxdi/forms": "^0.7.178",
@@ -31,19 +31,19 @@
   ],
   "devDependencies": {
     "@babel/core": "^7.10.2",
-    "babel-plugin-module-resolver": "^4.1.0",
-    "cssnano": "^5.1.14",
-    "graphql": "^14.4.2",
-    "typescript": "^4.9.4",
     "@typescript-eslint/eslint-plugin": "^5.48.0",
     "@typescript-eslint/parser": "^5.48.0",
+    "babel-plugin-module-resolver": "^4.1.0",
+    "cssnano": "^4.1.11",
     "eslint": "^8.31.0",
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-lit": "^1.7.2",
     "eslint-plugin-prettier": "^4.2.1",
     "eslint-plugin-simple-import-sort": "^8.0.0",
+    "graphql": "^14.4.2",
     "prettier": "^2.0.5",
-    "workbox-recipes": "^6.5.4",
-    "workbox-precaching": "^6.5.4"
+    "typescript": "^4.9.4",
+    "workbox-precaching": "^6.5.4",
+    "workbox-recipes": "^6.5.4"
   }
 }
